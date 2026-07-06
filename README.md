@@ -15,6 +15,11 @@ English | [简体中文](./README.zh-CN.md)
 **▶ [paddockcv.com](https://paddockcv.com)** — the site itself, running the full
 real dataset (~480 people, 5 series) in 7 languages. This repo is how it's built.
 
+**Know a paddock engineer the site is missing (or shows wrong)?**
+[Open a person-info issue](../../issues/new?template=person-info.yml) with a
+source URL — sourced contributions flow straight into the live site.
+Contact: [hello@paddockcv.com](mailto:hello@paddockcv.com)
+
 <!-- screenshot: docs/img/dashboard-sample.png — dashboard running on the SAMPLE dataset only -->
 ![Dashboard on the sample dataset](docs/img/dashboard-sample.png)
 
@@ -92,6 +97,14 @@ The four-layer loop, per role:
 | L3 CV | How did each person get there? | LinkedIn public summaries, university alumni features, series "People of the Paddock" columns |
 | L4 Assets | Photo, with identity actually verified? | Official team CDNs with named captions, single-subject interview leads — see the binding-strength spectrum |
 
+The search layer is AI-assisted: LLM research agents drive the role-by-role
+queries through **[Tavily](https://tavily.com)** (search + full-page reading)
+and **[Firecrawl](https://firecrawl.dev)** (structured extraction), surfacing
+candidate sources at a scale one human can't. Judgment stays human-shaped:
+agents only *propose*; every accept/reject goes through the sourcing rules
+below, and every claim keeps its URL so you can re-verify without trusting
+the pipeline at all.
+
 Two rules carry the whole thing:
 
 1. **Absence over fabrication.** If it can't be sourced, the field stays
@@ -163,6 +176,9 @@ that powers [paddockcv.com](https://paddockcv.com).
 Code and methodology PRs are equally welcome — see
 [CONTRIBUTING.md](CONTRIBUTING.md). The repo's files ship only the fictional
 sample dataset; real-person info flows through issues, not PRs.
+
+Anything else (removal requests, press, questions):
+[hello@paddockcv.com](mailto:hello@paddockcv.com).
 
 ## License
 

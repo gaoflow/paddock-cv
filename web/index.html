@@ -581,7 +581,7 @@ it:{"中级":"Livello intermedio","中级到高级":"Da intermedio a senior","�
 const sc = v => { v = String(v||"").trim(); if(!v || LOCALE==="zh") return v; const m = SCALES[LOCALE]; return (m && m[v]) || v; };
 const I18N = {
 zh:{
-  title:"围场履历",
+  title:"围场履历",foot_contrib:"补充人员信息",
   tab_roster:"阵容",tab_roles:"岗位地图",tab_routes:"入行路径",
   search_ph:"搜索人员 / 车队 / 岗位",search_aria:"搜索人员、车队或岗位",
   qf_aria:"数据状态",qf_public:"公开人员",qf_photos:"头像资源",qf_lowconf:"低置信度标注",
@@ -612,7 +612,7 @@ zh:{
   ],
 },
 en:{
-  title:"Paddock CV",
+  title:"Paddock CV",foot_contrib:"Contribute person info",
   tab_roster:"Roster",tab_roles:"Role map",tab_routes:"Entry paths",
   search_ph:"Search people / teams / roles",search_aria:"Search people, teams or roles",
   qf_aria:"Data status",qf_public:"Public people",qf_photos:"Avatars",qf_lowconf:"Low-confidence flags",
@@ -643,7 +643,7 @@ en:{
   ],
 },
 ja:{
-  title:"Paddock CV",
+  title:"Paddock CV",foot_contrib:"情報を提供する",
   tab_roster:"ロースター",tab_roles:"ロールマップ",tab_routes:"キャリア経路",
   search_ph:"人・チーム・職種を検索",search_aria:"人・チーム・職種を検索",
   qf_aria:"データ状態",qf_public:"公開人員",qf_photos:"アバター",qf_lowconf:"低信頼度ラベル",
@@ -667,7 +667,7 @@ ja:{
   bucket:l=>`${l} 年`,
 },
 de:{
-  title:"Paddock CV",
+  title:"Paddock CV",foot_contrib:"Personendaten beitragen",
   tab_roster:"Kader",tab_roles:"Rollenkarte",tab_routes:"Einstiegswege",
   search_ph:"Personen / Teams / Rollen suchen",search_aria:"Personen, Teams oder Rollen suchen",
   qf_aria:"Datenstatus",qf_public:"Öffentliche Personen",qf_photos:"Avatare",qf_lowconf:"Niedrige Konfidenz",
@@ -691,7 +691,7 @@ de:{
   bucket:l=>`${l} J.`,
 },
 fr:{
-  title:"Paddock CV",
+  title:"Paddock CV",foot_contrib:"Contribuer des infos",
   tab_roster:"Effectif",tab_roles:"Carte des rôles",tab_routes:"Parcours d'entrée",
   search_ph:"Rechercher personnes / équipes / postes",search_aria:"Rechercher personnes, équipes ou postes",
   qf_aria:"État des données",qf_public:"Personnes publiques",qf_photos:"Avatars",qf_lowconf:"Confiance faible",
@@ -715,7 +715,7 @@ fr:{
   bucket:l=>`${l} ans`,
 },
 es:{
-  title:"Paddock CV",
+  title:"Paddock CV",foot_contrib:"Aportar información",
   tab_roster:"Plantilla",tab_roles:"Mapa de roles",tab_routes:"Vías de entrada",
   search_ph:"Buscar personas / equipos / puestos",search_aria:"Buscar personas, equipos o puestos",
   qf_aria:"Estado de datos",qf_public:"Personas públicas",qf_photos:"Avatares",qf_lowconf:"Confianza baja",
@@ -739,7 +739,7 @@ es:{
   bucket:l=>`${l} años`,
 },
 it:{
-  title:"Paddock CV",
+  title:"Paddock CV",foot_contrib:"Contribuisci informazioni",
   tab_roster:"Organico",tab_roles:"Mappa dei ruoli",tab_routes:"Percorsi d'ingresso",
   search_ph:"Cerca persone / team / ruoli",search_aria:"Cerca persone, team o ruoli",
   qf_aria:"Stato dei dati",qf_public:"Persone pubbliche",qf_photos:"Avatar",qf_lowconf:"Bassa confidenza",
@@ -1792,7 +1792,8 @@ if(rosterSearch){
     }
   });
 }
-document.getElementById("foot").innerHTML="";
+document.getElementById("foot").innerHTML =
+  `© 2026 Paddock CV · <a href="mailto:hello@paddockcv.com">hello@paddockcv.com</a> · <a href="https://github.com/gaoflow/paddock-cv" target="_blank" rel="noopener">GitHub</a> · <a href="https://github.com/gaoflow/paddock-cv/issues/new?template=person-info.yml" target="_blank" rel="noopener">${t("foot_contrib")}</a>`;
 
 renderRosterBoard();
 renderRoles();
