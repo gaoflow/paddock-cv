@@ -8,8 +8,12 @@
 [![Code: MIT](https://img.shields.io/badge/code-MIT-blue)](LICENSE)
 [![Data: private · sample shipped](https://img.shields.io/badge/data-private%20·%20sample%20shipped-orange)](#-data-notice)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](#quickstart)
+[![Live: paddockcv.com](https://img.shields.io/badge/live-paddockcv.com-brightgreen)](https://paddockcv.com)
 
 English | [简体中文](./README.zh-CN.md)
+
+**▶ Live demo: [paddockcv.com](https://paddockcv.com)** — the full real dataset
+(~480 people, 5 series), in 7 languages. This repo is how it was built.
 
 <!-- screenshot: docs/img/dashboard-sample.png — dashboard running on the SAMPLE dataset only -->
 ![Dashboard on the sample dataset](docs/img/dashboard-sample.png)
