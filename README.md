@@ -4,6 +4,7 @@
 > atlas of the publicly identifiable trackside engineering staff across F1, F2,
 > WEC / Le Mans, Formula E and F1 Academy.
 
+[![CI](https://github.com/gaoflow/paddock-cv/actions/workflows/ci.yml/badge.svg)](https://github.com/gaoflow/paddock-cv/actions/workflows/ci.yml)
 [![Code: MIT](https://img.shields.io/badge/code-MIT-blue)](LICENSE)
 [![Data: private · sample shipped](https://img.shields.io/badge/data-private%20·%20sample%20shipped-orange)](#-data-notice)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](#quickstart)
@@ -150,8 +151,9 @@ how to reproduce these numbers for any other paddock role.
 ## Contributing
 
 Issues and PRs welcome — especially methodology improvements, new
-identity-binding heuristics, and dashboard fixes. Corrections to the sample
-data schema are fine; **do not submit real people's data to this repository.**
+identity-binding heuristics, and dashboard fixes. See
+[CONTRIBUTING.md](CONTRIBUTING.md). The one hard rule: **do not submit real
+people's data to this repository.**
 
 ## License
 

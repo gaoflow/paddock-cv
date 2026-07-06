@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Build the sample dataset
+        run: |
+          python3 scripts/make_sample_data.py
+          F1E_DATA_DIR=data/sample python3 scripts/build_data.py
+          F1E_DATA_DIR=data/sample python3 scripts/seed_db.py
+
+      - name: Install test dependencies
+        run: |
+          npm install
+          npx playwright install --with-deps chromium
+
+      - name: Serve and test
+        run: |
+          F1E_DATA_DIR=data/sample python3 server.py --host 127.0.0.1 --port 8000 &
+          for i in $(seq 1 20); do
+            curl -sf http://127.0.0.1:8000/api/health > /dev/null && break
+            sleep 1
+          done
+          PLAYWRIGHT_CHANNEL=chromium npm test
