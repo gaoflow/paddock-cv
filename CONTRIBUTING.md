@@ -1,20 +1,31 @@
 # Contributing to paddock-cv
 
-Thanks for your interest. Ground rules first, then the practical bits.
+Thanks for your interest. Two very different kinds of contribution are
+welcome — read the right section.
 
-## The one hard rule
+## 1. Contributing people information (encouraged!)
 
-**Never submit real people's personal data to this repository.** No real
-names, career histories, photos, LinkedIn URLs, or datasets built from them —
-not in code, not in fixtures, not in issues. The public repo runs exclusively
-on the fictional sample dataset. PRs that add real-person data will be closed
-and the commits scrubbed.
+**This is the most valuable thing you can contribute.** One person's search
+reach is limited; if you know something the dataset is missing, please share
+it — open a **GitHub Issue** using the *Person info* template (or any issue
+titled `[person] Name — Team`):
 
-If you believe content already in this repo identifies a real person
-inappropriately, open an issue titled `[removal]` or email the maintainer —
-it will be handled with priority.
+- who: name, team, role, series/season
+- what you know: career step, education, a photo that actually identifies
+  them, a role change, a correction to something the live site shows
+- **source link(s)** — the one hard requirement. Official team pages,
+  editorial interviews, university alumni features, public LinkedIn profiles
+  are all great. "I heard" is not usable; a URL is.
 
-## What contributions are welcome
+What happens next: the maintainer verifies it against the sourcing rules in
+[docs/SEARCH_METHODOLOGY.md](docs/SEARCH_METHODOLOGY.md) and merges it into
+the **private dataset** that powers [paddockcv.com](https://paddockcv.com).
+Person data lives in issues and on the site — it is not stored in this
+repository's files, which is why you contribute it via an issue rather
+than a PR. Corrections and removal requests about anyone already on the
+live site are handled the same way, with priority.
+
+## 2. Contributing code & methodology (PRs)
 
 - **Methodology improvements** — better source patterns, new identity-binding
   heuristics, sharper stop conditions. These live in `docs/`.
@@ -23,10 +34,13 @@ it will be handled with priority.
   that way). UI translations live in the `I18N` dict in the same file.
 - **Sample-data schema fixes** — keep `scripts/make_sample_data.py`
   structurally identical to what `build_data.py` expects.
-- **Test coverage** — `tests/` asserts structure against the sample dataset,
-  never real names.
+- **Test coverage** — `tests/` asserts structure against the sample dataset.
 
-## Dev setup
+Note that PRs should not add real-person data to the repo's *files* — the
+repo ships only the fictional sample dataset (see the README data notice).
+Real-person info goes through issues (§1) into the private dataset.
+
+### Dev setup
 
 ```bash
 python3 scripts/make_sample_data.py
@@ -42,14 +56,13 @@ npm test
 Python is stdlib-only by design — don't add pip dependencies without a very
 good reason. The frontend is one HTML file with no build step — likewise.
 
-## PR checklist
+### PR checklist
 
 - [ ] `npm test` passes against the sample dataset
-- [ ] No real-person data anywhere in the diff
 - [ ] No absolute paths, usernames, or machine-specific config
 - [ ] New behaviour covered by a test if it's testable
 
-## Style
+### Style
 
 Match what's there. The codebase favours small, boring, readable code over
 abstractions. One file per concern; comments only where the code can't speak.

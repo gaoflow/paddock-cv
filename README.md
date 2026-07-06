@@ -150,10 +150,15 @@ how to reproduce these numbers for any other paddock role.
 
 ## Contributing
 
-Issues and PRs welcome — especially methodology improvements, new
-identity-binding heuristics, and dashboard fixes. See
-[CONTRIBUTING.md](CONTRIBUTING.md). The one hard rule: **do not submit real
-people's data to this repository.**
+**Know something about a paddock engineer that the site is missing?** That's
+the most valuable contribution there is — open a
+[person-info issue](../../issues/new?template=person-info.yml) with what you
+know and a source URL. Verified contributions go into the private dataset
+that powers [paddockcv.com](https://paddockcv.com).
+
+Code and methodology PRs are equally welcome — see
+[CONTRIBUTING.md](CONTRIBUTING.md). The repo's files ship only the fictional
+sample dataset; real-person info flows through issues, not PRs.
 
 ## License
 

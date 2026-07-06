@@ -1,0 +1,56 @@
+name: Person info contribution
+description: Share sourced information about a paddock engineering person (new info, correction, photo lead, or removal request)
+title: "[person] <Name> — <Team>"
+labels: ["person-info"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks — sourced contributions are how this dataset grows beyond one
+        person's search reach. The only hard requirement is a **source URL**
+        for every claim. See `docs/SEARCH_METHODOLOGY.md` for what counts as
+        a strong source.
+  - type: input
+    id: who
+    attributes:
+      label: Who
+      description: Name · team · role · series/season
+      placeholder: "Jane Doe · Example Racing · Performance Engineer · F2 2026"
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Contribution type
+      options:
+        - New person (not on the site yet)
+        - Career / education info for an existing person
+        - Photo lead (a page that identifiably shows this person)
+        - Correction (the site shows something wrong)
+        - Removal request (I am this person / represent them)
+    validations:
+      required: true
+  - type: textarea
+    id: info
+    attributes:
+      label: The information
+      description: What do you know? Keep it factual; one claim per line is ideal.
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Source URL(s)
+      description: One URL per line. Every claim needs at least one public source.
+      placeholder: |
+        https://www.exampleteam.com/people/jane-doe
+        https://www.motorsport.com/...
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmations
+      options:
+        - label: The sources above are publicly accessible (no login required)
+          required: true
