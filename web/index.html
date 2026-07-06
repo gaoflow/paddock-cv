@@ -4,7 +4,39 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" href="data:," />
-<title>围场履历</title>
+<title>Paddock CV</title>
+<meta name="description" content="Paddock CV — a sourced career-path atlas of the trackside engineering staff across F1, F2, WEC / Le Mans, Formula E and F1 Academy. Pick a paddock job, see everyone who holds it in 2026, and read how each of them got there: education, junior series, years to the pit wall." />
+<link rel="canonical" href="https://paddockcv.com/" />
+<link rel="alternate" hreflang="x-default" href="https://paddockcv.com/" />
+<link rel="alternate" hreflang="zh" href="https://paddockcv.com/?lang=zh" />
+<link rel="alternate" hreflang="en" href="https://paddockcv.com/?lang=en" />
+<link rel="alternate" hreflang="ja" href="https://paddockcv.com/?lang=ja" />
+<link rel="alternate" hreflang="de" href="https://paddockcv.com/?lang=de" />
+<link rel="alternate" hreflang="fr" href="https://paddockcv.com/?lang=fr" />
+<link rel="alternate" hreflang="es" href="https://paddockcv.com/?lang=es" />
+<link rel="alternate" hreflang="it" href="https://paddockcv.com/?lang=it" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Paddock CV" />
+<meta property="og:title" content="Paddock CV — how people actually get paddock jobs" />
+<meta property="og:description" content="A sourced career-path atlas of trackside engineering staff across F1, F2, WEC / Le Mans, Formula E and F1 Academy. Roster board, role map and entry-route analytics in 7 languages." />
+<meta property="og:url" content="https://paddockcv.com/" />
+<meta property="og:image" content="https://paddockcv.com/og.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Paddock CV — how people actually get paddock jobs" />
+<meta name="twitter:description" content="Pick a paddock job. See everyone who holds it. Read how each of them got there. F1 · F2 · WEC · Formula E · F1 Academy." />
+<meta name="twitter:image" content="https://paddockcv.com/og.png" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Paddock CV",
+  "alternateName": "围场履历",
+  "url": "https://paddockcv.com/",
+  "description": "A sourced career-path atlas of the trackside engineering staff across F1, F2, WEC / Le Mans, Formula E and F1 Academy — who holds each paddock job and how they got there.",
+  "inLanguage": ["zh-CN","en","ja","de","fr","es","it"],
+  "sameAs": ["https://github.com/gaoflow/paddock-cv"]
+}
+</script>
 <style>
   :root{
 	    --bg:#090c11; --bg2:#0b1017; --card:#0f141b; --card2:#151c26; --card3:#1b2532;
@@ -385,12 +417,24 @@
 </style>
 </head>
 <body>
+<noscript>
+  <section style="max-width:720px;margin:40px auto;padding:0 20px;font-family:system-ui,sans-serif;line-height:1.6">
+    <h1>Paddock CV</h1>
+    <p>A sourced career-path atlas of the publicly identifiable trackside engineering
+    staff across Formula 1, Formula 2, WEC / Le Mans, Formula E and F1 Academy —
+    roster board, role map and entry-route analytics for ~480 people, every claim
+    backed by a public source URL. Available in 中文, English, 日本語, Deutsch,
+    Français, Español and Italiano.</p>
+    <p>The dashboard needs JavaScript. Methodology and tooling are open source at
+    <a href="https://github.com/gaoflow/paddock-cv">github.com/gaoflow/paddock-cv</a>.</p>
+  </section>
+</noscript>
 <header class="top">
   <div class="wrap">
     <div class="logo">
 	      <div class="bars"><span style="background:#e8002d"></span><span style="background:#ff8000"></span><span style="background:#36a2ff"></span></div>
 	      <div>
-	        <h1>围场履历</h1>
+	        <h1 data-i18n="title">围场履历</h1>
 	        <div class="sub">ENGINEERING ROSTER OPS</div>
 	      </div>
 	    </div>
@@ -475,6 +519,7 @@
 <div class="scrim" id="scrim"></div>
 <aside class="drawer" id="drawer" data-i18n-aria="drawer_aria" aria-label="人员详情"></aside>
 
+<script src="imgmap.js" onerror="window.IMGMAP=window.IMGMAP"></script>
 <script src="data.js"></script>
 <script type="module">
 async function loadDashboard(){
@@ -491,7 +536,48 @@ const D = await loadDashboard();
 
 /* ---------- i18n (UI chrome only; data/content stays in source language) ---------- */
 const LANGS = [["zh","中文"],["en","English"],["ja","日本語"],["de","Deutsch"],["fr","Français"],["es","Español"],["it","Italiano"]];
-const LOCALE = (()=>{ try{ const v=localStorage.getItem("locale"); return LANGS.some(l=>l[0]===v)?v:"zh"; }catch{ return "zh"; } })();
+const LOCALE = (()=>{
+  const known = v => LANGS.some(l=>l[0]===v);
+  // 1. URL wins: shared links carry their language (?lang=xx)
+  try{
+    const q = new URLSearchParams(location.search).get("lang");
+    if(known(q)){ try{ localStorage.setItem("locale", q); }catch{} return q; }
+  }catch{}
+  // 2. remembered explicit choice (localStorage — static site, no server, so no cookie needed)
+  try{ const v = localStorage.getItem("locale"); if(known(v)) return v; }catch{}
+  // 3. browser language
+  try{
+    for(const nav of (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language||""])){
+      const b = String(nav||"").toLowerCase();
+      if(b.startsWith("zh")) return "zh";
+      const hit = LANGS.find(l=>b.startsWith(l[0]));
+      if(hit) return hit[0];
+    }
+  }catch{}
+  return "en";
+})();
+// keep the language visible in the URL so copying the address shares it
+try{
+  const u = new URL(location.href);
+  if(u.searchParams.get("lang") !== LOCALE){
+    u.searchParams.set("lang", LOCALE);
+    history.replaceState(null, "", u.toString());
+  }
+}catch{}
+
+/* enum scale values (seniority / difficulty / importance / path position):
+   the zh string in the data is the canonical key; SCALES maps it to each
+   locale. Content overlays never carry these — this table is the single
+   source of truth. */
+const SCALES = {
+en:{"中级":"Mid-level","中级到高级":"Mid to senior","中高级":"Upper mid-level","入门到中级":"Entry to mid-level","入门到高级":"Entry to senior","最高技术层":"Top technical tier","管理层":"Management","高级":"Senior","高级管理":"Senior management","中":"Medium","中高":"Medium-high","很高":"Very high","极高":"Extremely high","高":"High","高到很高":"High to very high","RE 之后的高级席位":"Senior seat after RE","RE 前一站 / 核心跳板":"Last stop before RE / key springboard","专项入口 / 支撑岗位":"Specialist entry / support role","专项路线":"Specialist track","专项跳板":"Specialist springboard","分析入口 / 横向跳板":"Analysis entry / lateral springboard","工厂入口 / 专项路线":"Factory entry / specialist track","工厂入口 / 跳板":"Factory entry / springboard","常见入口":"Common entry point","目标岗位":"Target role","终点 / 管理晋升":"End point / management promotion"},
+ja:{"中级":"中堅","中级到高级":"中堅〜シニア","中高级":"中堅上位","入门到中级":"入門〜中堅","入门到高级":"入門〜シニア","最高技术层":"技術最上位","管理层":"マネジメント","高级":"シニア","高级管理":"上級マネジメント","中":"中","中高":"中〜高","很高":"非常に高い","极高":"極めて高い","高":"高い","高到很高":"高い〜非常に高い","RE 之后的高级席位":"RE後のシニアポジション","RE 前一站 / 核心跳板":"RE直前のステップ / 主要な足がかり","专项入口 / 支撑岗位":"専門職入口 / サポート職","专项路线":"専門ルート","专项跳板":"専門職の足がかり","分析入口 / 横向跳板":"分析職入口 / 横方向の足がかり","工厂入口 / 专项路线":"ファクトリー入口 / 専門ルート","工厂入口 / 跳板":"ファクトリー入口 / 足がかり","常见入口":"一般的な入口","目标岗位":"目標ポジション","终点 / 管理晋升":"終着点 / マネジメント昇進"},
+de:{"中级":"Mittleres Level","中级到高级":"Mittel bis Senior","中高级":"Gehobenes Mittelfeld","入门到中级":"Einstieg bis Mittel","入门到高级":"Einstieg bis Senior","最高技术层":"Oberste Technikebene","管理层":"Management","高级":"Senior","高级管理":"Senior-Management","中":"Mittel","中高":"Mittel bis hoch","很高":"Sehr hoch","极高":"Extrem hoch","高":"Hoch","高到很高":"Hoch bis sehr hoch","RE 之后的高级席位":"Senior-Position nach dem RE","RE 前一站 / 核心跳板":"Letzte Station vor dem RE / zentrales Sprungbrett","专项入口 / 支撑岗位":"Spezialisten-Einstieg / Support-Rolle","专项路线":"Spezialistenpfad","专项跳板":"Spezialisten-Sprungbrett","分析入口 / 横向跳板":"Analyse-Einstieg / laterales Sprungbrett","工厂入口 / 专项路线":"Werkseinstieg / Spezialistenpfad","工厂入口 / 跳板":"Werkseinstieg / Sprungbrett","常见入口":"Üblicher Einstieg","目标岗位":"Zielposition","终点 / 管理晋升":"Endstation / Aufstieg ins Management"},
+fr:{"中级":"Intermédiaire","中级到高级":"Intermédiaire à senior","中高级":"Intermédiaire supérieur","入门到中级":"Débutant à intermédiaire","入门到高级":"Débutant à senior","最高技术层":"Sommet technique","管理层":"Management","高级":"Senior","高级管理":"Direction senior","中":"Moyenne","中高":"Moyenne à élevée","很高":"Très élevée","极高":"Extrêmement élevée","高":"Élevée","高到很高":"Élevée à très élevée","RE 之后的高级席位":"Poste senior après RE","RE 前一站 / 核心跳板":"Dernière étape avant RE / tremplin clé","专项入口 / 支撑岗位":"Entrée spécialisée / rôle de soutien","专项路线":"Voie spécialisée","专项跳板":"Tremplin spécialisé","分析入口 / 横向跳板":"Entrée analyse / tremplin latéral","工厂入口 / 专项路线":"Entrée usine / voie spécialisée","工厂入口 / 跳板":"Entrée usine / tremplin","常见入口":"Porte d'entrée courante","目标岗位":"Poste cible","终点 / 管理晋升":"Aboutissement / promotion management"},
+es:{"中级":"Nivel medio","中级到高级":"De medio a sénior","中高级":"Medio-alto","入门到中级":"De inicial a medio","入门到高级":"De inicial a sénior","最高技术层":"Cúspide técnica","管理层":"Dirección","高级":"Sénior","高级管理":"Alta dirección","中":"Media","中高":"Media-alta","很高":"Muy alta","极高":"Extremadamente alta","高":"Alta","高到很高":"Alta a muy alta","RE 之后的高级席位":"Puesto sénior tras el RE","RE 前一站 / 核心跳板":"Última parada antes de RE / trampolín clave","专项入口 / 支撑岗位":"Entrada especialista / rol de apoyo","专项路线":"Vía especialista","专项跳板":"Trampolín especialista","分析入口 / 横向跳板":"Entrada de análisis / trampolín lateral","工厂入口 / 专项路线":"Entrada de fábrica / vía especialista","工厂入口 / 跳板":"Entrada de fábrica / trampolín","常见入口":"Entrada habitual","目标岗位":"Puesto objetivo","终点 / 管理晋升":"Meta / ascenso a dirección"},
+it:{"中级":"Livello intermedio","中级到高级":"Da intermedio a senior","中高级":"Intermedio-alto","入门到中级":"Da junior a intermedio","入门到高级":"Da junior a senior","最高技术层":"Vertice tecnico","管理层":"Management","高级":"Senior","高级管理":"Alta dirigenza","中":"Media","中高":"Medio-alta","很高":"Molto alta","极高":"Estremamente alta","高":"Alta","高到很高":"Da alta a molto alta","RE 之后的高级席位":"Posizione senior dopo il RE","RE 前一站 / 核心跳板":"Ultima tappa prima del RE / trampolino chiave","专项入口 / 支撑岗位":"Ingresso specialistico / ruolo di supporto","专项路线":"Percorso specialistico","专项跳板":"Trampolino specialistico","分析入口 / 横向跳板":"Ingresso analisi / trampolino laterale","工厂入口 / 专项路线":"Ingresso in fabbrica / percorso specialistico","工厂入口 / 跳板":"Ingresso in fabbrica / trampolino","常见入口":"Ingresso comune","目标岗位":"Ruolo obiettivo","终点 / 管理晋升":"Traguardo / promozione manageriale"}
+};
+const sc = v => { v = String(v||"").trim(); if(!v || LOCALE==="zh") return v; const m = SCALES[LOCALE]; return (m && m[v]) || v; };
 const I18N = {
 zh:{
   title:"围场履历",
@@ -525,7 +611,7 @@ zh:{
   ],
 },
 en:{
-  title:"Paddock CV · 围场履历",
+  title:"Paddock CV",
   tab_roster:"Roster",tab_roles:"Role map",tab_routes:"Entry paths",
   search_ph:"Search people / teams / roles",search_aria:"Search people, teams or roles",
   qf_aria:"Data status",qf_public:"Public people",qf_photos:"Avatars",qf_lowconf:"Low-confidence flags",
@@ -556,7 +642,7 @@ en:{
   ],
 },
 ja:{
-  title:"パドック履歴 · 围场履历",
+  title:"Paddock CV",
   tab_roster:"ロースター",tab_roles:"ロールマップ",tab_routes:"キャリア経路",
   search_ph:"人・チーム・職種を検索",search_aria:"人・チーム・職種を検索",
   qf_aria:"データ状態",qf_public:"公開人員",qf_photos:"アバター",qf_lowconf:"低信頼度ラベル",
@@ -580,7 +666,7 @@ ja:{
   bucket:l=>`${l} 年`,
 },
 de:{
-  title:"Paddock-Lebensläufe · 围场履历",
+  title:"Paddock CV",
   tab_roster:"Kader",tab_roles:"Rollenkarte",tab_routes:"Einstiegswege",
   search_ph:"Personen / Teams / Rollen suchen",search_aria:"Personen, Teams oder Rollen suchen",
   qf_aria:"Datenstatus",qf_public:"Öffentliche Personen",qf_photos:"Avatare",qf_lowconf:"Niedrige Konfidenz",
@@ -604,7 +690,7 @@ de:{
   bucket:l=>`${l} J.`,
 },
 fr:{
-  title:"CV du paddock · 围场履历",
+  title:"Paddock CV",
   tab_roster:"Effectif",tab_roles:"Carte des rôles",tab_routes:"Parcours d'entrée",
   search_ph:"Rechercher personnes / équipes / postes",search_aria:"Rechercher personnes, équipes ou postes",
   qf_aria:"État des données",qf_public:"Personnes publiques",qf_photos:"Avatars",qf_lowconf:"Confiance faible",
@@ -628,7 +714,7 @@ fr:{
   bucket:l=>`${l} ans`,
 },
 es:{
-  title:"CV del paddock · 围场履历",
+  title:"Paddock CV",
   tab_roster:"Plantilla",tab_roles:"Mapa de roles",tab_routes:"Vías de entrada",
   search_ph:"Buscar personas / equipos / puestos",search_aria:"Buscar personas, equipos o puestos",
   qf_aria:"Estado de datos",qf_public:"Personas públicas",qf_photos:"Avatares",qf_lowconf:"Confianza baja",
@@ -652,7 +738,7 @@ es:{
   bucket:l=>`${l} años`,
 },
 it:{
-  title:"CV del paddock · 围场履历",
+  title:"Paddock CV",
   tab_roster:"Organico",tab_roles:"Mappa dei ruoli",tab_routes:"Percorsi d'ingresso",
   search_ph:"Cerca persone / team / ruoli",search_aria:"Cerca persone, team o ruoli",
   qf_aria:"Stato dei dati",qf_public:"Persone pubbliche",qf_photos:"Avatar",qf_lowconf:"Bassa confidenza",
@@ -689,7 +775,12 @@ document.querySelectorAll("[data-i18n-ph]").forEach(el=>{ el.setAttribute("place
 {
   const sel = document.getElementById("langsel");
   sel.innerHTML = LANGS.map(([v,l])=>`<option value="${v}" ${v===LOCALE?"selected":""}>${l}</option>`).join("");
-  sel.onchange = ()=>{ try{ localStorage.setItem("locale", sel.value); }catch{} location.reload(); };
+  sel.onchange = ()=>{
+    try{ localStorage.setItem("locale", sel.value); }catch{}
+    const u = new URL(location.href);
+    u.searchParams.set("lang", sel.value);
+    location.href = u.toString();   // navigating reloads with the new locale in the URL
+  };
 }
 // data-content overlay: translated notes/highlights/role-map text for non-zh locales.
 // Generated by scripts/build_i18n_overlays.py from data/i18n/content/<locale>/.
@@ -747,6 +838,11 @@ function imageUrl(url, fallbackText=""){
   if(!raw) return "";
   if(raw.startsWith("local:")) return localImageUrl(raw.slice(6));
   if(/^https?:\/\//i.test(raw)){
+    // static deploys ship a pre-materialized image cache + URL map (imgmap.js);
+    // when absent (local dev) fall through to the live api/image proxy.
+    const mapped = window.IMGMAP && window.IMGMAP[raw];
+    if(mapped) return mapped;
+    if(window.IMGMAP) return "";  // static site, un-cached remote image -> initials
     const params = new URLSearchParams({u:raw});
     if(ASSET_VERSION && fallbackText) params.set("v", ASSET_VERSION);
     if(fallbackText) params.set("i", fallbackText);
@@ -1424,7 +1520,12 @@ function renderRoles(){
   const scopeNote = LOCALE==="zh"
     ? (data.scope_note_zh||data.scope_note||t("scope_fallback"))
     : (OVLY.scope_note||data.scope_note||data.scope_note_zh||t("scope_fallback"));
-  const rr = (r,f)=> LOCALE==="zh" ? (r[f+"_zh"]||"") : (ovR(r.key,f)||r[f+"_zh"]||"");
+  const scaleFields = new Set(["importance","seniority","difficulty","path_position"]);
+  const rr = (r,f)=>{
+    if(LOCALE==="zh") return r[f+"_zh"]||"";
+    if(scaleFields.has(f)) return sc(r[f+"_zh"]);
+    return ovR(r.key||slug(r.title),f)||r[f+"_zh"]||"";
+  };
   document.getElementById("rolescope").innerHTML =
     `<strong>${t("scope_label")}</strong>${scopeNote}`;
   document.getElementById("rolegrid").innerHTML = (data.hierarchy||[]).slice().sort((a,b)=>(b.importance_score||0)-(a.importance_score||0)).map(r=>{
@@ -1604,7 +1705,7 @@ document.getElementById("rosterboard").addEventListener("keydown",e=>{
     const entryCount = s.id==="f1" ? D.team_count : (s.teams||[]).length;
     return `<div class="routeitem">
       <h4>${seriesTitle(s)}<span>${t("entries_count",entryCount)}</span></h4>
-      <div class="rroles">${roles.map(r=>`<div class="rrole"><b>•</b><span><strong>${titleRoleHtml(r)}</strong> · ${[r.seniority_zh,r.difficulty_zh].filter(Boolean).join(" · ")}</span></div>`).join("")}</div>
+      <div class="rroles">${roles.map(r=>`<div class="rrole"><b>•</b><span><strong>${titleRoleHtml(r)}</strong> · ${[sc(r.seniority_zh),sc(r.difficulty_zh)].filter(Boolean).join(" · ")}</span></div>`).join("")}</div>
     </div>`;
   }).join("");
 
