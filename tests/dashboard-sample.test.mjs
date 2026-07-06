@@ -35,7 +35,8 @@ test("health endpoint reports a seeded database", async () => {
 test("roster board renders team cards and person rows", async () => {
   const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
   try {
-    await page.goto(BASE_URL, { waitUntil: "networkidle" });
+    await page.goto(BASE_URL, { waitUntil: "domcontentloaded" });
+    await page.locator(".personrow").first().waitFor();
     assert.ok(await page.locator("#rostersearch").isVisible(), "global search should be visible");
     assert.ok(await page.locator("#rosterboard .rostersection").count() >= 1, "at least one series section");
     assert.ok(await page.locator(".rosterteam").count() >= 2, "team cards should render");
@@ -48,8 +49,9 @@ test("roster board renders team cards and person rows", async () => {
 test("profile drawer opens from a person row and closes with Escape", async () => {
   const page = await browser.newPage({ viewport: { width: 1366, height: 900 } });
   try {
-    await page.goto(BASE_URL, { waitUntil: "networkidle" });
+    await page.goto(BASE_URL, { waitUntil: "domcontentloaded" });
     const row = page.locator(".personrow").first();
+    await row.waitFor();
     await row.scrollIntoViewIfNeeded();
     await row.click();
     await page.locator("#drawer.on").waitFor();
@@ -64,7 +66,8 @@ test("profile drawer opens from a person row and closes with Escape", async () =
 test("mobile layout does not overflow horizontally", async () => {
   const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
   try {
-    await page.goto(BASE_URL, { waitUntil: "networkidle" });
+    await page.goto(BASE_URL, { waitUntil: "domcontentloaded" });
+    await page.locator(".personrow").first().waitFor();
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     assert.ok(overflow <= 6, `mobile page should not horizontally overflow; got ${overflow}px`);
   } finally {

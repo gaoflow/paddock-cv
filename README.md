@@ -12,8 +12,8 @@
 
 English | [简体中文](./README.zh-CN.md)
 
-**▶ Live demo: [paddockcv.com](https://paddockcv.com)** — the full real dataset
-(~480 people, 5 series), in 7 languages. This repo is how it was built.
+**▶ [paddockcv.com](https://paddockcv.com)** — the site itself, running the full
+real dataset (~480 people, 5 series) in 7 languages. This repo is how it's built.
 
 <!-- screenshot: docs/img/dashboard-sample.png — dashboard running on the SAMPLE dataset only -->
 ![Dashboard on the sample dataset](docs/img/dashboard-sample.png)
