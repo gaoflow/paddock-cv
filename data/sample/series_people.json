@@ -1,0 +1,45 @@
+{
+  "generated": "2026-01-01",
+  "method_zh": "示例数据：手工构造的虚构名册。",
+  "series": {
+    "sample-junior": {
+      "teams": [
+        {
+          "series_id": "sample-junior",
+          "team_name": "Demo Junior Team",
+          "source_url": "https://example.com/teams/demo-junior-team",
+          "source_title": "Demo Junior Team - Example Site",
+          "members": [
+            {
+              "name": "Charlie Demo",
+              "role": "Team Principal",
+              "role_key": "team-principal",
+              "role_group_zh": "管理 / 车队领导",
+              "engineering_related": true,
+              "confidence": "high",
+              "notes_zh": "示例数据：虚构车队官网列名。"
+            },
+            {
+              "name": "Sasha Specimen",
+              "role": "Race Engineer",
+              "role_key": "race-engineer",
+              "role_group_zh": "赛车工程师",
+              "engineering_related": true,
+              "confidence": "high",
+              "notes_zh": "示例数据：虚构车队官网列名。"
+            },
+            {
+              "name": "Lee Dummy",
+              "role": "Data Engineer",
+              "role_key": "data-engineer",
+              "role_group_zh": "数据工程师",
+              "engineering_related": true,
+              "confidence": "medium",
+              "notes_zh": "示例数据：虚构车队官网列名。"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

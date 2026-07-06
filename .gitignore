@@ -1,0 +1,15 @@
+# ── real data must never enter the public repo ──────────────────────────
+# Only the fictional sample dataset ships. Anything you build for real
+# stays out by default.
+data/*
+!data/sample/
+data/sample/motorsport.db
+web/data.json
+web/data.js
+web/img/
+web/i18n/
+node_modules/
+output/
+__pycache__/
+*.pyc
+.DS_Store

@@ -1,0 +1,1710 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" href="data:," />
+<title>围场履历</title>
+<style>
+  :root{
+	    --bg:#090c11; --bg2:#0b1017; --card:#0f141b; --card2:#151c26; --card3:#1b2532;
+	    --line:#2a3545; --line2:#3b4758;
+	    --txt:#f4f7fb; --muted:#94a3b8; --muted2:#728096;
+    --red:#e8002d; --accent:#ff8000;
+    --hi:#37d67a; --med:#ffb020; --lo:#ff5a5a;
+    --a1:#ff8000; --a2:#36a2ff; --a3:#b06bff; --a4:#37d67a; --a5:#ff5a8a; --a6:#7a8aa0;
+    --mono:'SF Mono',ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace;
+    --sans:'Inter','PingFang SC','Hiragino Sans GB','Microsoft YaHei',system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+	  body{
+	    background:linear-gradient(180deg,#090d13 0%,#080b10 100%);
+	    color:var(--txt); font-family:var(--sans); line-height:1.5;
+	    -webkit-font-smoothing:antialiased;
+	  }
+	  a{color:inherit}
+	  .wrap{max-width:1440px;margin:0 auto;padding:0 24px}
+  .zh{color:var(--muted);font-weight:500;font-size:.84em;margin-left:5px;letter-spacing:0}
+
+	  header.top{
+	    border-bottom:1px solid var(--line);
+	    background:rgba(7,10,15,.88);
+	    backdrop-filter:blur(14px); position:sticky; top:0; z-index:40;
+	    box-shadow:0 12px 30px rgba(0,0,0,.22);
+	  }
+	  .top .wrap{display:grid;grid-template-columns:auto minmax(330px,1fr) minmax(260px,360px);align-items:center;gap:18px;padding-top:10px;padding-bottom:10px}
+	  .logo{display:flex;align-items:center;gap:12px}
+	  .logo .bars{display:flex;gap:3px}
+	  .logo .bars span{width:5px;height:29px;border-radius:2px;display:block;transform:skewX(-16deg);box-shadow:0 0 18px rgba(255,128,0,.18)}
+	  .logo h1{font-size:19.8px;margin:0;letter-spacing:0;font-weight:900}
+	  .logo .sub{font-size:11.5px;color:var(--muted2);font-family:var(--mono);letter-spacing:.2px;margin-top:1px}
+	  .tabs{display:flex;gap:4px;justify-self:end;padding:3px;border:1px solid var(--line);border-radius:8px;background:rgba(13,18,26,.7)}
+	  .tab{
+	    font-size:14.3px;letter-spacing:.4px;color:var(--muted);
+	    background:transparent;border:1px solid transparent;padding:7px 14px;border-radius:6px;cursor:pointer;transition:.15s;
+	  }
+	  .tab:hover{color:var(--txt);background:rgba(255,255,255,.045)}
+	  .tab.on{color:#080b10;background:var(--accent);border-color:var(--accent);font-weight:800}
+	  .langsel{font-size:12.6px;font-family:var(--mono);color:var(--muted);background:rgba(13,18,26,.7);border:1px solid var(--line);border-radius:6px;padding:6px 8px;cursor:pointer;outline:none;margin-left:4px}
+  .langsel:hover,.langsel:focus-visible{color:var(--txt);border-color:var(--line2)}
+  .searchbox{display:flex;align-items:center;gap:7px;color:var(--muted2);background:rgba(13,18,26,.76);border:1px solid var(--line);border-radius:8px;padding:0 10px;height:36px;min-width:0;width:100%}
+	  .searchbox span{font-family:var(--mono);font-size:13px;color:var(--accent)}
+	  .search{
+	    font-size:13.4px;color:var(--txt);background:transparent;
+	    border:0;padding:0;width:100%;outline:none;
+	  }
+	  .searchbox:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(54,162,255,.12)}
+	  .search::placeholder{color:var(--muted2)}
+
+  .hero{padding:26px 0 6px}
+  .hero h2{font-size:27.5px;margin:0 0 8px;font-weight:800;letter-spacing:-.2px}
+  .hero p{color:var(--muted);margin:0 0 22px;max-width:780px;font-size:16px}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .stat{
+    background:linear-gradient(160deg,var(--card),var(--bg2));
+    border:1px solid var(--line);border-radius:8px;padding:16px 18px;position:relative;overflow:hidden;
+  }
+  .stat .n{font-size:33px;font-weight:800;font-family:var(--mono);letter-spacing:-1px}
+  .stat .l{font-size:13.2px;color:var(--muted);letter-spacing:.4px;margin-top:3px}
+  .stat .h{font-size:13.2px;color:var(--muted2);margin-top:7px}
+
+  section.view{padding:26px 0 60px;display:none}
+  section.view.on{display:block}
+
+  .teamgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(370px,1fr));gap:16px}
+  .team{background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;transition:.15s}
+  .team:hover{border-color:var(--line2)}
+  .team .hd{display:flex;align-items:center;gap:11px;padding:14px 16px;border-bottom:1px solid var(--line);position:relative}
+  .team .hd .stripe{position:absolute;left:0;top:0;bottom:0;width:5px}
+  .team .hd .nm{font-weight:800;font-size:17.1px;letter-spacing:.2px}
+  .team .hd .dr{font-size:12.7px;color:var(--muted);font-family:var(--mono);margin-top:2px;line-height:1.5}
+  .team .body{padding:8px}
+  .eng{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;cursor:pointer;transition:.13s;border:1px solid transparent}
+  .eng:hover{background:var(--card2);border-color:var(--line)}
+  .eng .av{width:58px;height:58px;border-radius:11px;flex:0 0 58px;display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:19.8px;color:#0a0c10;background-size:cover;background-position:center top;background-repeat:no-repeat}
+  .eng .meta{min-width:0;flex:1}
+  .eng .en{font-weight:800;font-size:15.8px;color:var(--txt);line-height:1.35;overflow-wrap:anywhere}
+  .eng .en .zh{color:#d3dbe8;font-weight:600}
+  .eng .aka{color:var(--muted);font-family:var(--mono);font-size:12.1px;margin-left:6px}
+  .eng .er{font-size:12.9px;color:var(--muted);margin-top:3px}
+  .eng .etags{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .eng .arrow{color:var(--muted2);font-size:19.8px;transition:.13s}
+  .eng:hover .arrow{color:var(--accent);transform:translateX(2px)}
+
+  .cdot{width:7px;height:7px;border-radius:50%;display:inline-block;flex:0 0 7px}
+  .cdot.high{background:var(--hi)} .cdot.medium{background:var(--med)} .cdot.low{background:var(--lo)}
+  .badge{font-size:12.1px;letter-spacing:.2px;padding:2px 8px;border-radius:20px;border:1px solid var(--line2);color:var(--muted);white-space:nowrap}
+  .abadge{font-size:11.6px;padding:2px 9px;border-radius:20px;font-weight:600;white-space:nowrap}
+  .confbadge{font-size:11.6px;font-weight:700;border-radius:20px;padding:2px 9px;white-space:nowrap;border:1px solid var(--line2)}
+  .confbadge.high{color:#d8ffe8;border-color:var(--hi);background:rgba(55,214,122,.14)}
+  .confbadge.medium{color:#fff0c2;border-color:var(--med);background:rgba(255,176,32,.14)}
+  .confbadge.low{color:#ffd7d7;border-color:var(--lo);background:rgba(255,90,90,.14)}
+  /* age — its own accent token so it stands out from role text & grey badges */
+  .agetag{font-size:11.6px;font-weight:700;font-family:var(--mono);color:var(--accent);
+    border:1px solid var(--accent);background:rgba(255,128,0,.10);padding:2px 9px;border-radius:20px;white-space:nowrap;flex:0 0 auto}
+  .agechip{display:inline-flex;align-items:center;gap:6px;font-size:12.7px;font-weight:600;color:var(--accent);
+    border:1px solid var(--accent);background:rgba(255,128,0,.12);padding:3px 11px;border-radius:20px;white-space:nowrap}
+  .agechip .al{font-size:.82em;font-weight:500;color:var(--muted);letter-spacing:.5px}
+  .agechip b{font-family:var(--mono);font-size:1.12em}
+  .dh .agewrap{margin-top:13px}
+
+  .rgrid{display:grid;grid-template-columns:1fr;gap:18px;align-items:start}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:20px}
+  .panel h3{margin:0 0 14px;font-size:20px;letter-spacing:.2px}
+  .panel .ph{font-size:15px;color:var(--muted);margin:0 0 16px}
+  .bar{margin-bottom:14px}
+  .bar .bl{display:flex;justify-content:space-between;align-items:baseline;font-size:13.8px;margin-bottom:5px;gap:10px}
+  .bar .bl .bn{font-weight:600;white-space:nowrap}
+  .bar .bl .bd{color:var(--muted);font-size:12.1px;text-align:right;line-height:1.4}
+  .bar .track{height:10px;background:var(--bg2);border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+  .bar .fill{height:100%;border-radius:6px}
+  .bar .cnt{font-family:var(--mono);font-size:12.1px;color:var(--muted);margin-left:8px}
+
+  .uni{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px dashed var(--line);gap:10px}
+  .uni:last-child{border-bottom:0}
+  .uni .un{font-size:14.3px}.uni .uc{font-family:var(--mono);font-size:13.2px;color:var(--accent);white-space:nowrap}
+
+  .playbook{background:linear-gradient(160deg,#13202a,#11161f);border:1px solid var(--line2)}
+  .step{display:flex;gap:14px;padding:12px 0;border-bottom:1px dashed var(--line)}
+  .step:last-child{border-bottom:0}
+  .step .num{font-family:var(--mono);font-weight:800;font-size:15.4px;color:#0a0c10;background:var(--accent);width:26px;height:26px;border-radius:7px;display:grid;place-items:center;flex:0 0 26px}
+  .step .st{font-weight:700;font-size:14.9px;margin-bottom:2px}
+  .step .sd{font-size:13.8px;color:var(--muted)}
+  .ydist{display:flex;align-items:flex-end;gap:6px;height:90px;margin-top:6px}
+  .ydist .yb{flex:1;background:linear-gradient(180deg,var(--accent),#a85200);border-radius:4px 4px 0 0;min-height:3px;position:relative}
+  .ydist .yb span{position:absolute;top:-17px;left:0;right:0;text-align:center;font-family:var(--mono);font-size:11px;color:var(--muted)}
+  .ydist .yb i{position:absolute;bottom:-19px;left:0;right:0;text-align:center;font-size:11.6px;color:var(--muted2);font-style:normal}
+  .pathchart{width:100%;overflow:hidden}
+  .pathchart svg{display:block;width:100%;min-width:620px;height:auto}
+  .axis{stroke:var(--line2);stroke-width:1}
+  .gridline{stroke:var(--line);stroke-width:1;stroke-dasharray:3 5}
+  .charttext{font-size:11.6px;fill:var(--muted);font-family:var(--mono)}
+  .chartlabel{font-size:12.1px;fill:var(--txt);font-weight:700}
+  .chartnote{font-size:13.2px;color:var(--muted);margin-top:10px;line-height:1.6}
+	  .boardblock{margin-bottom:30px}
+	  .workbench{display:block}
+	  .workmain{min-width:0}
+	  .boardhead{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:12px;background:linear-gradient(180deg,rgba(17,24,36,.92),rgba(10,14,21,.74))}
+	  .boardhead h3{margin:0;font-size:19px;letter-spacing:0;font-weight:900}
+	  .boardhead p{margin:4px 0 0;color:var(--muted);font-size:13.6px;line-height:1.5;max-width:780px}
+	  .quickfilters{display:flex;align-items:center;justify-content:flex-end;gap:7px;flex-wrap:wrap;min-width:240px}
+	  .quickfilters span{font-size:11.5px;color:#dce5f0;border:1px solid var(--line2);border-radius:20px;padding:3px 8px;background:rgba(255,255,255,.025);white-space:nowrap}
+  .roleintro{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px 20px;margin-bottom:16px;color:var(--muted);font-size:14.3px}
+  .roleintro strong{color:var(--txt)}
+  .rolegrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+  .rolecard{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px;min-height:220px}
+  .rolecard .lvl{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.7px;text-transform:uppercase;margin-bottom:7px}
+  .rolecard h3{font-size:16px;margin:0 0 3px}
+  .rolecard .enrole{font-family:var(--mono);font-size:12.1px;color:var(--muted2);margin-bottom:10px}
+  .rolecard p{margin:0 0 9px;color:var(--muted);font-size:13.8px}
+  .rolefacts{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:12px 0}
+  .rolefact{border:1px solid var(--line2);background:rgba(255,255,255,.025);border-radius:8px;padding:8px;min-width:0}
+  .rolefact .fl{font-size:10.8px;color:var(--muted2);letter-spacing:.5px;margin-bottom:3px}
+  .rolefact .fv{font-size:12.6px;color:var(--txt);font-weight:800;line-height:1.3}
+  .difficulty{display:flex;align-items:center;gap:5px;white-space:nowrap}
+  .difficulty i{width:7px;height:7px;border-radius:50%;background:var(--line2);display:block}
+  .difficulty i.on{background:var(--accent)}
+  .diffreason{font-size:13px;color:#d3dbe8;background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:9px 10px;margin:10px 0}
+  .rolecard .prog{border-top:1px dashed var(--line);padding-top:10px;margin-top:11px;color:#cfd8e4}
+  .exchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
+  .exchips span{font-size:11.6px;border:1px solid var(--line2);border-radius:20px;padding:2px 8px;color:var(--muted)}
+  .sourcegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin-top:18px}
+  .sourcecard{display:block;text-decoration:none;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:12px;color:var(--muted)}
+  .sourcecard:hover{border-color:var(--accent);color:var(--txt)}
+  .sourcecard b{display:block;color:var(--txt);font-size:13.8px;margin-bottom:5px}
+  .sourcecard span{font-size:12.7px;line-height:1.45}
+  .teamengpanel{margin-top:18px}
+  .teamenggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:12px}
+  .teameng{background:var(--bg2);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .teameng .thd{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+  .teameng .mark{width:5px;height:28px;border-radius:3px}
+  .teameng .tn{font-weight:800;font-size:15px}
+  .teameng .td{font-size:12px;color:var(--muted);font-family:var(--mono)}
+  .roleline{display:grid;grid-template-columns:48px minmax(0,1fr);gap:10px;padding:10px 12px;border-bottom:1px dashed var(--line)}
+  .roleline:last-child{border-bottom:0}
+  .score{font-family:var(--mono);font-weight:900;color:#0a0c10;background:var(--accent);border-radius:8px;display:grid;place-items:center;height:30px;margin-top:2px}
+  .roleline .rt{font-size:13.2px;font-weight:800;color:var(--txt);line-height:1.35}
+  .roleline .rp{font-size:12.6px;color:var(--muted);margin-top:3px;line-height:1.45}
+  .roleline .rs{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+  .mini{font-size:11.2px;color:#dce5f0;border:1px solid var(--line2);border-radius:20px;padding:1px 7px;background:rgba(255,255,255,.025)}
+  .mini.warn{color:#fff0c2;border-color:var(--med);background:rgba(255,176,32,.12)}
+  .mini.good{color:#d8ffe8;border-color:var(--hi);background:rgba(55,214,122,.12)}
+  .routecoverage{display:grid;gap:10px}
+  .routeitem{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:12px}
+  .routeitem h4{margin:0 0 5px;font-size:14.4px;color:var(--txt)}
+  .routeitem h4 span{display:block;font-size:11.6px;font-family:var(--mono);font-weight:500;color:var(--accent);margin-top:2px}
+  .routeitem .note{font-size:12.8px;color:var(--muted);line-height:1.5;margin:7px 0 9px}
+  .routechips{display:flex;flex-wrap:wrap;gap:6px}
+  .routechips span{font-size:11.4px;color:#dce5f0;border:1px solid var(--line2);border-radius:20px;padding:1px 7px;background:rgba(255,255,255,.025)}
+  .rroles{display:grid;gap:5px}
+  .rrole{display:grid;grid-template-columns:34px 1fr;gap:8px;font-size:12.2px;color:var(--muted);line-height:1.35}
+  .rrole b{font-family:var(--mono);color:var(--accent)}
+  .rrole strong{color:var(--txt)}
+  .route-table{display:grid;gap:7px}
+  .route-row{display:grid;grid-template-columns:1.15fr .95fr .7fr .65fr;gap:12px;align-items:center;border-bottom:1px dashed var(--line);padding:9px 0;font-size:14.8px}
+  .route-row.head{color:var(--muted2);font-size:12.8px;letter-spacing:.5px;text-transform:uppercase}
+  .route-row b{color:var(--txt)}
+  .route-row span{color:var(--muted)}
+  .seriesgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px}
+  .seriescard{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px}
+  .seriescard h3{margin:0;font-size:17px}
+  .seriescard .seas{font-family:var(--mono);font-size:12px;color:var(--accent);margin-top:2px}
+  .seriescard .desc{color:var(--muted);font-size:13.5px;margin:11px 0;line-height:1.55}
+  .seriescard .classes{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+  .seriescard .classes span{font-size:11.6px;border:1px solid var(--line2);border-radius:20px;padding:2px 8px;color:#dce5f0}
+  .seriescard .teams{font-size:12.4px;color:var(--muted);line-height:1.55;max-height:116px;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--bg2)}
+  .seriescard .ladder{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px}
+  .srole{display:grid;grid-template-columns:42px 1fr;gap:9px;padding:6px 0;border-bottom:1px dashed rgba(70,84,108,.55)}
+  .srole:last-child{border-bottom:0}
+  .srole .sn{font-family:var(--mono);font-size:12px;font-weight:900;color:var(--accent)}
+  .srole .sx{font-size:12.6px;color:var(--txt);font-weight:700}
+  .srole .sd{font-size:12px;color:var(--muted);line-height:1.4}
+	  .seriesboard{display:grid;gap:14px}
+	  .rostersection{border:1px solid var(--line);background:rgba(12,17,25,.88);border-radius:8px;overflow:hidden;box-shadow:0 14px 36px rgba(0,0,0,.18)}
+	  .rostertop{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:16px;padding:12px 14px;border-bottom:1px solid var(--line);background:rgba(21,28,38,.82)}
+	  .rostertop h3{margin:0;font-size:18px;font-weight:900;letter-spacing:0}
+	  .series-toggle{display:flex;align-items:center;gap:10px;width:100%;background:transparent;border:0;color:var(--txt);padding:0;text-align:left;cursor:pointer;font:inherit;min-width:0}
+	  .series-title{min-width:0}
+	  .series-toggle h3{margin:0;font-size:17px;line-height:1.22}
+	  .series-title span{display:block;font-family:var(--mono);font-size:11.2px;color:var(--muted2);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+	  .series-toggle .chev{width:24px;height:24px;border:1px solid var(--line2);border-radius:6px;display:grid;place-items:center;color:var(--accent);font-family:var(--mono);font-size:13px;transition:.16s;background:rgba(255,255,255,.035)}
+  .series-toggle[aria-expanded="true"] .chev{transform:rotate(90deg)}
+  .series-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:8px}
+  .rostersection.collapsed .rostertop{border-bottom:0}
+  .rostersection.collapsed .rostergrid{display:none}
+	  .rostertop .seriesmeta{font-family:var(--mono);font-size:12px;color:var(--accent);margin-top:2px}
+	  .rostertop .seriesdesc{font-size:13.6px;color:var(--muted);line-height:1.55;margin-top:8px;max-width:880px}
+		  .rostergrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(345px,1fr));gap:10px;padding:10px}
+		  .rosterteam{--team-pad:10px;--row-pad:7px;--team-accent:var(--accent);background:linear-gradient(180deg,rgba(15,20,27,.98),rgba(11,15,22,.98));border:1px solid var(--line);border-radius:8px;overflow:hidden;transition:border-color .15s,transform .15s,box-shadow .15s}
+		  .rosterteam:hover{border-color:var(--line2);transform:translateY(-1px);box-shadow:0 10px 26px rgba(0,0,0,.22)}
+		  .rosterhd{display:grid;grid-template-columns:5px auto minmax(0,1fr);align-items:center;gap:10px;padding:var(--team-pad) 12px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.018)}
+		  .rosterhd .mark{width:5px;align-self:stretch;min-height:32px;border-radius:3px;display:block}
+		  .rosterhd > div:last-child{min-width:0}
+		  .rosterhd .mark + div:last-child{grid-column:2 / -1}
+  .teamlogo{width:52px;height:34px;object-fit:contain;object-position:center center;background:transparent;border:1px solid transparent;border-radius:6px;padding:2px}
+  .teamlogo.light{background:#f4f7fb;border-color:#d8e0ec}
+  .teamlogo.invert{filter:invert(1) brightness(1.7)}
+	  .rosterhd .tn{font-weight:900;font-size:15px;line-height:1.25;letter-spacing:0}
+	  .rosterhd .td{font-size:11.7px;color:var(--muted);font-family:var(--mono);margin-top:3px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+	  .posblock{padding:9px 12px 8px;border-bottom:1px solid rgba(37,49,67,.72)}
+	  .posblock:last-child{border-bottom:0}
+		  .postitle{display:block;margin-bottom:6px;padding:3px 0 3px 9px;position:relative}
+		  .postitle::before{content:'';position:absolute;left:0;top:5px;bottom:5px;width:2px;border-radius:1px;background:var(--team-accent,var(--accent));opacity:.75}
+		  .postitle b{display:block;font-size:12.7px;color:var(--txt);line-height:1.25}
+		  .postitle span{display:block;font-size:10.4px;color:var(--muted2);font-family:var(--mono);letter-spacing:.4px;text-transform:uppercase;line-height:1.4;margin-top:2px;white-space:normal;overflow-wrap:anywhere;text-align:left}
+		  .personrow{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:9px;align-items:center;min-height:52px;padding:var(--row-pad);border:1px solid transparent;border-radius:7px;cursor:pointer;transition:background .14s,border-color .14s}
+		  .personrow:hover{border-color:var(--line2);background:rgba(23,32,48,.82)}
+		  .personrow:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-color:var(--line2);background:rgba(23,32,48,.82)}
+		  .personrow::after{content:'›';color:var(--muted2);font-family:var(--mono);font-size:16px}
+		  .pav{width:36px;height:36px;border-radius:7px;display:grid;place-items:center;font-family:var(--mono);font-weight:800;font-size:12px;color:#0a0c10;background-size:cover;background-position:center top;background-repeat:no-repeat;overflow:hidden;border:1px solid rgba(255,255,255,.12);box-shadow:inset 0 0 0 1px rgba(0,0,0,.28)}
+	  .pav.lazy-bg{position:relative;background-color:#1c2635;color:#dce5f0}
+  .pav.lazy-bg::after{content:attr(data-initials);position:absolute;inset:0;display:grid;place-items:center;transition:opacity .14s}
+  .pav.lazy-bg[data-loaded="1"]::after{opacity:0}
+  .pav.lazy-bg[data-error="1"]::after{opacity:1;color:#dce5f0}
+		  .pnamebar{display:flex;align-items:center;gap:6px;min-width:0}
+		  .pname{font-size:13.6px;font-weight:900;color:var(--txt);line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+	  .pnick{font-size:11.6px;color:var(--muted2);line-height:1.35;margin-top:2px}
+	  .prole{font-size:12.1px;color:var(--muted);line-height:1.4;margin-top:2px}
+		  .role-en{display:block;color:var(--muted2);font-family:var(--mono);font-size:.92em;line-height:1.35;margin-top:1px;max-width:100%;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere}
+  .role-meta{display:block;color:var(--muted);font-size:12.7px;line-height:1.4;margin-top:3px}
+  .ptags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+  .ptag{font-size:10.9px;color:#dce5f0;border:1px solid var(--line2);border-radius:20px;padding:1px 7px;background:rgba(255,255,255,.025)}
+  .ptag.warn{color:#ffd7d7;border-color:var(--lo);background:rgba(255,90,90,.13);font-weight:700}
+	  .unknownrow{padding:8px 10px;border:1px dashed var(--line2);border-radius:7px;color:var(--muted);font-size:12.7px;line-height:1.5;background:rgba(255,255,255,.018)}
+  .unknownrow b{color:var(--txt)}
+  .slotlist{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+  .slotlist span{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:1px 7px}
+  .notfound{color:var(--muted2);font-size:13px;padding:12px 14px}
+
+  .scrim{position:fixed;inset:0;background:rgba(4,6,9,.72);backdrop-filter:blur(4px);z-index:60;opacity:0;pointer-events:none;transition:.18s}
+  .scrim.on{opacity:1;pointer-events:auto}
+		  .drawer{
+		    display:none;position:fixed;left:50%;top:50%;width:min(760px,calc(100vw - 32px));max-height:calc(100vh - 32px);
+		    transform:translate(-50%,-50%);background:var(--bg2);border:1px solid var(--line2);border-radius:8px;z-index:70;
+		    overflow-y:auto;box-shadow:0 24px 90px rgba(0,0,0,.55)
+		  }
+		  .drawer.on{display:block}
+	  .dh{padding:18px 22px 16px;border-bottom:1px solid var(--line);position:relative}
+  .dh .stripe{position:absolute;left:0;top:0;bottom:0;width:6px}
+  .dh .close{position:absolute;top:16px;right:18px;background:transparent;border:1px solid var(--line2);color:var(--muted);width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:17.6px}
+  .dh .close:hover{color:var(--txt);border-color:var(--txt)}
+	  .dh .dhrow{display:flex;gap:14px;align-items:flex-start;padding-right:34px}
+		  .dav{width:96px;height:96px;border-radius:8px;object-fit:cover;object-position:center top;border:1px solid var(--line2);flex:0 0 96px;background:#0d1118}
+	  .dav.ph{display:grid;place-items:center;font-family:var(--mono);font-weight:800;font-size:37.4px;color:#0a0c10}
+	  .dcap{font-size:11px;color:var(--muted2);margin-top:5px;text-align:center;width:96px;line-height:1.35}
+  .dh .dn{font-size:24.2px;font-weight:800;letter-spacing:-.2px}
+  .dh .dn .zh{font-size:.7em}
+  .dh .dnk{font-family:var(--mono);font-size:13.2px;color:var(--accent);margin-left:6px}
+  .dh .dnick{font-size:12.8px;color:var(--muted2);font-family:var(--mono);margin-top:4px;line-height:1.4}
+  .dh .drole{color:var(--muted);font-size:13.8px;margin-top:5px;line-height:1.5}
+  .dh .drole .role-en{font-size:12.4px;margin-top:2px}
+  .dh .drole .role-meta{font-size:13.2px}
+  .dh .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}
+  .dbody{padding:8px 24px 40px}
+  .sec{padding:18px 0;border-bottom:1px solid var(--line)}
+  .sec:last-child{border-bottom:0}
+  .sec .lab{font-size:12.7px;letter-spacing:1px;color:var(--muted2);margin-bottom:12px}
+  .edu{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:11px 13px;margin-bottom:8px}
+  .edu .ei{font-weight:700;font-size:14.9px}
+  .edu .ed{font-size:13.2px;color:var(--muted);margin-top:3px}
+  .edu .ed.eyr{color:var(--accent);font-family:var(--mono);font-size:12.4px}
+  .edu .edusrc{display:inline-block;margin-top:6px;font-size:11.4px;color:var(--muted2);text-decoration:none;word-break:break-word}
+  .edu .edusrc:hover{color:var(--accent)}
+  .sec .lab.edulab{color:var(--accent);font-weight:700}
+
+  .tl{position:relative;margin-left:8px;padding-left:22px}
+  .tl::before{content:'';position:absolute;left:5px;top:4px;bottom:4px;width:2px;background:var(--line2)}
+  .tli{position:relative;padding:0 0 16px}
+  .tli:last-child{padding-bottom:0}
+  .tli .dot{position:absolute;left:-22px;top:3px;width:12px;height:12px;border-radius:50%;border:2px solid var(--bg2)}
+  .tli .yr{font-family:var(--mono);font-size:12.7px;color:var(--accent);font-weight:600}
+  .tli .org{font-weight:700;font-size:14.9px;margin-top:1px}
+  .tli .ro{font-size:13.8px;color:var(--muted);margin-top:1px}
+  .tli .cat{font-family:var(--mono);font-size:10.5px;color:var(--muted2);letter-spacing:.5px;margin-left:6px}
+
+  .hl{display:flex;gap:9px;font-size:14px;color:#cfd8e4;padding:5px 0}
+  .hl::before{content:'▸';color:var(--accent);flex:0 0 auto}
+  .src{display:block;font-size:13.2px;color:var(--muted);padding:6px 0;border-bottom:1px dashed var(--line);text-decoration:none;word-break:break-word}
+  .src:hover{color:var(--accent)}
+  .src .st{color:var(--muted2);font-family:var(--mono);font-size:11px;margin-right:7px}
+  .notes{font-size:13.2px;color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 13px;line-height:1.6}
+  .notes p{margin:0 0 9px}
+  .notes p:last-child{margin-bottom:0}
+
+  .legend{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0 2px}
+  .legend .li{display:flex;align-items:center;gap:6px;font-size:12.7px;color:var(--muted)}
+  .legend .sw{width:11px;height:11px;border-radius:3px}
+
+  footer{border-top:1px solid var(--line);color:var(--muted2);font-size:12.7px;padding:18px 0 40px;line-height:1.7}
+  .empty{color:var(--muted);font-size:14.3px;padding:30px;text-align:center}
+		  @media(max-width:1080px){
+		    .top .wrap{grid-template-columns:1fr;gap:10px}
+		    .tabs{justify-self:stretch;width:100%;margin-left:0}
+		    .tab{flex:1}
+		    .stats{grid-template-columns:repeat(2,1fr)}
+		    .rgrid{grid-template-columns:1fr}
+		    .rolegrid,.teamenggrid,.seriesgrid{grid-template-columns:1fr}
+		    .rolefacts{grid-template-columns:1fr 1fr}
+		    .pathchart{overflow-x:auto}
+		  }
+		  @media(max-width:880px){
+		    .wrap{padding:0 14px}
+		    section.view{padding-top:18px}
+		    .boardhead{display:block;padding:12px}
+		    .boardhead p{margin-top:5px}
+		    .quickfilters{justify-content:flex-start;min-width:0;margin-top:10px}
+		    .rostertop{grid-template-columns:1fr;padding:11px 12px}
+		    .rostergrid{grid-template-columns:1fr;padding:8px}
+		  }
+		  @media(max-width:640px){
+		    .wrap{padding:0 10px}
+		    .top .wrap{grid-template-columns:auto minmax(0,1fr);padding-top:8px;padding-bottom:10px}
+		    .logo h1{font-size:18px}
+		    .logo .sub{display:none}
+		    .tabs{order:0;justify-self:end}
+		    .searchbox{order:3;grid-column:1/-1;height:34px}
+		    .tab{padding:7px 8px;font-size:13.2px}
+		    .boardhead h3{font-size:17px}
+		    .boardhead p{font-size:12.8px}
+		    .rostergrid{padding:7px;gap:8px}
+		    .rosterhd{grid-template-columns:4px 42px minmax(0,1fr)}
+		    .teamlogo{width:42px;height:28px;border-color:transparent;padding:0}
+		    .pname{white-space:normal}
+		    .drawer{width:calc(100vw - 20px);max-height:calc(100vh - 20px)}
+		  }
+		  @media(max-width:520px){
+		    .dh .dhrow{display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px}
+		    .dav{width:76px;height:76px}.dcap{width:76px}.dbody{padding:8px 16px 28px}
+		  }
+		  @media(max-width:420px){
+		    .role-en{white-space:normal;overflow:visible;text-overflow:clip}
+		    .personrow{grid-template-columns:34px minmax(0,1fr) auto}
+		    .pav{width:34px;height:34px}
+		  }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="logo">
+	      <div class="bars"><span style="background:#e8002d"></span><span style="background:#ff8000"></span><span style="background:#36a2ff"></span></div>
+	      <div>
+	        <h1>围场履历</h1>
+	        <div class="sub">ENGINEERING ROSTER OPS</div>
+	      </div>
+	    </div>
+	    <nav class="tabs">
+	      <button class="tab on" data-view="grid" data-i18n="tab_roster">阵容</button>
+	      <button class="tab" data-view="roles" data-i18n="tab_roles">岗位地图</button>
+	      <button class="tab" data-view="routes" data-i18n="tab_routes">入行路径</button>
+	      <select id="langsel" class="langsel" aria-label="Language / 语言"></select>
+	    </nav>
+	    <label class="searchbox" data-i18n-aria="search_aria" aria-label="搜索人员、车队或岗位">
+	      <span>/</span>
+	      <input class="search" id="rostersearch" type="search" data-i18n-ph="search_ph" placeholder="搜索人员 / 车队 / 岗位" autocomplete="off" />
+	    </label>
+	  </div>
+	</header>
+
+<div class="wrap">
+  <section class="view on" id="view-grid">
+    <div class="boardblock">
+      <div class="workbench">
+        <main class="workmain">
+          <div class="boardhead">
+            <div>
+              <h3 data-i18n="tab_roster">阵容</h3>
+              <p id="rosterscope"></p>
+            </div>
+            <div class="quickfilters" data-i18n-aria="qf_aria" aria-label="数据状态">
+              <span data-i18n="qf_public">公开人员</span>
+              <span data-i18n="qf_photos">头像资源</span>
+              <span data-i18n="qf_lowconf">低置信度标注</span>
+            </div>
+          </div>
+          <div class="seriesboard" id="rosterboard"></div>
+        </main>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="view-roles">
+    <div class="roleintro" id="rolescope"></div>
+    <div class="rolegrid" id="rolegrid"></div>
+    <div class="sourcegrid" id="rolesources"></div>
+  </section>
+
+  <section class="view" id="view-routes">
+    <div class="rgrid">
+      <div class="panel">
+        <h3 data-i18n="p_routes">路线分布</h3>
+        <div id="archebars"></div>
+      </div>
+      <div class="panel">
+        <h3 data-i18n="p_chart">晋升折线</h3>
+        <div class="pathchart" id="pathchart"></div>
+      </div>
+      <div class="panel">
+        <h3 data-i18n="p_people">个人样本</h3>
+        <div class="route-table" id="routepeople"></div>
+      </div>
+      <div class="panel">
+        <h3 data-i18n="p_years">从进入 F1 到首个 RE 席位</h3>
+        <div class="ydist" id="ydist"></div>
+        <div style="margin-top:32px;font-size:15px;color:var(--muted)" id="ystat"></div>
+      </div>
+      <div class="panel">
+        <h3 data-i18n="p_unis">院校</h3>
+        <div id="unis"></div>
+      </div>
+      <div class="panel">
+        <h3 data-i18n="p_series">跨赛事入口</h3>
+        <div class="routecoverage" id="seriespath"></div>
+      </div>
+      <div class="panel playbook">
+        <h3 data-i18n="p_playbook">行动手册</h3>
+        <div id="playbook"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="wrap"><footer id="foot"></footer></div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" data-i18n-aria="drawer_aria" aria-label="人员详情"></aside>
+
+<script src="data.js"></script>
+<script type="module">
+async function loadDashboard(){
+  try{
+    const res = await fetch("/api/dashboard", {cache:"no-store"});
+    if(!res.ok) throw new Error(`API ${res.status}`);
+    return await res.json();
+  }catch(err){
+    if(window.F1DATA) return window.F1DATA;
+    throw err;
+  }
+}
+const D = await loadDashboard();
+
+/* ---------- i18n (UI chrome only; data/content stays in source language) ---------- */
+const LANGS = [["zh","中文"],["en","English"],["ja","日本語"],["de","Deutsch"],["fr","Français"],["es","Español"],["it","Italiano"]];
+const LOCALE = (()=>{ try{ const v=localStorage.getItem("locale"); return LANGS.some(l=>l[0]===v)?v:"zh"; }catch{ return "zh"; } })();
+const I18N = {
+zh:{
+  title:"围场履历",
+  tab_roster:"阵容",tab_roles:"岗位地图",tab_routes:"入行路径",
+  search_ph:"搜索人员 / 车队 / 岗位",search_aria:"搜索人员、车队或岗位",
+  qf_aria:"数据状态",qf_public:"公开人员",qf_photos:"头像资源",qf_lowconf:"低置信度标注",
+  p_routes:"路线分布",p_chart:"晋升折线",p_people:"个人样本",p_years:"从进入 F1 到首个 RE 席位",p_unis:"院校",p_series:"跨赛事入口",p_playbook:"行动手册",
+  drawer_aria:"人员详情",close_aria:"关闭详情",
+  lab_edu:"教育背景",lab_career:"职业阶梯",lab_route:"入行路线",lab_highlights:"高光时刻",lab_notes:"调研备注",lab_sources:"信息来源",
+  source_pfx:"来源",not_found:"未找到",not_found_name:"未找到姓名",lineup_tbd:"阵容待定",no_detail:"暂无公开细节",aka:"外号：",low_conf:"低置信度",
+  age_label:"年龄",age_suffix:"岁",age_approx:"约",whole_team:"全队",public_cv:"公开履历",
+  st_teams:"车队",st_people:"人员",st_entries:"参赛车号",st_teams_entries:"车队/入口",
+  head_name:"姓名",head_role:"当前岗位",head_entry:"进入 F1",head_years:"用时",
+  scope_label:"口径说明：",rf_importance:"重要程度",rf_seniority:"资深程度",rf_difficulty:"进入难度",rf_path:"路径位置",
+  unmarked:"未标注",typical:"常见路径：",no_pub:"公开资料不足。",
+  scope_fallback:"公开资料不足以完整点名所有支撑岗位，以下为岗位类型地图。",
+  lv_department:"部门管理",lv_carlead:"单车负责人",lv_carsupport:"单车支撑",lv_shared:"共享赛道资源",lv_pitwall:"Pit Wall / 策略",lv_factory:"工厂到赛道入口",
+  chart_x:"进入 F1 后用时（年）",chart_y:"该路线累计到达 RE 的比例",chart_aria:"各入行路线从进入 F1 到成为赛车工程师的累计折线图",
+  photo_free:"照片·自由",photo_media:"照片·媒体",photo_profile:"照片/档案",free_license:"自由授权",media_photo:"媒体图片",
+  unit_people:n=>`${n} 人`,unit_years:n=>`${n} 年`,yrs_to_re:n=>`${n} 年晋升至 RE`,debut:y=>`F1 起始 ${y}`,
+  entries_count:n=>`${n} 个入口`,filter:f=>`过滤：${f}`,empty_filter:f=>`没有匹配“${f}”的阵容项。`,
+  index_line:"2026 多赛事技术岗位、岗位槽位和公开履历索引",
+  ystat:(m,a,b,n)=>`<strong style="color:var(--txt)">中位 ${m} 年</strong> · 区间 ${a}–${b} 年 · 样本 ${n} 人`,
+  bucket:l=>`${l} 年`,
+  playbook:(topUni,median)=>[
+    ["拿到学位","机械、航空航天或汽车工程的 MEng/MSc 几乎是入场券——所有有记录的工程师都持有此类学位。高频院校："+topUni+"。"],
+    ["选一扇门进去","两条主路并存：①先在 F1 Academy / F4 → F3 → F2，或 WEC/勒芒、Formula E 等职业赛事里跑场边历练，再进入 F1 车队；或②直接以<em>数据 / 系统 / 控制</em>工程师身份加入一支 F1 车队。"],
+    ["在车库里逐级晋升","F1 内部的阶梯高度一致：数据/系统 → <strong>性能工程师</strong>（关键的练兵场）→ 赛车工程师。绝大多数人都先做了多年性能工程师。"],
+    ["有耐心 · 约 "+median+" 年","从首份 F1 工作到首个赛车工程师位，中位用时 "+median+" 年。一个周末一个周末地积累信任；位置往往在资深工程师晋升或离队时才空出来。"],
+    ["用专长脱颖而出","空气动力、车辆动力学、能量管理、软件/控制或轮胎/策略专长，都会在不同系列变成可迁移能力；赛车工程硕士、厂商学院和耐力赛/电动赛事经验是常见加速器。"],
+  ],
+},
+en:{
+  title:"Paddock CV · 围场履历",
+  tab_roster:"Roster",tab_roles:"Role map",tab_routes:"Entry paths",
+  search_ph:"Search people / teams / roles",search_aria:"Search people, teams or roles",
+  qf_aria:"Data status",qf_public:"Public people",qf_photos:"Avatars",qf_lowconf:"Low-confidence flags",
+  p_routes:"Route mix",p_chart:"Progression curve",p_people:"Individual sample",p_years:"From F1 entry to first RE seat",p_unis:"Universities",p_series:"Cross-series entries",p_playbook:"Playbook",
+  drawer_aria:"Person details",close_aria:"Close details",
+  lab_edu:"Education",lab_career:"Career ladder",lab_route:"Entry route",lab_highlights:"Highlights",lab_notes:"Research notes",lab_sources:"Sources",
+  source_pfx:"Source",not_found:"Not found",not_found_name:"No name found",lineup_tbd:"Line-up TBC",no_detail:"No public details",aka:"Nicknames: ",low_conf:"Low confidence",
+  age_label:"Age",age_suffix:"",age_approx:"~",whole_team:"Whole team",public_cv:"Public CV",
+  st_teams:"teams",st_people:"people",st_entries:"entries",st_teams_entries:"teams/entries",
+  head_name:"Name",head_role:"Current role",head_entry:"F1 entry",head_years:"Time",
+  scope_label:"Scope: ",rf_importance:"Importance",rf_seniority:"Seniority",rf_difficulty:"Entry difficulty",rf_path:"Path position",
+  unmarked:"n/a",typical:"Typical path: ",no_pub:"Insufficient public info.",
+  scope_fallback:"Public sources cannot name every support role; this is a map of role types.",
+  lv_department:"Department mgmt",lv_carlead:"Car lead",lv_carsupport:"Car support",lv_shared:"Shared trackside",lv_pitwall:"Pit wall / strategy",lv_factory:"Factory-to-track",
+  chart_x:"Years since F1 entry",chart_y:"Cumulative % reaching RE",chart_aria:"Cumulative curve per entry route: years from F1 entry to race engineer",
+  photo_free:"Photo · free",photo_media:"Photo · media",photo_profile:"Photo/profile",free_license:"Free license",media_photo:"Media photo",
+  unit_people:n=>`${n}`,unit_years:n=>`${n} yrs`,yrs_to_re:n=>`${n} yrs to RE`,debut:y=>`F1 debut ${y}`,
+  entries_count:n=>`${n} entry points`,filter:f=>`Filter: ${f}`,empty_filter:f=>`No roster items match “${f}”.`,
+  index_line:"2026 index of technical roles, slots and public CVs across series",
+  ystat:(m,a,b,n)=>`<strong style="color:var(--txt)">Median ${m} yrs</strong> · range ${a}–${b} yrs · ${n} people`,
+  bucket:l=>`${l} yrs`,
+  playbook:(topUni,median)=>[
+    ["Get the degree","An MEng/MSc in mechanical, aerospace or automotive engineering is effectively the entry ticket — every documented engineer holds one. Frequent schools: "+topUni+"."],
+    ["Pick a door","Two main routes coexist: ① trackside years in F1 Academy / F4 → F3 → F2, or in WEC/Le Mans and Formula E, then into an F1 team; or ② join an F1 team directly as a <em>data / systems / controls</em> engineer."],
+    ["Climb inside the garage","The internal ladder is remarkably consistent: data/systems → <strong>performance engineer</strong> (the key proving ground) → race engineer. Almost everyone spent years as a performance engineer first."],
+    ["Be patient · ~"+median+" yrs","Median time from first F1 job to first race-engineer seat is "+median+" years. Trust is built weekend by weekend; seats open only when a senior engineer moves up or out."],
+    ["Stand out with a specialty","Aerodynamics, vehicle dynamics, energy management, software/controls or tyres/strategy all transfer across series; motorsport MScs, OEM academies and endurance/electric experience are common accelerators."],
+  ],
+},
+ja:{
+  title:"パドック履歴 · 围场履历",
+  tab_roster:"ロースター",tab_roles:"ロールマップ",tab_routes:"キャリア経路",
+  search_ph:"人・チーム・職種を検索",search_aria:"人・チーム・職種を検索",
+  qf_aria:"データ状態",qf_public:"公開人員",qf_photos:"アバター",qf_lowconf:"低信頼度ラベル",
+  p_routes:"経路分布",p_chart:"昇進カーブ",p_people:"個人サンプル",p_years:"F1入りから初REまで",p_unis:"出身大学",p_series:"他シリーズからの入口",p_playbook:"行動プラン",
+  drawer_aria:"人物詳細",close_aria:"閉じる",
+  lab_edu:"学歴",lab_career:"キャリア",lab_route:"入行経路",lab_highlights:"ハイライト",lab_notes:"調査メモ",lab_sources:"出典",
+  source_pfx:"出典",not_found:"見つかりません",no_detail:"公開情報なし",aka:"ニックネーム：",low_conf:"低信頼度",
+  age_label:"年齢",age_suffix:"歳",age_approx:"約",whole_team:"全チーム",public_cv:"公開履歴",
+  st_teams:"チーム",st_people:"人員",st_entries:"参戦台数",st_teams_entries:"チーム/入口",
+  head_name:"名前",head_role:"現職",head_entry:"F1入り",head_years:"所要",
+  scope_label:"注記：",rf_importance:"重要度",rf_seniority:"シニア度",rf_difficulty:"参入難易度",rf_path:"経路上の位置",
+  unmarked:"未記載",typical:"典型経路：",no_pub:"公開情報不足。",
+  scope_fallback:"公開情報では全ての支援職を特定できないため、職種マップを示す。",
+  lv_department:"部門管理",lv_carlead:"車両責任者",lv_carsupport:"車両サポート",lv_shared:"共有トラックサイド",lv_pitwall:"ピットウォール/戦略",lv_factory:"工場→トラック",
+  chart_x:"F1入り後の年数",chart_y:"RE到達率（累積）",chart_aria:"経路別・F1入りからレースエンジニアまでの累積曲線",
+  photo_free:"写真·フリー",photo_media:"写真·メディア",photo_profile:"写真/プロフィール",free_license:"フリーライセンス",media_photo:"メディア写真",
+  unit_people:n=>`${n} 人`,unit_years:n=>`${n} 年`,yrs_to_re:n=>`${n}年でRE`,debut:y=>`F1デビュー ${y}`,
+  entries_count:n=>`${n} 入口`,filter:f=>`フィルター：${f}`,empty_filter:f=>`「${f}」に一致する項目はありません。`,
+  index_line:"2026 マルチシリーズ技術職・公開履歴インデックス",
+  ystat:(m,a,b,n)=>`<strong style="color:var(--txt)">中央値 ${m} 年</strong> · 範囲 ${a}–${b} 年 · サンプル ${n} 人`,
+  bucket:l=>`${l} 年`,
+},
+de:{
+  title:"Paddock-Lebensläufe · 围场履历",
+  tab_roster:"Kader",tab_roles:"Rollenkarte",tab_routes:"Einstiegswege",
+  search_ph:"Personen / Teams / Rollen suchen",search_aria:"Personen, Teams oder Rollen suchen",
+  qf_aria:"Datenstatus",qf_public:"Öffentliche Personen",qf_photos:"Avatare",qf_lowconf:"Niedrige Konfidenz",
+  p_routes:"Routenverteilung",p_chart:"Aufstiegskurve",p_people:"Personenstichprobe",p_years:"Vom F1-Einstieg zum ersten RE-Sitz",p_unis:"Hochschulen",p_series:"Serienübergreifende Einstiege",p_playbook:"Playbook",
+  drawer_aria:"Personendetails",close_aria:"Schließen",
+  lab_edu:"Ausbildung",lab_career:"Karriereleiter",lab_route:"Einstiegsweg",lab_highlights:"Highlights",lab_notes:"Recherchenotizen",lab_sources:"Quellen",
+  source_pfx:"Quelle",not_found:"Nicht gefunden",no_detail:"Keine öffentlichen Details",aka:"Spitzname: ",low_conf:"Niedrige Konfidenz",
+  age_label:"Alter",age_suffix:"",age_approx:"~",whole_team:"Gesamtes Team",public_cv:"Öffentl. Werdegang",
+  st_teams:"Teams",st_people:"Personen",st_entries:"Startplätze",st_teams_entries:"Teams/Einstiege",
+  head_name:"Name",head_role:"Aktuelle Rolle",head_entry:"F1-Einstieg",head_years:"Dauer",
+  scope_label:"Hinweis: ",rf_importance:"Wichtigkeit",rf_seniority:"Seniorität",rf_difficulty:"Einstiegshürde",rf_path:"Pfadposition",
+  unmarked:"k. A.",typical:"Typischer Weg: ",no_pub:"Zu wenig öffentliche Daten.",
+  scope_fallback:"Öffentliche Quellen benennen nicht jede Support-Rolle; dies ist eine Karte der Rollentypen.",
+  lv_department:"Abteilungsleitung",lv_carlead:"Fahrzeugverantwortlicher",lv_carsupport:"Fahrzeug-Support",lv_shared:"Geteilte Trackside-Rollen",lv_pitwall:"Kommandostand/Strategie",lv_factory:"Fabrik→Strecke",
+  chart_x:"Jahre seit F1-Einstieg",chart_y:"Kumulativer Anteil bis RE",chart_aria:"Kumulative Kurve je Route: Jahre vom F1-Einstieg bis Renningenieur",
+  photo_free:"Foto · frei",photo_media:"Foto · Medien",photo_profile:"Foto/Profil",free_license:"Freie Lizenz",media_photo:"Medienfoto",
+  unit_people:n=>`${n} Pers.`,unit_years:n=>`${n} J.`,yrs_to_re:n=>`${n} J. bis RE`,debut:y=>`F1-Debüt ${y}`,
+  entries_count:n=>`${n} Einstiege`,filter:f=>`Filter: ${f}`,empty_filter:f=>`Keine Treffer für „${f}“.`,
+  index_line:"2026-Index technischer Rollen, Slots und öffentlicher Lebensläufe",
+  ystat:(m,a,b,n)=>`<strong style="color:var(--txt)">Median ${m} J.</strong> · Spanne ${a}–${b} J. · ${n} Personen`,
+  bucket:l=>`${l} J.`,
+},
+fr:{
+  title:"CV du paddock · 围场履历",
+  tab_roster:"Effectif",tab_roles:"Carte des rôles",tab_routes:"Parcours d'entrée",
+  search_ph:"Rechercher personnes / équipes / postes",search_aria:"Rechercher personnes, équipes ou postes",
+  qf_aria:"État des données",qf_public:"Personnes publiques",qf_photos:"Avatars",qf_lowconf:"Confiance faible",
+  p_routes:"Répartition des parcours",p_chart:"Courbe de progression",p_people:"Échantillon individuel",p_years:"De l'entrée en F1 au premier poste de RE",p_unis:"Universités",p_series:"Entrées inter-séries",p_playbook:"Plan d'action",
+  drawer_aria:"Détails de la personne",close_aria:"Fermer",
+  lab_edu:"Formation",lab_career:"Parcours professionnel",lab_route:"Voie d'entrée",lab_highlights:"Faits marquants",lab_notes:"Notes de recherche",lab_sources:"Sources",
+  source_pfx:"Source",not_found:"Introuvable",no_detail:"Pas de détails publics",aka:"Surnom : ",low_conf:"Confiance faible",
+  age_label:"Âge",age_suffix:"ans",age_approx:"~",whole_team:"Toute l'équipe",public_cv:"CV public",
+  st_teams:"équipes",st_people:"personnes",st_entries:"engagés",st_teams_entries:"équipes/entrées",
+  head_name:"Nom",head_role:"Poste actuel",head_entry:"Entrée F1",head_years:"Durée",
+  scope_label:"Périmètre : ",rf_importance:"Importance",rf_seniority:"Séniorité",rf_difficulty:"Difficulté d'entrée",rf_path:"Position",
+  unmarked:"n. d.",typical:"Parcours type : ",no_pub:"Infos publiques insuffisantes.",
+  scope_fallback:"Les sources publiques ne nomment pas tous les rôles de support ; voici une carte des types de rôles.",
+  lv_department:"Direction de département",lv_carlead:"Responsable voiture",lv_carsupport:"Support voiture",lv_shared:"Ressources piste partagées",lv_pitwall:"Muret des stands/stratégie",lv_factory:"Usine→piste",
+  chart_x:"Années depuis l'entrée en F1",chart_y:"% cumulé atteignant RE",chart_aria:"Courbe cumulée par parcours : années de l'entrée F1 au poste d'ingénieur de course",
+  photo_free:"Photo · libre",photo_media:"Photo · média",photo_profile:"Photo/profil",free_license:"Licence libre",media_photo:"Photo média",
+  unit_people:n=>`${n} pers.`,unit_years:n=>`${n} ans`,yrs_to_re:n=>`${n} ans → RE`,debut:y=>`Débuts F1 ${y}`,
+  entries_count:n=>`${n} entrées`,filter:f=>`Filtre : ${f}`,empty_filter:f=>`Aucun résultat pour « ${f} ».`,
+  index_line:"Index 2026 des rôles techniques et CV publics multi-séries",
+  ystat:(m,a,b,n)=>`<strong style="color:var(--txt)">Médiane ${m} ans</strong> · plage ${a}–${b} ans · ${n} personnes`,
+  bucket:l=>`${l} ans`,
+},
+es:{
+  title:"CV del paddock · 围场履历",
+  tab_roster:"Plantilla",tab_roles:"Mapa de roles",tab_routes:"Vías de entrada",
+  search_ph:"Buscar personas / equipos / puestos",search_aria:"Buscar personas, equipos o puestos",
+  qf_aria:"Estado de datos",qf_public:"Personas públicas",qf_photos:"Avatares",qf_lowconf:"Confianza baja",
+  p_routes:"Distribución de rutas",p_chart:"Curva de progresión",p_people:"Muestra individual",p_years:"De la entrada en F1 al primer puesto de RE",p_unis:"Universidades",p_series:"Entradas entre series",p_playbook:"Guía de acción",
+  drawer_aria:"Detalles de la persona",close_aria:"Cerrar",
+  lab_edu:"Formación",lab_career:"Trayectoria",lab_route:"Vía de entrada",lab_highlights:"Hitos",lab_notes:"Notas de investigación",lab_sources:"Fuentes",
+  source_pfx:"Fuente",not_found:"No encontrado",no_detail:"Sin detalles públicos",aka:"Apodo: ",low_conf:"Confianza baja",
+  age_label:"Edad",age_suffix:"años",age_approx:"~",whole_team:"Todo el equipo",public_cv:"CV público",
+  st_teams:"equipos",st_people:"personas",st_entries:"inscritos",st_teams_entries:"equipos/entradas",
+  head_name:"Nombre",head_role:"Puesto actual",head_entry:"Entrada F1",head_years:"Tiempo",
+  scope_label:"Alcance: ",rf_importance:"Importancia",rf_seniority:"Antigüedad",rf_difficulty:"Dificultad de entrada",rf_path:"Posición",
+  unmarked:"s. d.",typical:"Ruta típica: ",no_pub:"Información pública insuficiente.",
+  scope_fallback:"Las fuentes públicas no nombran todos los roles de apoyo; este es un mapa de tipos de rol.",
+  lv_department:"Gestión de departamento",lv_carlead:"Responsable de coche",lv_carsupport:"Soporte de coche",lv_shared:"Recursos compartidos en pista",lv_pitwall:"Muro de boxes/estrategia",lv_factory:"Fábrica→pista",
+  chart_x:"Años desde la entrada en F1",chart_y:"% acumulado que llega a RE",chart_aria:"Curva acumulada por ruta: años desde la entrada en F1 hasta ingeniero de carrera",
+  photo_free:"Foto · libre",photo_media:"Foto · medios",photo_profile:"Foto/perfil",free_license:"Licencia libre",media_photo:"Foto de prensa",
+  unit_people:n=>`${n} pers.`,unit_years:n=>`${n} años`,yrs_to_re:n=>`${n} años → RE`,debut:y=>`Debut F1 ${y}`,
+  entries_count:n=>`${n} entradas`,filter:f=>`Filtro: ${f}`,empty_filter:f=>`Sin resultados para «${f}».`,
+  index_line:"Índice 2026 de roles técnicos y CV públicos multiserie",
+  ystat:(m,a,b,n)=>`<strong style="color:var(--txt)">Mediana ${m} años</strong> · rango ${a}–${b} años · ${n} personas`,
+  bucket:l=>`${l} años`,
+},
+it:{
+  title:"CV del paddock · 围场履历",
+  tab_roster:"Organico",tab_roles:"Mappa dei ruoli",tab_routes:"Percorsi d'ingresso",
+  search_ph:"Cerca persone / team / ruoli",search_aria:"Cerca persone, team o ruoli",
+  qf_aria:"Stato dei dati",qf_public:"Persone pubbliche",qf_photos:"Avatar",qf_lowconf:"Bassa confidenza",
+  p_routes:"Distribuzione dei percorsi",p_chart:"Curva di progressione",p_people:"Campione individuale",p_years:"Dall'ingresso in F1 al primo ruolo di RE",p_unis:"Università",p_series:"Ingressi tra serie",p_playbook:"Piano d'azione",
+  drawer_aria:"Dettagli della persona",close_aria:"Chiudi",
+  lab_edu:"Formazione",lab_career:"Carriera",lab_route:"Percorso d'ingresso",lab_highlights:"Momenti salienti",lab_notes:"Note di ricerca",lab_sources:"Fonti",
+  source_pfx:"Fonte",not_found:"Non trovato",no_detail:"Nessun dettaglio pubblico",aka:"Soprannome: ",low_conf:"Bassa confidenza",
+  age_label:"Età",age_suffix:"anni",age_approx:"~",whole_team:"Tutta la squadra",public_cv:"CV pubblico",
+  st_teams:"team",st_people:"persone",st_entries:"iscritti",st_teams_entries:"team/ingressi",
+  head_name:"Nome",head_role:"Ruolo attuale",head_entry:"Ingresso F1",head_years:"Tempo",
+  scope_label:"Nota: ",rf_importance:"Importanza",rf_seniority:"Anzianità",rf_difficulty:"Difficoltà d'ingresso",rf_path:"Posizione",
+  unmarked:"n.d.",typical:"Percorso tipico: ",no_pub:"Informazioni pubbliche insufficienti.",
+  scope_fallback:"Le fonti pubbliche non nominano ogni ruolo di supporto; questa è una mappa dei tipi di ruolo.",
+  lv_department:"Gestione di reparto",lv_carlead:"Responsabile vettura",lv_carsupport:"Supporto vettura",lv_shared:"Risorse condivise in pista",lv_pitwall:"Muretto/strategia",lv_factory:"Fabbrica→pista",
+  chart_x:"Anni dall'ingresso in F1",chart_y:"% cumulata che raggiunge RE",chart_aria:"Curva cumulata per percorso: anni dall'ingresso in F1 a ingegnere di pista",
+  photo_free:"Foto · libera",photo_media:"Foto · media",photo_profile:"Foto/profilo",free_license:"Licenza libera",media_photo:"Foto stampa",
+  unit_people:n=>`${n} pers.`,unit_years:n=>`${n} anni`,yrs_to_re:n=>`${n} anni → RE`,debut:y=>`Debutto F1 ${y}`,
+  entries_count:n=>`${n} ingressi`,filter:f=>`Filtro: ${f}`,empty_filter:f=>`Nessun risultato per «${f}».`,
+  index_line:"Indice 2026 di ruoli tecnici e CV pubblici multi-serie",
+  ystat:(m,a,b,n)=>`<strong style="color:var(--txt)">Mediana ${m} anni</strong> · intervallo ${a}–${b} anni · ${n} persone`,
+  bucket:l=>`${l} anni`,
+},
+};
+function t(key,...args){
+  const v = I18N[LOCALE]?.[key] ?? I18N.en[key] ?? I18N.zh[key] ?? key;
+  return typeof v==="function" ? v(...args) : v;
+}
+const TR = t; // alias for scopes where a local `t` variable shadows the i18n function
+document.documentElement.lang = ({zh:"zh-CN"})[LOCALE] || LOCALE;
+document.title = t("title");
+document.querySelectorAll("[data-i18n]").forEach(el=>{ el.textContent = t(el.dataset.i18n); });
+document.querySelectorAll("[data-i18n-aria]").forEach(el=>{ el.setAttribute("aria-label", t(el.dataset.i18nAria)); });
+document.querySelectorAll("[data-i18n-ph]").forEach(el=>{ el.setAttribute("placeholder", t(el.dataset.i18nPh)); });
+{
+  const sel = document.getElementById("langsel");
+  sel.innerHTML = LANGS.map(([v,l])=>`<option value="${v}" ${v===LOCALE?"selected":""}>${l}</option>`).join("");
+  sel.onchange = ()=>{ try{ localStorage.setItem("locale", sel.value); }catch{} location.reload(); };
+}
+// data-content overlay: translated notes/highlights/role-map text for non-zh locales.
+// Generated by scripts/build_i18n_overlays.py from data/i18n/content/<locale>/.
+let OVLY = {persons:{}, roles:{}, scope_note:""};
+if(LOCALE!=="zh"){
+  try{
+    const r = await fetch(`i18n/${LOCALE}.json`, {cache:"no-store"});
+    if(r.ok) OVLY = await r.json();
+  }catch{}
+}
+const ovP = id => (OVLY.persons||{})[id] || {};
+const ovR = (key,field) => ((OVLY.roles||{})[key]||{})[field] || "";
+
+const ENG = D.engineers;
+const RACE_STAFF = ENG.filter(e=>/race engineer/i.test(e.role||"") && !/development|simulator driver/i.test(e.role||""));
+const PATH_ENG = RACE_STAFF.filter(e=>typeof e.years_to_race_engineer==="number" && e.route_archetype!=="unknown");
+
+const ARCHE_ZH = {
+  "uni-junior-formula-to-f1":{label:"大学 → 初级方程式 → F1",badge:"大学→F1",color:"var(--a1)",
+    desc:"工程学位，先在 F3/F2/GP2 或耐力赛跑场边历练，再进入 F1 车队（或在队内一路晋升）。"},
+  "data-eng-to-RE":{label:"数据工程师 → 赛车工程师",badge:"数据→RE",color:"var(--a2)",
+    desc:"直接以数据/系统工程师身份进入 F1 车队，沿「数据 → 性能 → 赛车工程师」逐级晋升。"},
+  "oem-junior-program":{label:"厂商青训项目",badge:"厂商青训",color:"var(--a3)",
+    desc:"通过厂商青年工程师/学院项目（法拉利、梅赛德斯 HPP、雷诺）进入跑场边岗位。"},
+  "motorsport-msc-direct":{label:"赛车工程硕士直入",badge:"赛车硕士",color:"var(--a4)",
+    desc:"赛车工程专业硕士（克兰菲尔德、牛津布鲁克斯、南安普顿）→ 毕业生项目 → F1。"},
+  "mechanic-to-engineer":{label:"技师 → 工程师",badge:"技师出身",color:"var(--a5)",
+    desc:"从技师起步，凭跑场边经验晋升为工程师（少见但真实存在）。"},
+  "unknown":{label:"",badge:"",color:"var(--a6)",desc:""},
+};
+const ARCHE_EN = {
+  "uni-junior-formula-to-f1":{label:"University → junior formulae → F1",badge:"Uni→F1",color:"var(--a1)",
+    desc:"Engineering degree, trackside years in F3/F2/GP2 or endurance racing, then into an F1 team (or promoted internally)."},
+  "data-eng-to-RE":{label:"Data engineer → race engineer",badge:"Data→RE",color:"var(--a2)",
+    desc:"Joined an F1 team directly as a data/systems engineer and climbed data → performance → race engineer."},
+  "oem-junior-program":{label:"OEM junior programme",badge:"OEM junior",color:"var(--a3)",
+    desc:"Entered trackside roles via a manufacturer young-engineer/academy programme (Ferrari, Mercedes HPP, Renault)."},
+  "motorsport-msc-direct":{label:"Motorsport MSc direct",badge:"MSc direct",color:"var(--a4)",
+    desc:"Motorsport engineering MSc (Cranfield, Oxford Brookes, Southampton) → graduate scheme → F1."},
+  "mechanic-to-engineer":{label:"Mechanic → engineer",badge:"Mechanic",color:"var(--a5)",
+    desc:"Started as a mechanic and earned the engineer seat through trackside experience (rare but real)."},
+  "unknown":{label:"",badge:"",color:"var(--a6)",desc:""},
+};
+const ARCHE = LOCALE==="zh" ? ARCHE_ZH : ARCHE_EN;
+const catColor = c => ({F1:"var(--a1)",F2:"var(--a2)",F3:"var(--a4)",junior:"var(--a2)","formula-e":"var(--a5)",sportscars:"var(--a3)"}[c]||"var(--a6)");
+const initials = n => n.split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join("").toUpperCase();
+const escAttr = s => String(s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const ASSET_VERSION = String(D.asset_version || D.generated || "");
+function localImageUrl(raw){
+  if(!raw || !ASSET_VERSION) return raw;
+  return `${raw}${raw.includes("?") ? "&" : "?"}v=${encodeURIComponent(ASSET_VERSION)}`;
+}
+function imageUrl(url, fallbackText=""){
+  const raw = String(url||"").trim();
+  if(!raw) return "";
+  if(raw.startsWith("local:")) return localImageUrl(raw.slice(6));
+  if(/^https?:\/\//i.test(raw)){
+    const params = new URLSearchParams({u:raw});
+    if(ASSET_VERSION && fallbackText) params.set("v", ASSET_VERSION);
+    if(fallbackText) params.set("i", fallbackText);
+    return `api/image?${params.toString()}`;
+  }
+  return localImageUrl(raw);
+}
+// bilingual name: English + 中文 (zh suffix only shown in the zh locale)
+const nm = (en,zh) => (zh && LOCALE==="zh") ? `${en}<span class="zh">${zh}</span>` : en;
+const driversBi = e => (e.drivers_2026||[]).map((d,i)=>nm(d,(e.drivers_zh||[])[i])).join(" · ") || t("whole_team");
+const driversZh = e => (e.drivers_zh||[]).filter(Boolean).join("、") || (e.drivers_2026||[]).join("、") || t("whole_team");
+// age: exact "NN 岁" or estimated "约 NN 岁"; empty when undocumented
+const ageStr = e => (e.age!=null) ? `${e.age_approx?t("age_approx")+" ":""}${e.age} ${t("age_suffix")}`.trim() : "";
+const confLabel = e => e.confidence==="low" ? t("low_conf") : "";
+const confBadge = e => e.confidence==="low" ? `<span class="confbadge low" title="资料核验置信度">${confLabel(e)}</span>` : "";
+// collapse doubled sentence punctuation ("。。") and stray spaces in a zh note
+function cleanZh(t){
+  if(!t) return "";
+  let s=String(t).replace(/[^\S\n]+/g," ").replace(/\n{2,}/g,"\n").trim();
+  s=s.replace(/[。！？；!?;](?:[ \t]*[。！？；!?;])+/g,m=>m.replace(/[ \t]/g,"").slice(-1));
+  s=s.replace(/[ \t]+([。！？；，、])/g,"$1");
+  return s.trim();
+}
+// join note fragments into one clean string, no doubled punctuation
+function joinZh(parts){
+  const out=[];
+  (parts||[]).forEach(p=>{ p=cleanZh(p); if(!p) return;
+    if(!/[。！？!?；;]$/.test(p)) p+="。"; out.push(p); });
+  return cleanZh(out.join(""));
+}
+// split a long note into ~2-sentence paragraphs for readability
+function paras(t){
+  t=cleanZh(t); if(!t) return "";
+  const parts=[];
+  t.split(/\n+/).forEach(block=>{
+    const sents=(block.match(/[^。！？!?；;]+[。！？!?；;]*/g)||[block]).map(s=>s.trim()).filter(Boolean);
+    let buf="";
+    sents.forEach(s=>{
+      const next=buf ? buf+s : s;
+      if(buf && next.length>96){ parts.push(buf); buf=s; return; }
+      buf=next;
+      if((/[。！？!?]$/.test(s)&&buf.length>=44)||(/[；;]$/.test(s)&&buf.length>=36)){
+        parts.push(buf); buf="";
+      }
+    });
+    if(buf) parts.push(buf);
+  });
+  return parts.map(p=>`<p>${p}</p>`).join("");
+}
+
+/* ---------- roster board ---------- */
+function slug(s){
+  return String(s||"").normalize("NFKD").replace(/[^\w\s-]/g,"").trim().toLowerCase().replace(/\s+/g,"-") || "person";
+}
+function profileKey(seriesId, teamName, name, roleKey=""){
+  return [seriesId, teamName, name, roleKey].map(x=>String(x||"").normalize("NFKD").toLowerCase().replace(/[^\w]+/g," ").trim()).join("|");
+}
+function seriesColor(id){
+  return ({f1:"var(--accent)", f2:"var(--a2)", "wec-le-mans":"var(--a3)", "f1-academy":"var(--a4)", "formula-e":"var(--a5)"}[id] || "var(--a6)");
+}
+function seriesTitle(s){
+  return ({
+    f1:"Formula 1",
+    f2:"Formula 2",
+    "wec-le-mans":"WEC / Le Mans",
+    "f1-academy":"F1 Academy",
+    "formula-e":"Formula E"
+  }[s.id] || s.name || s.name_zh || s.id);
+}
+const SERIES_ROSTER_MAP = {};
+Object.entries(D.series_rosters?.series||{}).forEach(([seriesId, data])=>{
+  (data.teams||[]).forEach(team=>{
+    SERIES_ROSTER_MAP[`${seriesId}|${slug(team.team_name)}`] = team;
+  });
+});
+function rosterMeta(seriesId, teamName){
+  return SERIES_ROSTER_MAP[`${seriesId}|${slug(teamName)}`] || {};
+}
+function driverLine(drivers=[]){
+  if(!drivers.length) return "";
+  return drivers.map(d=>{
+    const num = d.number ? `#${d.number} ` : "";
+    const support = d.support ? ` (${d.support})` : "";
+    return `${num}${d.name}${support}`;
+  }).join(" · ");
+}
+function teamLogo(url, light=false, invert=false){
+  return url ? `<img class="teamlogo ${light?"light":""} ${invert?"invert":""}" src="${escAttr(imageUrl(url))}" alt="" loading="lazy" decoding="async">` : "";
+}
+function leadershipRoleZh(role=""){
+  const map = {
+    "Team Principal":"车队领队",
+    "Team Principal / CEO":"车队领队 / CEO",
+    "Team Principal / Managing Technical Partner":"车队领队 / 管理技术合伙人",
+    "Executive Chairman / Owner":"执行主席 / 所有者",
+    "Team Principal duties":"代理车队领队职责",
+    "Managing Director":"董事总经理",
+    "Head of Audi F1 Project / CEO technical lead":"奥迪 F1 项目负责人 / 技术型 CEO",
+    "Racing Director":"赛事总监"
+  };
+  return map[role] || "管理 / 技术领导";
+}
+function makeLeadershipPeople(){
+  const cfg = D.f1_team_engineering || {};
+  const f1Sources = (D.series_engineering?.sources||[]).filter(s=>/F1|Formula|RacingNews365|Motorsport|F1\.com/i.test(`${s.title} ${s.note_zh||""}`));
+  const leaderProfiles = D.leader_profiles?.people || {};
+  const byTeam = Object.fromEntries(D.teams.map(t=>[t.id,t]));
+  const out = [];
+  (cfg.teams||[]).forEach(group=>{
+    const t = byTeam[group.team_id]; if(!t) return;
+    (group.leadership||[]).forEach(l=>{
+      const profile = leaderProfiles[l.person] || {};
+      const profileSource = profile.source_url ? [{url:profile.source_url,title:profile.source_title||profile.source_url,type:"photo/profile"}] : [];
+      out.push({
+        id:`leader-${group.team_id}-${slug(l.person)}`,
+        profile_kind:"leadership",
+        name:l.person,
+        name_zh:l.person_zh||"",
+        photo_url:profile.photo_url||"",
+        photo_credit:profile.photo_credit||"",
+        profile_source_url:profile.source_url||"",
+        role:l.role||l.role_zh||"Leadership",
+        role_zh:l.role_zh && !/^[\x00-\x7F\s/()&.-]+$/.test(l.role_zh) ? l.role_zh : leadershipRoleZh(l.role_zh||l.role||""),
+        team_id:t.id,
+        team_2026:t.name,
+        team_zh:t.name_zh,
+        team_color:t.color,
+        drivers_2026:t.drivers||[],
+        drivers_zh:t.drivers_zh||[],
+        confidence:"medium",
+        confidence_zh:"公开",
+        route_archetype:"unknown",
+        education:(profile.education||[]),
+        career:(profile.career&&profile.career.length) ? profile.career : [{
+          from:TR("public_cv"),
+          to:"2026",
+          org:t.name,
+          org_zh:t.name_zh,
+          role:l.role||l.role_zh||"Leadership",
+          role_zh:l.note_zh||l.engineering_background_zh||"",
+          category:"management",
+          category_zh:"管理 / 工程领导"
+        }],
+        highlights_zh:(profile.highlights_zh&&profile.highlights_zh.length
+          ? profile.highlights_zh
+          : [l.engineering_background_zh, l.note_zh]).map(cleanZh).filter(Boolean),
+        notes_zh:joinZh([profile.career_summary_zh, l.engineering_background_zh, l.note_zh]),
+        sources:(profile.sources&&profile.sources.length) ? [...profileSource, ...profile.sources] : [...profileSource, ...f1Sources]
+      });
+    });
+  });
+  return out;
+}
+function makeF1EngineeringPeople(){
+  const data = D.f1_public_engineering_people || {};
+  const byTeam = Object.fromEntries(D.teams.map(t=>[t.id,t]));
+  const globalSources = data.sources || [];
+  const out = [];
+  Object.entries(data.teams||{}).forEach(([teamId, people])=>{
+    const t = byTeam[teamId]; if(!t) return;
+    (people||[]).forEach(p=>{
+      const roleKey = p.role_key || "engineering-adjacent";
+      const srcs = (p.sources&&p.sources.length) ? p.sources : globalSources;
+      out.push({
+        id:`f1eng-${teamId}-${slug(p.person)}-${slug(roleKey)}`,
+        profile_kind:"f1-engineering",
+        role_key:roleKey,
+        name:p.person,
+        name_zh:p.person_zh||"",
+        photo_url:p.photo_url||"",
+        photo_credit:p.photo_credit||"",
+        photo_pos:p.photo_pos||"",
+        role:p.role||roleKey,
+        role_zh:p.role_zh||p.role||roleKey,
+        team_id:t.id,
+        team_2026:t.name,
+        team_zh:t.name_zh,
+        team_color:t.color,
+        drivers_2026:t.drivers||[],
+        drivers_zh:t.drivers_zh||[],
+        confidence:p.confidence||"high",
+        route_archetype:"unknown",
+        education:p.education||[],
+        career:(p.career&&p.career.length) ? p.career : [{
+          from:p.from||TR("public_cv"),
+          to:"2026",
+          org:t.name,
+          org_zh:t.name_zh,
+          role:p.role||roleKey,
+          role_zh:p.career_summary_zh||p.note_zh||p.role_zh||p.role||roleKey,
+          category:"F1",
+          category_zh:"F1"
+        }],
+        highlights_zh:(p.highlights_zh&&p.highlights_zh.length
+          ? p.highlights_zh
+          : [p.career_summary_zh,p.note_zh]).map(cleanZh).filter(Boolean),
+        notes_zh:joinZh([p.career_summary_zh,p.note_zh]),
+        sources:srcs
+      });
+    });
+  });
+  return out;
+}
+function makeSeriesPeople(){
+  const out = [];
+  const seriesById = Object.fromEntries((D.motorsport_series||[]).map(s=>[s.id,s]));
+  const sourceGroups = D.series_people_compiled?.series || D.series_people?.series || {};
+  const enrichments = new Map((D.series_people_enrichment?.profiles||[]).map(p=>[
+    profileKey(p.series_id, p.team_name, p.name, p.role_key),
+    p
+  ]));
+  const unresolved = new Map((D.series_people_enrichment?.unresolved||[]).map(p=>[
+    profileKey(p.series_id, p.team_name, p.name, p.role_key),
+    p
+  ]));
+  Object.entries(sourceGroups).forEach(([seriesId, seriesData])=>{
+    const series = seriesById[seriesId] || {name:seriesId, name_zh:seriesId};
+    (seriesData.teams||[]).forEach(team=>{
+      (team.members||[]).forEach(m=>{
+        if(m.engineering_related===false) return;
+        const enriched = enrichments.get(profileKey(seriesId, team.team_name, m.name, m.role_key)) || {};
+        const unresolvedProfile = unresolved.get(profileKey(seriesId, team.team_name, m.name, m.role_key)) || null;
+        const publicProfiles = m.public_profiles || enriched.public_profiles || [];
+        const profileSources = (m.sources&&m.sources.length) ? m.sources : (publicProfiles||[]).map(p=>({url:p.url,title:p.title||p.url,type:p.type||"profile"}));
+        const profileNotes = m.notes_zh ? [m.notes_zh] : [
+          enriched.career_summary_zh,
+          ...(publicProfiles||[]).map(p=>p.evidence_zh).filter(Boolean),
+          unresolvedProfile?.note_zh
+        ].filter(Boolean);
+        const id=`series-${seriesId}-${slug(team.team_name)}-${slug(m.name)}-${slug(m.role_key||m.role)}`;
+        out.push({
+          id,
+          profile_kind:"series-person",
+          series_id:seriesId,
+          series_name:series.name,
+          series_zh:series.name_zh||series.name,
+          team_id:slug(team.team_name),
+          team_2026:team.team_name,
+          team_zh:team.team_name,
+          team_color:seriesColor(seriesId),
+          entry_number:m.entry_number||"",
+          name:m.name,
+          name_zh:"",
+          photo:m.photo || enriched.photo || null,
+          public_profiles:publicProfiles||[],
+          profile_lookup_status:m.profile_lookup_status || (unresolvedProfile ? "no_trusted_result" : (publicProfiles?.length ? "profile_found" : "not_enriched_yet")),
+          role:m.role,
+          role_en:m.role_en||m.role,
+          role_zh:m.role_group_zh||m.role,
+          confidence:m.confidence||"high",
+          confidence_zh:m.confidence==="high"?"高":"公开",
+          route_archetype:"unknown",
+          drivers_2026:[],
+          drivers_zh:[],
+          education:m.education||[],
+          career:(m.career&&m.career.length) ? m.career : (enriched.career_summary_zh||m.career_summary_zh) ? [{
+            from:TR("public_cv"),
+            to:"2026",
+            org:team.team_name,
+            org_zh:team.team_name,
+            role:m.role,
+            role_zh:enriched.career_summary_zh||m.career_summary_zh,
+            category:series.name,
+            category_zh:series.name_zh||series.name
+          }] : [],
+          highlights_zh:profileNotes.map(cleanZh).filter(Boolean),
+          notes_zh:joinZh(profileNotes),
+          sources:profileSources.length ? profileSources : [...(team.source_url ? [{url:team.source_url,title:team.source_title||team.source_url,type:"official"}] : [])]
+        });
+      });
+    });
+  });
+  return out;
+}
+const LEADERS = makeLeadershipPeople();
+const F1_ENGINEERING = makeF1EngineeringPeople();
+let SERIES_PEOPLE_CACHE = null;
+const PEOPLE = [...ENG, ...LEADERS, ...F1_ENGINEERING];
+const PERSON_BY_ID = Object.fromEntries(PEOPLE.map(p=>[p.id,p]));
+function getSeriesPeople(){
+  if(!SERIES_PEOPLE_CACHE){
+    SERIES_PEOPLE_CACHE = makeSeriesPeople();
+    SERIES_PEOPLE_CACHE.forEach(p=>{ PERSON_BY_ID[p.id] = p; });
+  }
+  return SERIES_PEOPLE_CACHE;
+}
+
+function personAvatar(p, cls="pav"){
+  const rawUrl = (p.photo&&p.photo.local) || (p.photo&&p.photo.src_img) || p.photo_url || "";
+  const avatarInitials = initials(p.name||"?");
+  const url = imageUrl(rawUrl, avatarInitials);
+  const pos = p.photo_pos || "";
+  if(url) return `<div class="${cls} lazy-bg" data-bg="${escAttr(url)}" data-initials="${escAttr(avatarInitials)}"${pos?` data-bg-pos="${escAttr(pos)}"`:""}></div>`;
+  return `<div class="${cls}" style="background:${p.team_color||"var(--accent)"}">${initials(p.name||"?")}</div>`;
+}
+function loadAvatar(el){
+  if(!el || el.dataset.loaded==="1" || el.dataset.loading==="1") return;
+  const url = el.dataset.bg;
+  if(!url) return;
+  el.dataset.loading = "1";
+  const img = new Image();
+  img.decoding = "async";
+  img.onload = ()=>{
+    el.style.backgroundImage = `url("${url.replace(/"/g,'\\"')}")`;
+    if(el.dataset.bgPos) el.style.backgroundPosition = el.dataset.bgPos;
+    el.dataset.loaded = "1";
+    delete el.dataset.loading;
+  };
+  img.onerror = ()=>{
+    el.dataset.error = "1";
+    el.dataset.loaded = "1";
+    delete el.dataset.loading;
+  };
+  img.src = url;
+}
+function setupLazyAvatars(root=document){
+  const nodes = [...root.querySelectorAll(".pav.lazy-bg:not([data-loaded='1'])")];
+  if(!nodes.length) return;
+  nodes.forEach(loadAvatar);
+}
+function roleTextZh(p, fallback=""){
+  if(LOCALE!=="zh") return String(p.role_en||p.role||fallback||p.role_zh||"").trim();
+  return p.role_zh || fallback || p.role || "";
+}
+function roleTextEn(p, fallback=""){
+  if(LOCALE!=="zh") return "";  // primary already shows the English original
+  const zh = String(p.role_zh||"").trim();
+  const en = String(p.role_en||p.role||fallback||"").trim();
+  return en && en!==zh ? en : "";
+}
+function roleHtml(p, fallback="", fallbackEn=""){
+  const zh = roleTextZh(p, fallback);
+  const en = roleTextEn(p, fallbackEn);
+  return `${zh||""}${en?`<span class="role-en">${en}</span>`:""}`;
+}
+function titleRoleHtml(r){
+  return roleHtml({role:r.title||r.role||r.key||"", role_zh:r.title_zh||r.role_zh||""}, r.key||"");
+}
+// rows carry no tags at all except a low-confidence warning when relevant.
+function personRow(p, context="", contextEn=""){
+	  const tags = p.confidence==="low" ? `<span class="ptag warn">${t("low_conf")}</span>` : "";
+	  const nick = p.aka&&p.aka.length ? `<div class="pnick">${t("aka")}${p.aka.join(" / ")}</div>` : "";
+	  return `<div class="personrow" data-id="${p.id}" tabindex="0" role="button">
+	    ${personAvatar(p)}
+	    <div>
+	      <div class="pnamebar"><div class="pname">${nm(p.name,p.name_zh)}</div>${tags?`<div class="ptags">${tags}</div>`:""}</div>
+	      ${nick}
+	      <div class="prole">${roleHtml(p, context, contextEn)}</div>
+	    </div>
+	  </div>`;
+	}
+function unknownSlot(text, roles=[]){
+  return `<div class="unknownrow">${t("not_found")}</div>`;
+}
+function notFound(){
+  return `<div class="notfound">${t("not_found")}</div>`;
+}
+function positionTitleHtml(title, titleEn=""){
+  const en = String(titleEn||"").trim();
+  if(LOCALE!=="zh") return `<b>${en||title}</b>`;
+  return `<b>${title}</b>${en && en!==String(title||"").trim() ? `<span>${en}</span>` : ""}`;
+}
+function positionBlock(title, hint, people, unknownHtml=""){
+  if(!people.length && !unknownHtml) return "";
+  return `<div class="posblock">
+    <div class="postitle">${positionTitleHtml(title, hint)}</div>
+    ${people.map(p=>personRow(p, p.role_zh||title, p.role||hint)).join("")}
+    ${unknownHtml}
+  </div>`;
+}
+function roleTemplateMap(){
+  const cfg = D.f1_team_engineering || {};
+  const series = D.series_engineering || {};
+  return {
+    f1:Object.fromEntries((cfg.role_templates||[]).map(r=>[r.key,r])),
+    series:Object.fromEntries((series.series_role_definitions||[]).map(r=>[r.key,r]))
+  };
+}
+function teamHaystack(team, people, extra=[]){
+  return [team.name,team.name_zh,team.series_zh,team.series_name,...extra,...people.flatMap(p=>[
+    p.name,p.name_zh,p.role,p.role_zh,(p.drivers_2026||[]).join(" "),(p.drivers_zh||[]).join(" ")
+  ])].join(" ").toLowerCase();
+}
+function peopleForSeriesTeam(seriesId, teamName){
+  const key = slug(teamName);
+  return getSeriesPeople().filter(p=>p.series_id===seriesId && p.team_id===key && !p.entry_number);
+}
+function peopleForEntry(seriesId, entry){
+  const key = slug(entry.entrant);
+  return getSeriesPeople().filter(p=>
+    p.series_id===seriesId &&
+    ((p.entry_number && String(p.entry_number)===String(entry.car_number)) || (!p.entry_number && p.team_id===key))
+  );
+}
+function rawSeriesPeopleCount(seriesId){
+  return ((D.series_people_compiled?.series?.[seriesId] || D.series_people?.series?.[seriesId] || {}).teams||[])
+    .flatMap(team=>team.members||[])
+    .filter(member=>member.engineering_related!==false)
+    .length;
+}
+function sourceTeamNames(seriesId){
+  return ((D.series_people_compiled?.series?.[seriesId] || D.series_people?.series?.[seriesId] || {}).teams||[])
+    .map(team=>team.team_name)
+    .filter(Boolean);
+}
+function rosterTeamNames(s){
+  return [...new Set([...(s.teams||[]), ...sourceTeamNames(s.id)])];
+}
+function publicPeopleBlocks(people){
+  if(!people.length) return "";
+  const order = ["team-technical-director","technical-director-powertrain","team-principal","team-manager","race-engineer","car-race-engineer","performance-engineer","performance-data-engineer","data-engineer","systems-energy-engineer","mechanic-number-one","mechanic"];
+  const grouped = {};
+  people.forEach(p=>{(grouped[p.role] ||= []).push(p);});
+  return Object.entries(grouped)
+    .sort(([a],[b])=>{
+      const ak=order.findIndex(x=>slug(a).includes(x)); const bk=order.findIndex(x=>slug(b).includes(x));
+      return (ak<0?99:ak)-(bk<0?99:bk) || a.localeCompare(b);
+    })
+    .map(([role, items])=>positionBlock(items[0].role_zh||role, role, items))
+    .join("");
+}
+function peopleBlocksByRole(people){
+  if(!people.length) return "";
+  const order = ["technical-leadership","engineering-principal","head-race-engineering","strategy-engineer","test-simulation-engineer","performance-engineer","systems-controls-engineer","pu-engineer","tyre-aero-trackside","chief-race-engineer","race-engineer"];
+  const grouped = {};
+  people.forEach(p=>{(grouped[p.role_key || p.role] ||= []).push(p);});
+  return Object.entries(grouped)
+    .sort(([a,itemsA],[b,itemsB])=>{
+      const ai=order.indexOf(itemsA[0].role_key||a); const bi=order.indexOf(itemsB[0].role_key||b);
+      return (ai<0?99:ai)-(bi<0?99:bi) || (itemsA[0].role_zh||a).localeCompare(itemsB[0].role_zh||b);
+    })
+    .map(([,items])=>positionBlock(items[0].role_zh||items[0].role, items[0].role, items))
+    .join("");
+}
+// canonical F1 position order — rendered identically for every team so the
+// grid is comparable. Core slots always show; empty ones display 未找到.
+const F1_SLOTS = [
+  {title:"领队 / 管理层", title_en:"Team Principal / Leadership", core:true, get:c=>c.leaders},
+  {title:"技术总监 / 工程负责人", title_en:"Technical Director / CTO / Head of Engineering", core:true, get:c=>c.eng["technical-leadership"]||[]},
+  {title:"赛事工程主管 / 首席 RE", title_en:"Head / Director of Race Engineering / Chief Race Engineer", core:true, get:c=>[...(c.eng["head-race-engineering"]||[]), ...c.chiefs]},
+  {title:"策略工程师", title_en:"Strategy Engineer / Strategist", core:true, get:c=>c.eng["strategy-engineer"]||[]},
+  {title:"车辆性能工程", title_en:"Performance Engineer", core:true, get:c=>c.eng["performance-engineer"]||[]},
+  {title:"仿真 / 模拟器 / 测试", title_en:"Simulation / Simulator / Test Engineer", core:false, get:c=>c.eng["test-simulation-engineer"]||[]},
+  {title:"动力单元 / 系统 / 控制", title_en:"Power Unit / Systems / Controls Engineer", core:false, get:c=>[...(c.eng["pu-engineer"]||[]), ...(c.eng["systems-controls-engineer"]||[])]},
+  {title:"气动 / 轮胎 / 赛道性能", title_en:"Trackside Aero / Tyre / Trackside Performance Engineer", core:false, get:c=>c.eng["tyre-aero-trackside"]||[]},
+  {title:"车手赛车工程师", title_en:"Race Engineer", core:true, get:c=>c.race},
+];
+function slotBlock(title, titleEn, people, core){
+	  if(!people.length){
+	    return core
+	      ? `<div class="posblock"><div class="postitle">${positionTitleHtml(title, titleEn)}</div><div class="unknownrow"><b>${t("not_found_name")}</b><div class="slotlist"><span>${titleEn}</span></div></div></div>`
+	      : "";
+	  }
+  return `<div class="posblock">
+    <div class="postitle">${positionTitleHtml(title, titleEn)}</div>
+    ${people.map(p=>personRow(p, p.role_zh||title, p.role||titleEn)).join("")}
+  </div>`;
+}
+function buildF1Section(filter=""){
+  const leaderByTeam = {};
+  LEADERS.forEach(p=>{(leaderByTeam[p.team_id] ||= []).push(p);});
+  const engByTeam = {};
+  F1_ENGINEERING.forEach(p=>{
+    (engByTeam[p.team_id] ||= {});
+    (engByTeam[p.team_id][p.role_key] ||= []).push(p);
+  });
+  const f = filter.trim().toLowerCase();
+	  const teams = D.teams.map(t=>{
+	    const chiefs = (t.engineers||[]).filter(e=>/chief|senior|head of race/i.test(e.role||""));
+	    const race = (t.engineers||[]).filter(e=>!chiefs.includes(e));
+	    const ctx = {leaders:leaderByTeam[t.id]||[], eng:engByTeam[t.id]||{}, chiefs, race};
+	    const named = [...ctx.leaders, ...F1_ENGINEERING.filter(p=>p.team_id===t.id), ...chiefs, ...race];
+	    const engRefs = ctx.leaders.length + Object.values(ctx.eng).flat().length;
+	    const driverText = (LOCALE==="zh" ? (t.drivers_zh||t.drivers||[]) : (t.drivers||t.drivers_zh||[])).join(" · ")||TR("lineup_tbd");
+	    const blocks = F1_SLOTS.map(s=>slotBlock(s.title, s.title_en, s.get(ctx), s.core)).join("");
+	    return {
+      ...t,
+      series_name:"Formula 1",
+	      series_zh:"一级方程式",
+	      named,
+	      html:`<article class="rosterteam">
+	        <div class="rosterhd"><span class="mark" style="background:${t.color}"></span>${teamLogo(t.logo_url, false, t.logo_invert)}<div><div class="tn">${nm(t.name,t.name_zh)}</div><div class="td">${driverText} · ${race.length}/2 RE · ${engRefs} refs</div></div></div>
+	        ${blocks}
+	      </article>`
+    };
+  }).filter(t=>!f || teamHaystack(t, t.named, ["策略","性能","系统","控制","轮胎","动力单元","仿真","模拟器","测试"]).includes(f));
+  return {
+    id:"f1",
+    title:"Formula 1",
+    subtitle:"",
+    desc:"",
+    color:"var(--accent)",
+    stats:[
+      [`${D.team_count}`,t("st_teams")],
+      [`${ENG.length + LEADERS.length}`,t("st_people")],
+      [`${RACE_STAFF.length}`,"RE"]
+    ],
+    teams
+  };
+}
+function buildOtherSeriesSection(s, filter=""){
+  const rmap = roleTemplateMap();
+  const f = filter.trim().toLowerCase();
+  const roles = (s.role_ladder||[]).map(k=>{
+    const r = rmap.series[k] || rmap.f1[k] || {title_zh:k};
+    return r.title_zh||r.title||k;
+  });
+  if(s.id==="wec-le-mans" && D.series_entries?.["wec-le-mans"]?.entries?.length){
+    const entries = D.series_entries["wec-le-mans"].entries;
+    const teams = entries.map(entry=>{
+      const named = peopleForEntry(s.id, entry);
+      const drivers = (entry.drivers||[]).map(d=>`${d.name}${d.rating?` ${d.rating}`:""}`);
+      const t = {
+        name:`#${entry.car_number} ${entry.entrant}`,
+        name_zh:"",
+        series_name:s.name,
+        series_zh:s.name_zh||s.name,
+        named,
+        html:`<article class="rosterteam">
+          <div class="rosterhd"><span class="mark" style="background:${seriesColor(s.id)}"></span><div><div class="tn">#${entry.car_number} ${entry.entrant}</div><div class="td">${entry.class_name} · ${entry.car} · ${drivers.join(" / ")}</div></div></div>
+          ${publicPeopleBlocks(named) || notFound()}
+        </article>`
+      };
+      return t;
+    }).filter(t=>!f || teamHaystack(t, t.named, [s.name,s.name_zh,...roles]).includes(f));
+    const counts = D.series_entries["wec-le-mans"].class_counts || {};
+    return {
+      id:s.id,
+      title:seriesTitle(s),
+      subtitle:"",
+      desc:"",
+      color:seriesColor(s.id),
+      stats:[
+        [`${entries.length}`,t("st_entries")],
+        [`${counts.Hypercar||0}/${counts.LMP2||0}/${counts.LMGT3||0}`,"H/LMP2/GT3"],
+        [`${getSeriesPeople().filter(p=>p.series_id===s.id).length}`,t("st_people")]
+      ],
+      teams
+    };
+  }
+  const teamNames = rosterTeamNames(s);
+  const teams = teamNames.map(name=>{
+    const named = peopleForSeriesTeam(s.id, name);
+    const roster = rosterMeta(s.id, name);
+    const drivers = driverLine(roster.drivers||[]);
+    const t = {
+      name,
+      name_zh:"",
+      series_name:s.name,
+      series_zh:s.name_zh||s.name,
+      named,
+      html:`<article class="rosterteam">
+        <div class="rosterhd"><span class="mark" style="background:${seriesColor(s.id)}"></span>${teamLogo(roster.logo_url, true)}<div><div class="tn">${name}</div><div class="td">${drivers||""}</div></div></div>
+        ${publicPeopleBlocks(named) || notFound()}
+      </article>`
+    };
+    return t;
+  }).filter(t=>!f || teamHaystack(t, t.named, [s.name,s.name_zh,...roles]).includes(f));
+  return {
+    id:s.id,
+    title:seriesTitle(s),
+    subtitle:"",
+    desc:"",
+    color:seriesColor(s.id),
+      stats:[
+      [`${teamNames.length}`,t("st_teams_entries")],
+      [`${getSeriesPeople().filter(p=>p.series_id===s.id).length}`,t("st_people")]
+    ],
+    teams
+  };
+}
+const OPEN_SERIES = new Set(["f1"]);
+let CURRENT_ROSTER_FILTER = "";
+function rosterSectionSummary(id){
+  if(id==="f1"){
+    return {
+      id:"f1",
+      title:"Formula 1",
+      color:"var(--accent)",
+      stats:[[`${D.team_count}`,t("st_teams")], [`${ENG.length + LEADERS.length}`,t("st_people")], [`${RACE_STAFF.length}`,"RE"]]
+    };
+  }
+  const s = (D.motorsport_series||[]).find(item=>item.id===id) || {id, name:id, teams:[]};
+  if(id==="wec-le-mans"){
+    const entries = D.series_entries?.["wec-le-mans"]?.entries || [];
+    const counts = D.series_entries?.["wec-le-mans"]?.class_counts || {};
+    return {
+      id,
+      title:seriesTitle(s),
+      color:seriesColor(id),
+      stats:[[`${entries.length}`,t("st_entries")], [`${counts.Hypercar||0}/${counts.LMP2||0}/${counts.LMGT3||0}`,"H/LMP2/GT3"], [`${rawSeriesPeopleCount(id)}`,t("st_people")]]
+    };
+  }
+  return {
+    id,
+    title:seriesTitle(s),
+    color:seriesColor(id),
+    stats:[[`${(s.teams||[]).length}`,t("st_teams_entries")], [`${rawSeriesPeopleCount(id)}`,t("st_people")]]
+	  };
+	}
+function seriesMetaLine(id){
+  const map = {
+    f1:"2026 F1 technical chain / leadership / race engineering",
+    f2:"junior ladder teams / race engineering pipeline",
+    "wec-le-mans":"endurance entries / car engineers / strategy cells",
+    "f1-academy":"academy teams / race engineering support",
+    "formula-e":"electric racing / energy strategy / systems roles"
+  };
+  return map[id] || "series staffing and public engineering records";
+}
+function opsStats(){
+  const seriesCount = D.motorsport_series?.length || 0;
+  const peopleCount = D.series_people_compiled?.summary?.people || D.series_people?.summary?.people || 0;
+  const photos = D.health?.photos || D.photo_count || "";
+  const named = D.health?.named_assignments || "";
+  return [
+    [seriesCount || 5, "赛事 / Series"],
+    [D.team_count || D.teams?.length || 0, "F1 车队"],
+    [peopleCount || "480", "公开人员样本"],
+    [named || "882", "岗位映射"],
+    [photos || "361", "头像资源"]
+  ];
+}
+function buildRosterSectionById(id, filter=""){
+  if(id==="f1") return buildF1Section(filter);
+  const s = (D.motorsport_series||[]).find(item=>item.id===id);
+  return s ? buildOtherSeriesSection(s, filter) : {...rosterSectionSummary(id), teams:[]};
+}
+function renderRosterSection(id, expanded){
+  const summary = expanded ? buildRosterSectionById(id, CURRENT_ROSTER_FILTER) : rosterSectionSummary(id);
+  const section = document.getElementById(`series-${id}`);
+  if(!section) return;
+  section.classList.toggle("collapsed", !expanded);
+  const button = section.querySelector(".series-toggle");
+  button?.setAttribute("aria-expanded", String(expanded));
+  section.querySelector(".rostergrid").innerHTML = expanded
+    ? (summary.teams.length ? summary.teams.map(x=>x.html).join("") : `<div class="empty">${t("empty_filter", CURRENT_ROSTER_FILTER)}</div>`)
+    : "";
+  setupLazyAvatars(section);
+}
+function renderRosterBoard(filter=""){
+  CURRENT_ROSTER_FILTER = filter.trim();
+  const host=document.getElementById("rosterboard");
+	  const ids=["f1", ...(D.motorsport_series||[]).filter(s=>s.id!=="f1").map(s=>s.id)];
+	  document.getElementById("rosterscope").textContent = CURRENT_ROSTER_FILTER
+	    ? t("filter", CURRENT_ROSTER_FILTER)
+	    : t("index_line");
+	  host.innerHTML = ids.map(id=>{
+	    const s = rosterSectionSummary(id);
+	    const expanded = OPEN_SERIES.has(id);
+	    return `<section class="rostersection ${expanded?"":"collapsed"}" id="series-${id}">
+	      <div class="rostertop" style="border-left:5px solid ${s.color}">
+	        <button class="series-toggle" type="button" data-series="${id}" aria-expanded="${expanded}">
+	          <span class="chev">›</span>
+	          <div class="series-title"><h3>${s.title}</h3><span>${seriesMetaLine(id)}</span></div>
+	        </button>
+	      </div>
+	      <div class="rostergrid"></div>
+	    </section>`;
+  }).join("");
+  ids.forEach(id=>renderRosterSection(id, OPEN_SERIES.has(id)));
+}
+
+/* ---------- role map ---------- */
+function renderRoles(){
+  const data = D.trackside_roles || {};
+  const levels = {
+    "department":t("lv_department"),
+    "car-lead":t("lv_carlead"),
+    "car-support":t("lv_carsupport"),
+    "shared-trackside":t("lv_shared"),
+    "pit-wall":t("lv_pitwall"),
+    "factory-feed":t("lv_factory")
+  };
+  const scopeNote = LOCALE==="zh"
+    ? (data.scope_note_zh||data.scope_note||t("scope_fallback"))
+    : (OVLY.scope_note||data.scope_note||data.scope_note_zh||t("scope_fallback"));
+  const rr = (r,f)=> LOCALE==="zh" ? (r[f+"_zh"]||"") : (ovR(r.key,f)||r[f+"_zh"]||"");
+  document.getElementById("rolescope").innerHTML =
+    `<strong>${t("scope_label")}</strong>${scopeNote}`;
+  document.getElementById("rolegrid").innerHTML = (data.hierarchy||[]).slice().sort((a,b)=>(b.importance_score||0)-(a.importance_score||0)).map(r=>{
+    const examples = (r.examples||[]).map(x=>`<span>${x}</span>`).join("");
+    return `<article class="rolecard">
+      <div class="lvl">${levels[r.level]||r.level||"role"}</div>
+      <h3>${titleRoleHtml(r)}</h3>
+      <p>${rr(r,"summary")}</p>
+      <div class="rolefacts">
+        <div class="rolefact"><div class="fl">${t("rf_importance")}</div><div class="fv">${rr(r,"importance")||t("unmarked")}</div></div>
+        <div class="rolefact"><div class="fl">${t("rf_seniority")}</div><div class="fv">${rr(r,"seniority")||t("unmarked")}</div></div>
+        <div class="rolefact"><div class="fl">${t("rf_difficulty")}</div><div class="fv">${rr(r,"difficulty")||t("unmarked")}</div></div>
+        <div class="rolefact"><div class="fl">${t("rf_path")}</div><div class="fv">${rr(r,"path_position")||t("unmarked")}</div></div>
+      </div>
+      ${rr(r,"difficulty_reason")?`<div class="diffreason">${rr(r,"difficulty_reason")}</div>`:""}
+      <p class="prog"><strong>${t("typical")}</strong>${rr(r,"typical_progression")||t("no_pub")}</p>
+      ${examples?`<div class="exchips">${examples}</div>`:""}
+    </article>`;
+  }).join("");
+  document.getElementById("rolesources").innerHTML = (data.sources||[]).map(s=>
+    `<a class="sourcecard" href="${s.url}" target="_blank" rel="noopener"><b>${s.title}</b><span>${LOCALE==="zh"?(s.note_zh||s.note||s.url):(s.note||s.note_zh||s.url)}</span></a>`).join("");
+}
+
+/* ---------- detail drawer ---------- */
+const scrim=document.getElementById("scrim"), drawer=document.getElementById("drawer");
+let lastFocusedRow = null;
+function openPerson(id){
+  lastFocusedRow = document.activeElement?.closest?.(".personrow") || null;
+  const e=PERSON_BY_ID[id]; if(!e) return;
+  const a=ARCHE[e.route_archetype]||ARCHE.unknown;
+  // no generic identity tags; keep the career-route class (the study's subject)
+  // and specific, meaningful facts (nationality, pairing, RE-timeline, low-conf).
+  const isPlainRole = e.profile_kind==="leadership"||e.profile_kind==="f1-engineering"||e.profile_kind==="series-person";
+  const chips=[
+    (!isPlainRole && a.label) ? `<span class="abadge" style="color:#0a0c10;background:${a.color}">${a.label}</span>` : "",
+    (e.nationality_zh||e.nationality)?`<span class="badge">${e.nationality_zh||e.nationality}</span>`:"",
+    confBadge(e),
+    typeof e.years_to_race_engineer==="number"?`<span class="badge">${t("yrs_to_re", e.years_to_race_engineer)}</span>`:"",
+    e.f1_debut_year?`<span class="badge">${t("debut", e.f1_debut_year)}</span>`:"",
+  ].filter(Boolean).join("");
+  const ageChip = e.age!=null
+    ? `<div class="agewrap"><span class="agechip"><span class="al">${t("age_label")}</span><b>${e.age}</b> ${t("age_suffix")}${e.age_approx?`<span class="al">${t("age_approx")}</span>`:""}</span></div>`
+    : "";
+  const edu=(e.education||[]).length?(e.education).map(ed=>{
+    const line2=(LOCALE==="zh"
+      ? [ed.degree_zh||ed.degree, ed.field_zh||ed.field]
+      : [ed.degree||ed.degree_zh, ed.field||ed.field_zh]).filter(Boolean).join(" · ");
+    const extra=[ed.years, LOCALE==="zh"?(ed.note_zh||ed.note):(ed.note||ed.note_zh)].filter(Boolean).join(" · ");
+    return `<div class="edu"><div class="ei">${nm(ed.institution||"—",ed.institution_zh)}</div>
+     ${line2?`<div class="ed">${line2}</div>`:""}
+     ${extra?`<div class="ed eyr">${extra}</div>`:""}
+     ${(!line2&&!extra)?`<div class="ed">${t("no_detail")}</div>`:""}
+     ${ed.source_url?`<a class="edusrc" href="${ed.source_url}" target="_blank" rel="noopener">${t("source_pfx")} · ${ed.source_title||ed.source_url}</a>`:""}</div>`;
+  }).join("")
+    :`<div class="notes">${t("not_found")}</div>`;
+  const tl=(e.career||[]).length?`<div class="tl">${e.career.map(c=>
+    `<div class="tli"><div class="dot" style="background:${catColor(c.category)}"></div>
+      <div class="yr">${[c.from,c.to].filter(Boolean).join(" – ")}</div>
+      <div class="org">${nm(c.org||"—",c.org_zh)}<span class="cat">${LOCALE==="zh"?(c.category_zh||c.category||""):(c.category||c.category_zh||"")}</span></div>
+      <div class="ro">${roleHtml(c)}</div></div>`).join("")}</div>`
+    :`<div class="notes">${t("not_found")}</div>`;
+  const ov = ovP(e.id);
+  const hlArr=((LOCALE==="zh"
+    ? (e.highlights_zh&&e.highlights_zh.length?e.highlights_zh:e.highlights)
+    : (ov.highlights&&ov.highlights.length?ov.highlights:(e.highlights||[])))||[]).map(cleanZh).filter(Boolean);
+  const notesText = LOCALE==="zh" ? (e.notes_zh||e.notes||"") : (ov.notes||e.notes||e.notes_zh||"");
+  const notesStr=cleanZh(notesText);
+  // suppress 高光时刻 when it merely re-lists the research-notes content
+  const hls=(hlArr.length && joinZh(hlArr)!==notesStr) ? hlArr.map(h=>`<div class="hl">${h}</div>`).join("") : "";
+  const p=e.photo;
+  const provLabel = p ? (p.provenance==="wikimedia"?t("free_license"):t("media_photo")) : "";
+  const remotePhotoRaw = (p&&p.src_img) || e.photo_url || "";
+  const drawerInitials = initials(e.name||"?");
+  const drawerPhotoAttrs = `alt="${escAttr(e.name)}" loading="lazy" decoding="async" data-fallback-color="${escAttr(e.team_color||"var(--accent)")}"`;
+  const dav = p&&p.local
+    ? `<div><img class="dav" src="${escAttr(imageUrl(p.local, drawerInitials))}" ${drawerPhotoAttrs}>${(p.license||p.credit)?`<div class="dcap">${provLabel}${p.license?(" · "+p.license):""}</div>`:""}</div>`
+    : remotePhotoRaw
+    ? `<div><img class="dav" src="${escAttr(imageUrl(remotePhotoRaw, drawerInitials))}" ${drawerPhotoAttrs}>${(p?.credit||e.photo_credit)?`<div class="dcap">${p?.credit||e.photo_credit}</div>`:""}</div>`
+    : `<div class="dav ph" style="background:${e.team_color}">${drawerInitials}</div>`;
+  const photoSrc = p&&p.src_page
+    ? `<a class="src" href="${p.src_page}" target="_blank" rel="noopener"><span class="st">${p.provenance==="wikimedia"?t("photo_free"):t("photo_media")}</span>${p.credit||p.src_page}${p.license?(" · "+p.license):""}</a>`
+    : e.profile_source_url
+    ? `<a class="src" href="${e.profile_source_url}" target="_blank" rel="noopener"><span class="st">${t("photo_profile")}</span>${e.photo_credit||e.profile_source_url}</a>`
+    : "";
+  const srcs=photoSrc+(e.sources||[]).map(s=>
+    `<a class="src" href="${s.url}" target="_blank" rel="noopener"><span class="st">${s.type||"link"}</span>${s.title||s.url}</a>`).join("");
+  const drawerNick = e.aka&&e.aka.length ? `<div class="dnick">${t("aka")}${e.aka.join(" / ")}</div>` : "";
+	  drawer.innerHTML=`
+	    <div class="dh"><div class="stripe" style="background:${e.team_color}"></div>
+	      <button class="close" id="dclose" aria-label="${t("close_aria")}">✕</button>
+	      <div class="dhrow">${dav}
+        <div>
+          <div class="dn">${nm(e.name,e.name_zh)}</div>
+          ${drawerNick}
+          <div class="drole">${roleHtml(e)}<span class="role-meta">${nm(e.team_2026,e.team_zh)} · ${driversBi(e)}</span></div>
+        </div>
+      </div>
+      ${ageChip}
+      <div class="chips">${chips}</div>
+    </div>
+    <div class="dbody">
+      <div class="sec"><div class="lab edulab">${t("lab_edu")}</div>${edu}</div>
+      <div class="sec"><div class="lab">${t("lab_career")}</div>${tl}</div>
+      ${(!isPlainRole && a.desc)?`<div class="sec"><div class="lab">${t("lab_route")}</div><div style="font-size:14.3px;color:#cfd8e4">${a.desc}</div></div>`:""}
+      ${hls?`<div class="sec"><div class="lab">${t("lab_highlights")}</div>${hls}</div>`:""}
+      ${notesText?`<div class="sec"><div class="lab">${t("lab_notes")}</div><div class="notes">${paras(notesText)}</div></div>`:""}
+      ${srcs?`<div class="sec"><div class="lab">${t("lab_sources")}</div>${srcs}</div>`:""}
+    </div>`;
+  drawer.classList.add("on");
+  scrim.classList.add("on");
+	  document.getElementById("dclose").onclick=closeEng;
+	}
+function closeEng(){
+  drawer.classList.remove("on");scrim.classList.remove("on");
+  lastFocusedRow?.focus?.();
+  lastFocusedRow = null;
+}
+scrim.onclick=closeEng;
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeEng();});
+document.addEventListener("error",e=>{
+  const img = e.target;
+  if(!(img instanceof HTMLImageElement) || !img.classList.contains("dav")) return;
+  const ph = document.createElement("div");
+  ph.className = "dav ph";
+  ph.style.background = img.dataset.fallbackColor || "var(--accent)";
+  ph.textContent = initials(img.alt || "?");
+  img.replaceWith(ph);
+}, true);
+document.getElementById("rosterboard").addEventListener("click",e=>{
+  const toggle=e.target.closest(".series-toggle");
+  if(toggle){
+    const id=toggle.dataset.series;
+    if(!id) return;
+    if(OPEN_SERIES.has(id)) OPEN_SERIES.delete(id);
+    else OPEN_SERIES.add(id);
+    renderRosterSection(id, OPEN_SERIES.has(id));
+    return;
+  }
+	  const row=e.target.closest(".personrow"); if(row) openPerson(row.dataset.id);
+	});
+document.getElementById("rosterboard").addEventListener("keydown",e=>{
+  const row=e.target.closest(".personrow");
+  if(!row || (e.key!=="Enter" && e.key!==" ")) return;
+  e.preventDefault();
+  openPerson(row.dataset.id);
+});
+
+/* ---------- routes view ---------- */
+(function(){
+  const counts=PATH_ENG.reduce((m,e)=>{m[e.route_archetype]=(m[e.route_archetype]||0)+1;return m;},{});
+  const max=Math.max(...Object.values(counts),1);
+  document.getElementById("archebars").innerHTML=Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([k,n])=>{
+    const a=ARCHE[k]||ARCHE.unknown;
+    return `<div class="bar"><div class="bl"><span class="bn" style="color:${a.color}">${a.label}<span class="cnt">${t("unit_people",n)}</span></span>
+      <span class="bd">${a.desc}</span></div>
+      <div class="track"><div class="fill" style="width:${n/max*100}%;background:${a.color}"></div></div></div>`;
+  }).join("");
+
+  const uni={};
+  PATH_ENG.forEach(e=>(e.education||[]).forEach(ed=>{
+    if(!ed.institution) return;
+    let key=ed.institution.replace(/\(.*?\)/g,"").replace(/University of /i,"").replace(/\s*University$/i,"").trim();
+    if(!uni[key]) uni[key]={en:key,zh:ed.institution_zh||"",count:0};
+    uni[key].count++; if(!uni[key].zh&&ed.institution_zh) uni[key].zh=ed.institution_zh;
+  }));
+  const us=Object.values(uni).sort((a,b)=>b.count-a.count);
+  document.getElementById("unis").innerHTML=us.map(u=>
+    `<div class="uni"><span class="un">${nm(u.en,u.zh)}</span><span class="uc">${"●".repeat(u.count)} ${u.count}</span></div>`).join("")||`<div class="empty">—</div>`;
+
+  const rmap = roleTemplateMap();
+  document.getElementById("seriespath").innerHTML = (D.motorsport_series||[]).map(s=>{
+    const sourceMap = s.id==="f1" ? rmap.f1 : rmap.series;
+    const roles = (s.role_ladder||[])
+      .map(k=>sourceMap[k]||rmap.f1[k]||rmap.series[k]||{key:k,title_zh:k,importance_score:"—",why_zh:""})
+      .sort((a,b)=>(Number(b.importance_score)||0)-(Number(a.importance_score)||0))
+      ;
+    const entryCount = s.id==="f1" ? D.team_count : (s.teams||[]).length;
+    return `<div class="routeitem">
+      <h4>${seriesTitle(s)}<span>${t("entries_count",entryCount)}</span></h4>
+      <div class="rroles">${roles.map(r=>`<div class="rrole"><b>•</b><span><strong>${titleRoleHtml(r)}</strong> · ${[r.seniority_zh,r.difficulty_zh].filter(Boolean).join(" · ")}</span></div>`).join("")}</div>
+    </div>`;
+  }).join("");
+
+  document.getElementById("routepeople").innerHTML = [
+    `<div class="route-row head"><span>${t("head_name")}</span><span>${t("head_role")}</span><span>${t("head_entry")}</span><span>${t("head_years")}</span></div>`,
+    ...PATH_ENG.slice().sort((a,b)=>a.years_to_race_engineer-b.years_to_race_engineer).map(e=>{
+      const a=ARCHE[e.route_archetype]||ARCHE.unknown;
+      return `<div class="route-row"><b>${nm(e.name,e.name_zh)}</b><span>${roleHtml(e)}</span><span>${e.f1_debut_year||""}</span><span>${t("unit_years",e.years_to_race_engineer)} · ${a.label}</span></div>`;
+    })
+  ].join("");
+
+  const yrs=PATH_ENG.map(e=>e.years_to_race_engineer).sort((a,b)=>a-b);
+  const buckets=[[t("bucket","0–4"),0],[t("bucket","5–8"),0],[t("bucket","9–12"),0],[t("bucket","13+"),0]];
+  yrs.forEach(y=> y<=4?buckets[0][1]++ : y<=8?buckets[1][1]++ : y<=12?buckets[2][1]++ : buckets[3][1]++);
+  const bmax=Math.max(...buckets.map(b=>b[1]),1);
+  document.getElementById("ydist").innerHTML=buckets.map(b=>
+    `<div class="yb" style="height:${b[1]/bmax*100}%"><span>${b[1]}</span><i>${b[0]}</i></div>`).join("");
+  const median=yrs.length%2?yrs[(yrs.length-1)/2]:Math.round((yrs[yrs.length/2-1]+yrs[yrs.length/2])/2);
+  document.getElementById("ystat").innerHTML=t("ystat", median, yrs[0], yrs[yrs.length-1], yrs.length);
+
+  const topUni=us.slice(0,5).map(u=>(LOCALE==="zh"?(u.zh||u.en):u.en)).join(LOCALE==="zh"?"、":", ");
+  const steps=t("playbook", topUni, median);
+  document.getElementById("playbook").innerHTML=steps.map((s,i)=>
+    `<div class="step"><div class="num">${i+1}</div><div><div class="st">${s[0]}</div><div class="sd">${s[1]}</div></div></div>`).join("");
+})();
+
+function renderPathChart(){
+  const host=document.getElementById("pathchart");
+  const groups={};
+  PATH_ENG.forEach(e=>{
+    const k=e.route_archetype;
+    if(!groups[k]) groups[k]=[];
+    groups[k].push(e.years_to_race_engineer);
+  });
+  const maxYear=Math.max(18,...PATH_ENG.map(e=>e.years_to_race_engineer));
+  const w=760,h=320,pl=54,pr=154,pt=24,pb=48;
+  const iw=w-pl-pr, ih=h-pt-pb;
+  const sx=x=>pl+(x/maxYear)*iw;
+  const sy=p=>pt+(1-p/100)*ih;
+  const yTicks=[0,25,50,75,100];
+  const xTicks=[0,4,8,12,16,maxYear].filter((v,i,a)=>v<=maxYear&&a.indexOf(v)===i);
+  const grid=[
+    ...yTicks.map(y=>`<line class="gridline" x1="${pl}" y1="${sy(y)}" x2="${pl+iw}" y2="${sy(y)}"></line><text class="charttext" x="${pl-10}" y="${sy(y)+4}" text-anchor="end">${y}%</text>`),
+    ...xTicks.map(x=>`<line class="gridline" x1="${sx(x)}" y1="${pt}" x2="${sx(x)}" y2="${pt+ih}"></line><text class="charttext" x="${sx(x)}" y="${pt+ih+22}" text-anchor="middle">${x}</text>`)
+  ].join("");
+  const lines=Object.entries(groups).sort((a,b)=>b[1].length-a[1].length).map(([k,vals],idx)=>{
+    const a=ARCHE[k]||ARCHE.unknown;
+    vals=vals.slice().sort((x,y)=>x-y);
+    const pts=[];
+    for(let x=0;x<=maxYear;x++){
+      const pct=vals.filter(v=>v<=x).length/vals.length*100;
+      pts.push([sx(x),sy(pct)]);
+    }
+    const d=pts.map((p,i)=>`${i?"L":"M"}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(" ");
+    const last=pts[pts.length-1];
+    return `<path d="${d}" fill="none" stroke="${a.color}" stroke-width="3" stroke-linecap="round"></path>
+      ${vals.map(v=>`<circle cx="${sx(v)}" cy="${sy(vals.filter(x=>x<=v).length/vals.length*100)}" r="3.5" fill="${a.color}"></circle>`).join("")}
+      <text class="chartlabel" x="${last[0]+10}" y="${last[1]+4+(idx%4-1.5)*13}" fill="${a.color}">${a.badge} · ${vals.length}</text>`;
+  }).join("");
+  host.innerHTML=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${t("chart_aria")}">
+    ${grid}
+    <line class="axis" x1="${pl}" y1="${pt}" x2="${pl}" y2="${pt+ih}"></line>
+    <line class="axis" x1="${pl}" y1="${pt+ih}" x2="${pl+iw}" y2="${pt+ih}"></line>
+    ${lines}
+    <text class="charttext" x="${pl+iw/2}" y="${h-8}" text-anchor="middle">${t("chart_x")}</text>
+    <text class="charttext" transform="translate(14 ${pt+ih/2}) rotate(-90)" text-anchor="middle">${t("chart_y")}</text>
+  </svg>`;
+}
+
+/* ---------- nav + search ---------- */
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+	  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("on")); t.classList.add("on");
+	  document.querySelectorAll(".view").forEach(v=>v.classList.remove("on"));
+	  document.getElementById("view-"+t.dataset.view).classList.add("on");
+	});
+const rosterSearch = document.getElementById("rostersearch");
+if(rosterSearch){
+  rosterSearch.addEventListener("input", e=>renderRosterBoard(e.target.value));
+  document.addEventListener("keydown", e=>{
+    if(e.key==="/" && !/input|textarea|select/i.test(document.activeElement?.tagName||"")){
+      e.preventDefault();
+      rosterSearch.focus();
+    }
+  });
+}
+document.getElementById("foot").innerHTML="";
+
+renderRosterBoard();
+renderRoles();
+renderPathChart();
+if("serviceWorker" in navigator && location.protocol !== "file:"){
+  navigator.serviceWorker.getRegistrations()
+    .then(regs=>Promise.all(regs.map(reg=>reg.unregister())))
+    .catch(()=>{});
+}
+if("caches" in window){
+  caches.keys()
+    .then(keys=>Promise.all(keys.filter(key=>key.startsWith("f1-dashboard-images-")).map(key=>caches.delete(key))))
+    .catch(()=>{});
+}
+</script>
+</body>
+</html>

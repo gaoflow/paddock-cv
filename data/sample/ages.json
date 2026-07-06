@@ -1,0 +1,10 @@
+{
+  "_note": "Fictional sample ages (dob invented). approx flag demo included.",
+  "alex-example": {
+    "dob": "1990-03-14"
+  },
+  "casey-placeholder": {
+    "birth_year": 1985,
+    "approx": true
+  }
+}

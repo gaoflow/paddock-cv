@@ -1,0 +1,16 @@
+{
+  "note": "Fictional sample fixture.",
+  "runs": [
+    {
+      "id": "sample-lookup-001",
+      "run_at": "2026-01-01",
+      "run_type": "sample",
+      "target": "sample fixture",
+      "tool": "none",
+      "provider": "none",
+      "result_count": 0,
+      "status": "ok",
+      "notes_zh": "示例数据：占位查询记录。"
+    }
+  ]
+}

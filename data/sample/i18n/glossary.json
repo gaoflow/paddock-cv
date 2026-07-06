@@ -1,0 +1,33 @@
+{
+  "teams": {
+    "Apex GP": "示例车队·Apex",
+    "Example Racing": "示例车队·Example",
+    "Placeholder Motorsport": "示例车队·Placeholder"
+  },
+  "drivers": {
+    "Sam Speedwell": "示例车手 Sam",
+    "Robin Apexley": "示例车手 Robin",
+    "Jamie Gridley": "示例车手 Jamie",
+    "Morgan Chicane": "示例车手 Morgan",
+    "Taylor Hairpin": "示例车手 Taylor",
+    "Quinn Slipstream": "示例车手 Quinn"
+  },
+  "archetypes": {
+    "uni-junior-formula-to-f1": "大学 → 初级方程式 → F1",
+    "data-eng-to-RE": "数据工程师 → 赛车工程师"
+  },
+  "archetype_desc": {
+    "uni-junior-formula-to-f1": "示例说明：工程学位后经初级方程式进入 F1。",
+    "data-eng-to-RE": "示例说明：以数据工程师身份进队后晋升为赛车工程师。"
+  },
+  "categories": {
+    "F1": "F1",
+    "F2": "F2",
+    "other": "其他"
+  },
+  "confidence": {
+    "high": "高",
+    "medium": "中",
+    "low": "低"
+  }
+}

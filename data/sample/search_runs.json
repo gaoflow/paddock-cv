@@ -1,0 +1,13 @@
+{
+  "runs": [
+    {
+      "id": "sample-run-001",
+      "run_at": "2026-01-01",
+      "query": "sample fixture search",
+      "tool": "none",
+      "providers": [],
+      "result_count": 0,
+      "notes_zh": "示例数据：占位搜索记录。"
+    }
+  ]
+}

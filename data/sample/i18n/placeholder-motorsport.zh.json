@@ -1,0 +1,63 @@
+{
+  "team_id": "placeholder-motorsport",
+  "team_zh": "示例车队·Placeholder",
+  "team_notes_zh": "示例数据：虚构车队。",
+  "engineers": {
+    "devon-mockford": {
+      "name_zh": "示例工程师 Devon",
+      "role_zh": "赛车工程师",
+      "nationality_zh": "示例国",
+      "education_zh": [
+        {
+          "institution_zh": "示例理工学院（Placeholder）",
+          "degree_zh": "工程硕士",
+          "field_zh": "示例工程专业"
+        }
+      ],
+      "career_zh": [
+        {
+          "org_zh": "示例初级方程式车队",
+          "role_zh": "数据工程师",
+          "category_zh": "F2"
+        },
+        {
+          "org_zh": "",
+          "role_zh": "赛车工程师",
+          "category_zh": "F1"
+        }
+      ],
+      "highlights_zh": [
+        "示例数据：完全虚构的履历。"
+      ],
+      "notes_zh": "示例数据：虚构人物，仅用于演示。"
+    },
+    "harper-stub": {
+      "name_zh": "示例工程师 Harper",
+      "role_zh": "赛车工程师",
+      "nationality_zh": "示例国",
+      "education_zh": [
+        {
+          "institution_zh": "示例职业技术学院（Fictional）",
+          "degree_zh": "工程硕士",
+          "field_zh": "示例工程专业"
+        }
+      ],
+      "career_zh": [
+        {
+          "org_zh": "示例初级方程式车队",
+          "role_zh": "数据工程师",
+          "category_zh": "F2"
+        },
+        {
+          "org_zh": "",
+          "role_zh": "赛车工程师",
+          "category_zh": "F1"
+        }
+      ],
+      "highlights_zh": [
+        "示例数据：完全虚构的履历。"
+      ],
+      "notes_zh": "示例数据：虚构人物，仅用于演示。"
+    }
+  }
+}

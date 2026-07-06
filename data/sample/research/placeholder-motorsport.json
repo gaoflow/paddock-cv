@@ -1,0 +1,107 @@
+{
+  "team_id": "placeholder-motorsport",
+  "team": "Placeholder Motorsport",
+  "engineers": [
+    {
+      "id": "devon-mockford",
+      "name": "Devon Mockford",
+      "aka": [],
+      "role": "Race Engineer",
+      "team_2026": "Placeholder Motorsport",
+      "drivers_2026": [
+        "Taylor Hairpin"
+      ],
+      "nationality": "Exampleland",
+      "education": [
+        {
+          "institution": "Placeholder Institute of Technology",
+          "degree": "MEng",
+          "field": "Mechanical Engineering",
+          "years": "2006-2010"
+        }
+      ],
+      "career": [
+        {
+          "from": "2011",
+          "to": "2015",
+          "org": "Demo Junior Formula Team",
+          "role": "Data Engineer",
+          "category": "F2"
+        },
+        {
+          "from": "2016",
+          "to": "present",
+          "org": "Placeholder Motorsport",
+          "role": "Race Engineer",
+          "category": "F1"
+        }
+      ],
+      "f1_debut_year": 2016,
+      "years_to_race_engineer": 5,
+      "route_archetype": "uni-junior-formula-to-f1",
+      "highlights": [
+        "Entirely fictional career for demo purposes."
+      ],
+      "sources": [
+        {
+          "url": "https://example.com/profiles/devon-mockford",
+          "type": "profile",
+          "title": "Devon Mockford - Example Profiles"
+        }
+      ],
+      "confidence": "high",
+      "notes": "Fictional sample person; not a real individual."
+    },
+    {
+      "id": "harper-stub",
+      "name": "Harper Stub",
+      "aka": [],
+      "role": "Race Engineer",
+      "team_2026": "Placeholder Motorsport",
+      "drivers_2026": [
+        "Quinn Slipstream"
+      ],
+      "nationality": "Exampleland",
+      "education": [
+        {
+          "institution": "Fictional Polytechnic",
+          "degree": "MEng",
+          "field": "Aerospace Engineering",
+          "years": "2006-2010"
+        }
+      ],
+      "career": [
+        {
+          "from": "2011",
+          "to": "2015",
+          "org": "Demo Junior Formula Team",
+          "role": "Data Engineer",
+          "category": "F2"
+        },
+        {
+          "from": "2016",
+          "to": "present",
+          "org": "Placeholder Motorsport",
+          "role": "Race Engineer",
+          "category": "F1"
+        }
+      ],
+      "f1_debut_year": 2016,
+      "years_to_race_engineer": 5,
+      "route_archetype": "data-eng-to-RE",
+      "highlights": [
+        "Entirely fictional career for demo purposes."
+      ],
+      "sources": [
+        {
+          "url": "https://example.com/profiles/harper-stub",
+          "type": "profile",
+          "title": "Harper Stub - Example Profiles"
+        }
+      ],
+      "confidence": "high",
+      "notes": "Fictional sample person; not a real individual."
+    }
+  ],
+  "team_notes": "Fictional sample team."
+}

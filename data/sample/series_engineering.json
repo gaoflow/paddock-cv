@@ -1,0 +1,187 @@
+{
+  "last_verified": "2026-01-01",
+  "scope_note_zh": "示例数据：完全虚构的系列与人员。",
+  "driver_pairing_status": [
+    {
+      "team_id": "apex-gp",
+      "engineer_id": "alex-example",
+      "driver": "Sam Speedwell",
+      "status": "confirmed",
+      "status_zh": "官方确认",
+      "certainty": "high",
+      "note_zh": "示例数据：虚构车队页面公开列名。"
+    }
+  ],
+  "f1_team_engineering": {
+    "scope_note_zh": "示例数据。",
+    "correction_note_zh": "",
+    "role_templates": [
+      {
+        "key": "technical-leadership",
+        "title": "Technical Director / CTO",
+        "title_zh": "技术总监",
+        "importance_score": 100,
+        "seniority_zh": "示例层级",
+        "difficulty_zh": "高",
+        "publicity_zh": "示例公开度",
+        "why_zh": "示例岗位说明。"
+      },
+      {
+        "key": "engineering-principal",
+        "title": "Team Principal with engineering authority",
+        "title_zh": "具工程背景的领队",
+        "importance_score": 96,
+        "seniority_zh": "示例层级",
+        "difficulty_zh": "高",
+        "publicity_zh": "示例公开度",
+        "why_zh": "示例岗位说明。"
+      },
+      {
+        "key": "race-engineer",
+        "title": "Race Engineer",
+        "title_zh": "赛车工程师",
+        "importance_score": 88,
+        "seniority_zh": "示例层级",
+        "difficulty_zh": "高",
+        "publicity_zh": "示例公开度",
+        "why_zh": "示例岗位说明。"
+      },
+      {
+        "key": "performance-engineer",
+        "title": "Performance Engineer",
+        "title_zh": "性能工程师",
+        "importance_score": 80,
+        "seniority_zh": "示例层级",
+        "difficulty_zh": "高",
+        "publicity_zh": "示例公开度",
+        "why_zh": "示例岗位说明。"
+      },
+      {
+        "key": "strategy-engineer",
+        "title": "Strategy Engineer",
+        "title_zh": "策略工程师",
+        "importance_score": 78,
+        "seniority_zh": "示例层级",
+        "difficulty_zh": "高",
+        "publicity_zh": "示例公开度",
+        "why_zh": "示例岗位说明。"
+      }
+    ],
+    "teams": [
+      {
+        "team_id": "apex-gp",
+        "leadership": [
+          {
+            "role_zh": "Team Principal",
+            "person": "Sidney Leadman",
+            "person_zh": "示例领队 Sidney",
+            "engineering_background_zh": "是，示例工程背景",
+            "importance_score": 95,
+            "note_zh": "示例数据：虚构领队履历。"
+          }
+        ]
+      },
+      {
+        "team_id": "example-racing",
+        "leadership": [
+          {
+            "role_zh": "Team Principal",
+            "person": "Frankie Principal",
+            "person_zh": "示例领队 Frankie",
+            "engineering_background_zh": "是，示例工程背景",
+            "importance_score": 95,
+            "note_zh": "示例数据：虚构领队履历。"
+          }
+        ]
+      },
+      {
+        "team_id": "placeholder-motorsport",
+        "leadership": [
+          {
+            "role_zh": "Team Principal",
+            "person": "Ash Overseer",
+            "person_zh": "示例领队 Ash",
+            "engineering_background_zh": "是，示例工程背景",
+            "importance_score": 95,
+            "note_zh": "示例数据：虚构领队履历。"
+          }
+        ]
+      }
+    ]
+  },
+  "motorsport_series": [
+    {
+      "id": "f1",
+      "name": "Formula 1",
+      "name_zh": "一级方程式",
+      "season_label": "2026",
+      "public_engineer_names_zh": "示例说明。",
+      "coverage_zh": "示例覆盖说明。",
+      "teams": [],
+      "classes": [
+        "F1"
+      ],
+      "role_ladder": [
+        "race-engineer",
+        "performance-engineer",
+        "strategy-engineer"
+      ]
+    },
+    {
+      "id": "sample-junior",
+      "name": "Sample Junior Series",
+      "name_zh": "示例初级方程式",
+      "season_label": "2026",
+      "public_engineer_names_zh": "示例说明。",
+      "coverage_zh": "示例覆盖说明。",
+      "teams": [
+        "Demo Junior Team"
+      ],
+      "classes": [
+        "SJ"
+      ],
+      "role_ladder": [
+        "race-engineer"
+      ]
+    },
+    {
+      "id": "wec-le-mans",
+      "name": "Example Endurance Series",
+      "name_zh": "示例耐力系列赛",
+      "season_label": "2026",
+      "public_engineer_names_zh": "示例说明。",
+      "coverage_zh": "示例覆盖说明。",
+      "teams": [],
+      "classes": [
+        "Hypercar"
+      ],
+      "role_ladder": [
+        "car-race-engineer"
+      ]
+    }
+  ],
+  "series_role_definitions": [
+    {
+      "key": "team-technical-director",
+      "title_zh": "车队技术总监",
+      "importance_score": 92,
+      "seniority_zh": "高级管理",
+      "difficulty_zh": "极高",
+      "why_zh": "示例岗位说明。"
+    },
+    {
+      "key": "data-engineer",
+      "title_zh": "数据工程师",
+      "importance_score": 70,
+      "seniority_zh": "工程师",
+      "difficulty_zh": "中",
+      "why_zh": "示例岗位说明。"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Example Motorsport News",
+      "url": "https://example.com/news/engineering-structures"
+    }
+  ]
+}

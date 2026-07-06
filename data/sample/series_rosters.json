@@ -1,0 +1,24 @@
+{
+  "generated": "2026-01-01",
+  "series": {
+    "sample-junior": {
+      "source_url": "https://example.com/series/sample-junior/teams",
+      "teams": [
+        {
+          "team_name": "Demo Junior Team",
+          "drivers": [
+            {
+              "name": "Ren Rookie",
+              "number": "1"
+            },
+            {
+              "name": "Nova Novice",
+              "number": "2"
+            }
+          ],
+          "logo_url": ""
+        }
+      ]
+    }
+  }
+}

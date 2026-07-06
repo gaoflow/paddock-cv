@@ -1,0 +1,36 @@
+{
+  "generated": "2026-01-01",
+  "source_title": "Example Endurance Series entry list",
+  "source_url": "https://example.com/endurance/entry-list",
+  "source_published": "2026-01-01",
+  "scope_zh": "示例数据：虚构耐力赛报名表。",
+  "entries": [
+    {
+      "id": "wec-le-mans:hypercar:001",
+      "series_id": "wec-le-mans",
+      "class_name": "Hypercar",
+      "car_number": "001",
+      "entrant": "Sample Endurance Team",
+      "source_championship": "SES",
+      "nationality": "EXA",
+      "tyre": "S",
+      "car": "Example Hypercar EX-1",
+      "misc": "",
+      "drivers": [
+        {
+          "name": "Pat Fictitious",
+          "country": "EXA",
+          "rating": "P"
+        },
+        {
+          "name": "Drew Notreal",
+          "country": "EXA",
+          "rating": "G"
+        }
+      ]
+    }
+  ],
+  "class_counts": {
+    "Hypercar": 1
+  }
+}

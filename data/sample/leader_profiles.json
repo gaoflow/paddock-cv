@@ -1,0 +1,69 @@
+{
+  "generated": "2026-01-01",
+  "method_zh": "示例数据：虚构领队档案。",
+  "people": {
+    "Sidney Leadman": {
+      "photo_url": "",
+      "source_url": "https://example.com/team/sidney-leadman",
+      "source_title": "Sidney Leadman - Example Team Site",
+      "photo_credit": "",
+      "confidence": "high",
+      "education": [
+        {
+          "institution": "Fictional Polytechnic",
+          "institution_zh": "示例职业技术学院（Fictional）",
+          "degree": "MSc",
+          "degree_zh": "理学硕士",
+          "field": "Aerospace Engineering",
+          "field_zh": "航空航天工程",
+          "years": "",
+          "source_url": "https://example.com/team/sidney-leadman",
+          "source_title": "Sidney Leadman - Example Team Site"
+        }
+      ],
+      "education_lookup": "profile_found"
+    },
+    "Frankie Principal": {
+      "photo_url": "",
+      "source_url": "https://example.com/team/frankie-principal",
+      "source_title": "Frankie Principal - Example Team Site",
+      "photo_credit": "",
+      "confidence": "high",
+      "education": [
+        {
+          "institution": "Fictional Polytechnic",
+          "institution_zh": "示例职业技术学院（Fictional）",
+          "degree": "MSc",
+          "degree_zh": "理学硕士",
+          "field": "Aerospace Engineering",
+          "field_zh": "航空航天工程",
+          "years": "",
+          "source_url": "https://example.com/team/frankie-principal",
+          "source_title": "Frankie Principal - Example Team Site"
+        }
+      ],
+      "education_lookup": "profile_found"
+    },
+    "Ash Overseer": {
+      "photo_url": "",
+      "source_url": "https://example.com/team/ash-overseer",
+      "source_title": "Ash Overseer - Example Team Site",
+      "photo_credit": "",
+      "confidence": "high",
+      "education": [
+        {
+          "institution": "Fictional Polytechnic",
+          "institution_zh": "示例职业技术学院（Fictional）",
+          "degree": "MSc",
+          "degree_zh": "理学硕士",
+          "field": "Aerospace Engineering",
+          "field_zh": "航空航天工程",
+          "years": "",
+          "source_url": "https://example.com/team/ash-overseer",
+          "source_title": "Ash Overseer - Example Team Site"
+        }
+      ],
+      "education_lookup": "profile_found"
+    }
+  }
+}

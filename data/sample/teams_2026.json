@@ -1,0 +1,51 @@
+{
+  "season": 2026,
+  "note": "FICTIONAL sample dataset — every team, driver and person is a placeholder.",
+  "teams": [
+    {
+      "id": "apex-gp",
+      "name": "Apex GP",
+      "color": "#FF6600",
+      "seats": [
+        {
+          "driver": "Sam Speedwell",
+          "race_engineer": "Alex Example"
+        },
+        {
+          "driver": "Robin Apexley",
+          "race_engineer": "Jordan Sample"
+        }
+      ]
+    },
+    {
+      "id": "example-racing",
+      "name": "Example Racing",
+      "color": "#0044CC",
+      "seats": [
+        {
+          "driver": "Jamie Gridley",
+          "race_engineer": "Casey Placeholder"
+        },
+        {
+          "driver": "Morgan Chicane",
+          "race_engineer": "Riley Fixture"
+        }
+      ]
+    },
+    {
+      "id": "placeholder-motorsport",
+      "name": "Placeholder Motorsport",
+      "color": "#00A550",
+      "seats": [
+        {
+          "driver": "Taylor Hairpin",
+          "race_engineer": "Devon Mockford"
+        },
+        {
+          "driver": "Quinn Slipstream",
+          "race_engineer": "Harper Stub"
+        }
+      ]
+    }
+  ]
+}

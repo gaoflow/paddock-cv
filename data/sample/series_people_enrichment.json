@@ -1,0 +1,70 @@
+{
+  "generated": "2026-01-01",
+  "method_zh": "示例数据：虚构的公开档案富化。",
+  "profiles": [
+    {
+      "series_id": "sample-junior",
+      "team_name": "Demo Junior Team",
+      "name": "Sasha Specimen",
+      "role_key": "race-engineer",
+      "career_entries": [
+        {
+          "from": "2012",
+          "to": "2018",
+          "org": "Placeholder Racing Developments",
+          "org_zh": "示例赛车研发公司",
+          "role": "Junior Data Engineer",
+          "role_zh": "初级数据工程师",
+          "category": "other",
+          "category_zh": "其他",
+          "source_url": "https://example.com/profiles/sasha-specimen",
+          "source_title": "Sasha Specimen - Example Profiles"
+        },
+        {
+          "from": "2019",
+          "to": "present",
+          "org": "Demo Junior Team",
+          "org_zh": "示例初级方程式车队",
+          "role": "Race Engineer",
+          "role_zh": "赛车工程师",
+          "category": "F2",
+          "category_zh": "F2",
+          "source_url": "https://example.com/profiles/sasha-specimen",
+          "source_title": "Sasha Specimen - Example Profiles"
+        }
+      ],
+      "public_profiles": [
+        {
+          "type": "profile",
+          "url": "https://example.com/profiles/sasha-specimen",
+          "title": "Sasha Specimen - Example Profiles",
+          "confidence": "high",
+          "evidence_zh": "示例数据：占位证据说明。"
+        }
+      ],
+      "education_entries": [
+        {
+          "institution": "Sampleton University",
+          "institution_zh": "示例大学（Sampleton）",
+          "degree": "BEng",
+          "degree_zh": "工程学士",
+          "field": "Motorsport Engineering",
+          "field_zh": "赛车工程",
+          "years": "2008-2012",
+          "source_url": "https://example.com/profiles/sasha-specimen",
+          "source_title": "Sasha Specimen - Example Profiles"
+        }
+      ],
+      "career_summary_zh": "示例数据：虚构人物的占位履历摘要。"
+    }
+  ],
+  "unresolved": [
+    {
+      "series_id": "sample-junior",
+      "team_name": "Demo Junior Team",
+      "name": "Lee Dummy",
+      "role_key": "data-engineer",
+      "note_zh": "示例数据：未找到可信公开档案（占位）。"
+    }
+  ]
+}

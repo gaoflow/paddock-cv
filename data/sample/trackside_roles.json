@@ -1,0 +1,116 @@
+{
+  "last_verified": "2026-01-01",
+  "scope_note": "Fictional sample: role hierarchy titles are methodology, examples are placeholders.",
+  "scope_note_zh": "示例数据：岗位结构来自方法论，示例人名均为虚构。",
+  "hierarchy": [
+    {
+      "level": "department",
+      "title": "Head / Director of Race Engineering",
+      "title_zh": "赛事工程主管 / 总监",
+      "summary_zh": "示例岗位说明。",
+      "typical_progression_zh": "示例晋升路径。",
+      "seniority_zh": "示例层级",
+      "importance_score": 92,
+      "importance_zh": "高",
+      "difficulty_zh": "高",
+      "difficulty_score": 3,
+      "path_position_zh": "示例位置",
+      "difficulty_reason_zh": "示例难度说明。",
+      "examples": [
+        "Alex Example"
+      ]
+    },
+    {
+      "level": "car-lead",
+      "title": "Senior / Chief Race Engineer",
+      "title_zh": "资深 / 首席赛车工程师",
+      "summary_zh": "示例岗位说明。",
+      "typical_progression_zh": "示例晋升路径。",
+      "seniority_zh": "示例层级",
+      "importance_score": 90,
+      "importance_zh": "高",
+      "difficulty_zh": "高",
+      "difficulty_score": 3,
+      "path_position_zh": "示例位置",
+      "difficulty_reason_zh": "示例难度说明。",
+      "examples": [
+        "Alex Example"
+      ]
+    },
+    {
+      "level": "car-lead",
+      "title": "Race Engineer",
+      "title_zh": "赛车工程师",
+      "summary_zh": "示例岗位说明。",
+      "typical_progression_zh": "示例晋升路径。",
+      "seniority_zh": "示例层级",
+      "importance_score": 88,
+      "importance_zh": "高",
+      "difficulty_zh": "高",
+      "difficulty_score": 3,
+      "path_position_zh": "示例位置",
+      "difficulty_reason_zh": "示例难度说明。",
+      "examples": [
+        "Alex Example"
+      ]
+    },
+    {
+      "level": "car-support",
+      "title": "Performance Engineer",
+      "title_zh": "性能工程师",
+      "summary_zh": "示例岗位说明。",
+      "typical_progression_zh": "示例晋升路径。",
+      "seniority_zh": "示例层级",
+      "importance_score": 80,
+      "importance_zh": "高",
+      "difficulty_zh": "高",
+      "difficulty_score": 3,
+      "path_position_zh": "示例位置",
+      "difficulty_reason_zh": "示例难度说明。",
+      "examples": [
+        "Alex Example"
+      ]
+    },
+    {
+      "level": "pit-wall",
+      "title": "Strategy Engineer / Strategist",
+      "title_zh": "策略工程师 / 策略师",
+      "summary_zh": "示例岗位说明。",
+      "typical_progression_zh": "示例晋升路径。",
+      "seniority_zh": "示例层级",
+      "importance_score": 78,
+      "importance_zh": "高",
+      "difficulty_zh": "高",
+      "difficulty_score": 3,
+      "path_position_zh": "示例位置",
+      "difficulty_reason_zh": "示例难度说明。",
+      "examples": [
+        "Alex Example"
+      ]
+    },
+    {
+      "level": "factory-feed",
+      "title": "Simulation / Simulator Engineer",
+      "title_zh": "仿真 / 模拟器工程师",
+      "summary_zh": "示例岗位说明。",
+      "typical_progression_zh": "示例晋升路径。",
+      "seniority_zh": "示例层级",
+      "importance_score": 70,
+      "importance_zh": "高",
+      "difficulty_zh": "高",
+      "difficulty_score": 3,
+      "path_position_zh": "示例位置",
+      "difficulty_reason_zh": "示例难度说明。",
+      "examples": [
+        "Alex Example"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Example Motorsport Handbook",
+      "url": "https://example.com/handbook/trackside-roles",
+      "note": "Placeholder source."
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "last_verified": "2026-01-01",
+  "scope_zh": "示例数据：虚构的公开工程人员。",
+  "sources": [
+    {
+      "title": "Example Motorsport News",
+      "url": "https://example.com/news/engineering-structures"
+    }
+  ],
+  "teams": {
+    "apex-gp": [
+      {
+        "person": "Dana Aeroford",
+        "person_zh": "示例总监 Dana",
+        "role_key": "technical-leadership",
+        "role": "Technical Director",
+        "role_zh": "技术总监",
+        "importance_score": 95,
+        "career_summary_zh": "示例数据：虚构技术总监履历摘要。",
+        "note_zh": "示例数据：虚构人物。",
+        "photo_url": "",
+        "education": [
+          {
+            "institution": "Placeholder Institute of Technology",
+            "institution_zh": "示例理工学院（Placeholder）",
+            "degree": "PhD",
+            "degree_zh": "博士",
+            "field": "Aerodynamics",
+            "field_zh": "空气动力学",
+            "years": "",
+            "source_url": "https://example.com/profiles/dana-aeroford",
+            "source_title": "Dana Aeroford - Example Profiles"
+          }
+        ],
+        "education_lookup": "profile_found",
+        "career": [
+          {
+            "from": "2010",
+            "to": "present",
+            "org": "Apex GP",
+            "org_zh": "示例车队·Apex",
+            "role": "Technical Director",
+            "role_zh": "技术总监",
+            "category": "F1",
+            "category_zh": "F1"
+          }
+        ],
+        "sources": [
+          {
+            "url": "https://example.com/profiles/dana-aeroford",
+            "type": "profile",
+            "title": "Dana Aeroford - Example Profiles"
+          }
+        ],
+        "confidence": "high"
+      }
+    ],
+    "example-racing": [
+      {
+        "person": "Kit Strategos",
+        "person_zh": "示例策略主管 Kit",
+        "role_key": "strategy-engineer",
+        "role": "Head of Strategy",
+        "role_zh": "策略主管",
+        "importance_score": 80,
+        "career_summary_zh": "示例数据：虚构策略主管履历摘要。",
+        "note_zh": "示例数据：虚构人物。",
+        "photo_url": "",
+        "education": [],
+        "education_lookup": "not_researched",
+        "career": [],
+        "sources": [
+          {
+            "url": "https://example.com/profiles/kit-strategos",
+            "type": "profile",
+            "title": "Kit Strategos - Example Profiles"
+          }
+        ],
+        "confidence": "medium"
+      }
+    ]
+  }
+}

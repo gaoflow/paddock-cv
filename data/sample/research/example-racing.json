@@ -1,0 +1,107 @@
+{
+  "team_id": "example-racing",
+  "team": "Example Racing",
+  "engineers": [
+    {
+      "id": "casey-placeholder",
+      "name": "Casey Placeholder",
+      "aka": [],
+      "role": "Race Engineer",
+      "team_2026": "Example Racing",
+      "drivers_2026": [
+        "Jamie Gridley"
+      ],
+      "nationality": "Exampleland",
+      "education": [
+        {
+          "institution": "Fictional Polytechnic",
+          "degree": "MEng",
+          "field": "Aerospace Engineering",
+          "years": "2006-2010"
+        }
+      ],
+      "career": [
+        {
+          "from": "2011",
+          "to": "2015",
+          "org": "Demo Junior Formula Team",
+          "role": "Data Engineer",
+          "category": "F2"
+        },
+        {
+          "from": "2016",
+          "to": "present",
+          "org": "Example Racing",
+          "role": "Race Engineer",
+          "category": "F1"
+        }
+      ],
+      "f1_debut_year": 2016,
+      "years_to_race_engineer": 5,
+      "route_archetype": "uni-junior-formula-to-f1",
+      "highlights": [
+        "Entirely fictional career for demo purposes."
+      ],
+      "sources": [
+        {
+          "url": "https://example.com/profiles/casey-placeholder",
+          "type": "profile",
+          "title": "Casey Placeholder - Example Profiles"
+        }
+      ],
+      "confidence": "high",
+      "notes": "Fictional sample person; not a real individual."
+    },
+    {
+      "id": "riley-fixture",
+      "name": "Riley Fixture",
+      "aka": [],
+      "role": "Race Engineer",
+      "team_2026": "Example Racing",
+      "drivers_2026": [
+        "Morgan Chicane"
+      ],
+      "nationality": "Exampleland",
+      "education": [
+        {
+          "institution": "Sampleton University",
+          "degree": "MEng",
+          "field": "Motorsport Engineering",
+          "years": "2006-2010"
+        }
+      ],
+      "career": [
+        {
+          "from": "2011",
+          "to": "2015",
+          "org": "Demo Junior Formula Team",
+          "role": "Data Engineer",
+          "category": "F2"
+        },
+        {
+          "from": "2016",
+          "to": "present",
+          "org": "Example Racing",
+          "role": "Race Engineer",
+          "category": "F1"
+        }
+      ],
+      "f1_debut_year": 2016,
+      "years_to_race_engineer": 5,
+      "route_archetype": "data-eng-to-RE",
+      "highlights": [
+        "Entirely fictional career for demo purposes."
+      ],
+      "sources": [
+        {
+          "url": "https://example.com/profiles/riley-fixture",
+          "type": "profile",
+          "title": "Riley Fixture - Example Profiles"
+        }
+      ],
+      "confidence": "high",
+      "notes": "Fictional sample person; not a real individual."
+    }
+  ],
+  "team_notes": "Fictional sample team."
+}
