@@ -78,7 +78,7 @@
   a{color:inherit}
   button{font-family:inherit}
   :focus-visible{outline:2px solid rgba(0,113,227,.85); outline-offset:2px; border-radius:8px}
-  .wrap{max-width:1280px; margin:0 auto; padding:0 32px}
+  .wrap{max-width:1640px; margin:0 auto; padding:0 32px}
 
   /* ---------- top nav (56px, canvas, hairline) ---------- */
   header.top{
@@ -513,8 +513,12 @@
   .pav.lazy-bg[data-error="1"]{background-color:var(--s3)}
 
   /* ---------- responsive ---------- */
-  @media(max-width:1080px){
+  @media(max-width:1620px){
+    /* 3-up only when each card gets ~510px+ (the longest bilingual role
+       label needs 472px unwrapped) — below that, 2 wide columns */
     .rostergrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  }
+  @media(max-width:1080px){
     .rolegrid{grid-template-columns:repeat(2,minmax(0,1fr))}
     .sourcegrid{grid-template-columns:repeat(2,minmax(0,1fr))}
     .rgrid{grid-template-columns:1fr}
