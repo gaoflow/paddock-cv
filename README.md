@@ -20,8 +20,8 @@ real dataset (~480 people, 5 series) in 7 languages. This repo is how it's built
 source URL — sourced contributions flow straight into the live site.
 Contact: [hello@paddockcv.com](mailto:hello@paddockcv.com)
 
-<!-- screenshot: docs/img/dashboard-sample.png — dashboard running on the SAMPLE dataset only -->
-![Dashboard on the sample dataset](docs/img/dashboard-sample.png)
+<!-- screenshot: docs/img/dashboard-sample.png — the live site (paddockcv.com); the repo itself ships only the fictional sample dataset -->
+![Paddock CV dashboard (live site)](docs/img/dashboard-sample.png)
 
 Pick a paddock job. Find everyone who currently holds it. Read how each of them
 got there. That is the whole method — this repo is the tooling and methodology
