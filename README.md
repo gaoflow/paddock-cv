@@ -72,12 +72,6 @@ F1E_DATA_DIR=data/sample python3 scripts/seed_db.py     # build the SQLite layer
 F1E_DATA_DIR=data/sample python3 server.py              # serve on http://localhost:8000
 ```
 
-Long-running deployments are expected to go through PM2:
-
-```bash
-pm2 start ecosystem.config.cjs && pm2 save
-```
-
 Tests (Playwright, against the sample dataset):
 
 ```bash
