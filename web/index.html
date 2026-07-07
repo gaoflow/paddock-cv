@@ -41,86 +41,89 @@
   /* ============================================================
      Paddock CV — design system per Linear DESIGN.md
      canvas #010102 · surface ladder · hairline borders ·
-     single lavender accent #5e6ad2 · negative-tracked display type
+     BMW M language: true-black canvas, white UPPERCASE display (700) over light body (300),
+     M tricolor #0066b1/#1c69d4/#e22718 as brand marks only, zero radius except circular controls
      ============================================================ */
   :root{
-    /* Linear tokens */
-    --canvas:#010102;
-    --s1:#0f1011; --s2:#141516; --s3:#18191a; --s4:#191a1b;
-    --hair:#23252a; --hair2:#34343a; --hair3:#3e3e44;
-    --ink:#f7f8f8; --ink2:#d0d6e0; --ink3:#8a8f98; --ink4:#62666d;
-    --lav:#5e6ad2; --lav-h:#828fff; --lav-f:#5e69d1; --ok:#27a644;
-    --sans:-apple-system,"SF Pro Display","Inter",system-ui,"Segoe UI",Roboto,sans-serif;
-    --monoft:ui-monospace,"SF Mono","JetBrains Mono",Menlo,monospace;
-    /* legacy aliases kept for inline templates */
-    --bg:var(--canvas); --bg2:var(--canvas);
-    --card:var(--s1); --card2:var(--s2); --card3:var(--s3);
+    /* BMW M language: true-black canvas, white ink, engineered grays */
+    --canvas:#000000; --s1:#0d0d0d; --s2:#1a1a1a; --s3:#262626; --carbon:#2b2b2b;
+    --hair:#262626; --hair2:#3c3c3c; --hair3:#4a4a4a;
+    --ink:#ffffff; --ink2:#e6e6e6; --ink3:#bbbbbb; --ink4:#7e7e7e;
+    /* M tricolor — brand-identity marks only, never fills */
+    --m1:#0066b1; --m2:#1c69d4; --m3:#e22718;
+    --lav:#1c69d4; --lav-h:#ffffff; --lav-f:#1c69d4;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --monoft:ui-monospace,"SF Mono",SFMono-Regular,Menlo,monospace;
+    /* legacy aliases (inline JS templates) */
+    --bg:var(--canvas); --card:var(--s2); --card2:var(--s3); --card3:var(--carbon);
     --line:var(--hair); --line2:var(--hair2);
     --txt:var(--ink); --muted:var(--ink3); --muted2:var(--ink4);
-    --accent:var(--lav); --mono:var(--monoft);
-    /* series data-coding hues (quiet, label-palette register) */
-    --a2:#6c9fd4; --a3:#c2925f; --a4:#b06d9e; --a5:#5fae8b; --a6:#8a8f98;
+    --accent:var(--m2); --mono:var(--monoft);
+    /* series data-coding hues (M tricolor first, one clear hue per series) */
+    --a1:#e22718; --a2:#1c69d4; --a3:#f4b400; --a4:#e06bb5; --a5:#0fa336; --a6:#7e7e7e;
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{
     margin:0; background:var(--canvas); color:var(--ink);
-    font-family:var(--sans); font-size:16px; line-height:1.5;
-    letter-spacing:-.05px; -webkit-font-smoothing:antialiased;
+    font-family:var(--sans); font-size:16px; font-weight:300; line-height:1.5;
+    letter-spacing:0; -webkit-font-smoothing:antialiased;
   }
-  ::selection{background:rgba(94,106,210,.35)}
+  ::selection{background:rgba(28,105,212,.45)}
   a{color:inherit}
   button{font-family:inherit}
-  :focus-visible{outline:2px solid rgba(94,105,209,.5); outline-offset:2px; border-radius:8px}
+  :focus-visible{outline:2px solid rgba(255,255,255,.6); outline-offset:2px}
   .wrap{max-width:1280px; margin:0 auto; padding:0 32px}
 
   /* ---------- top nav (56px, canvas, hairline) ---------- */
   header.top{
     position:sticky; top:0; z-index:40;
-    background:rgba(1,1,2,.82); backdrop-filter:blur(20px) saturate(1.4);
+    background:rgba(0,0,0,.88); backdrop-filter:blur(20px);
     border-bottom:1px solid var(--hair);
   }
+  .mstripe{height:3px; background:linear-gradient(90deg,var(--m1) 0 33.4%,var(--m2) 33.4% 66.7%,var(--m3) 66.7% 100%)}
   .top .wrap{
     display:grid; grid-template-columns:auto 1fr auto; align-items:center;
-    gap:24px; height:56px;
+    gap:24px; height:61px;
   }
   .logo{display:flex; align-items:center; gap:10px; min-width:0}
   .bars{display:flex; gap:2.5px; transform:skewX(-16deg)}
   .bars span{width:4px; height:16px; border-radius:1.5px; display:block}
-  .bars span:nth-child(1){background:var(--lav)}
-  .bars span:nth-child(2){background:var(--lav); opacity:.55}
-  .bars span:nth-child(3){background:var(--lav); opacity:.28}
-  .logo h1{margin:0; font-size:15px; font-weight:600; letter-spacing:-.2px; white-space:nowrap}
-  .logo .sub{font-family:var(--monoft); font-size:10px; letter-spacing:.8px; color:var(--ink4); margin-top:1px}
+  .bars span:nth-child(1){background:var(--m1)}
+  .bars span:nth-child(2){background:var(--m2)}
+  .bars span:nth-child(3){background:var(--m3)}
+  .logo h1{margin:0; font-size:15px; font-weight:700; letter-spacing:1px; text-transform:uppercase; white-space:nowrap}
   .tabs{display:flex; align-items:center; gap:2px; justify-self:center; padding:0; border:0; background:none}
   .tab{
     appearance:none; background:none; border:0; cursor:pointer;
-    font-size:14px; font-weight:500; line-height:1.2; color:var(--ink3);
-    padding:8px 12px; border-radius:8px; transition:color .15s ease, background .15s ease;
+    font-size:13px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+    line-height:1.2; color:var(--ink3);
+    padding:10px 12px 8px; border-bottom:2px solid transparent;
+    transition:color .15s ease, border-color .15s ease;
   }
   .tab:hover{color:var(--ink)}
-  .tab.on{color:var(--ink); background:var(--s2)}
+  .tab.on{color:var(--ink); border-bottom-color:var(--ink)}
   .langsel{
-    font-size:13px; font-weight:500; color:var(--ink2);
-    background:var(--s1); border:1px solid var(--hair); border-radius:8px;
+    font-size:13px; font-weight:400; color:var(--ink2);
+    background:var(--s2); border:1px solid var(--hair2); border-radius:0;
     padding:6px 8px; cursor:pointer; outline:none; margin-left:6px;
     transition:border-color .15s ease, color .15s ease;
   }
   .langsel:hover,.langsel:focus-visible{color:var(--ink); border-color:var(--hair2)}
   .searchbox{
     display:flex; align-items:center; gap:8px; justify-self:end;
-    background:var(--s1); border:1px solid var(--hair); border-radius:8px;
-    padding:0 12px; height:34px; width:min(300px,100%);
+    background:var(--s2); border:1px solid var(--hair2); border-radius:0;
+    padding:0 12px; height:36px; width:min(300px,100%);
     transition:border-color .15s ease;
   }
-  .searchbox:focus-within{border-color:var(--hair2); outline:2px solid rgba(94,105,209,.5); outline-offset:1px}
+  .searchbox:focus-within{border-color:var(--ink); outline:none}
   .searchbox span{
     font-family:var(--monoft); font-size:11px; color:var(--ink4);
-    border:1px solid var(--hair); border-radius:4px; padding:1px 5px; line-height:1.4;
+    border:1px solid var(--hair2); border-radius:0; padding:1px 5px; line-height:1.4;
   }
   .search{
     background:none; border:0; outline:none; color:var(--ink);
-    font-family:inherit; font-size:14px; width:100%; letter-spacing:-.05px;
+    font-family:inherit; font-size:14.5px; width:100%; letter-spacing:-.05px;
   }
   .search::placeholder{color:var(--ink4)}
 
@@ -131,17 +134,22 @@
   /* ---------- hero ---------- */
   .hero{padding:72px 0 40px; max-width:780px}
   .eyebrow{
-    font-size:13px; font-weight:500; letter-spacing:.4px; text-transform:uppercase;
-    color:var(--lav-h); margin-bottom:16px; font-family:var(--monoft);
+    font-size:13px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+    color:var(--ink3); margin-bottom:16px;
+  }
+  .eyebrow::before{
+    content:''; display:inline-block; width:34px; height:3px; margin-right:12px;
+    vertical-align:3px;
+    background:linear-gradient(90deg,var(--m1) 0 33.4%,var(--m2) 33.4% 66.7%,var(--m3) 66.7% 100%);
   }
   .hero h2{
-    margin:0 0 16px; font-size:clamp(32px,4.6vw,56px); font-weight:600;
-    line-height:1.1; letter-spacing:-1.8px; color:var(--ink);
+    margin:0 0 16px; font-size:clamp(34px,4.8vw,64px); font-weight:700;
+    line-height:1.05; letter-spacing:-.5px; text-transform:uppercase; color:var(--ink);
   }
-  .hero p{margin:0; font-size:18px; line-height:1.5; letter-spacing:-.1px; color:var(--ink3); max-width:640px}
+  .hero p{margin:0; font-size:19px; font-weight:300; line-height:1.5; color:var(--ink3); max-width:640px}
   .quickfilters{display:flex; gap:8px; flex-wrap:wrap; margin-top:24px}
   .quickfilters span{
-    font-size:12px; line-height:1.4; color:var(--ink2);
+    font-size:12.5px; line-height:1.4; color:var(--ink2);
     background:var(--s2); border:1px solid var(--hair); border-radius:9999px;
     padding:2px 10px; white-space:nowrap;
   }
@@ -165,41 +173,40 @@
   }
   .rostersection.collapsed .chev{transform:rotate(0deg)}
   .series-title{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; min-width:0}
-  .series-title h3{margin:0; font-size:22px; font-weight:500; letter-spacing:-.4px; line-height:1.25}
-  .series-title span{font-family:var(--monoft); font-size:12px; color:var(--ink4)}
-  .series-toggle:hover .series-title h3{color:var(--lav-h)}
+  .series-title h3{margin:0; font-size:22px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; line-height:1.25}
+  .series-title span{font-family:var(--monoft); font-size:12.5px; color:var(--ink4)}
+  .series-toggle:hover .series-title h3{color:var(--ink3)}
 
   .rostergrid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px}
   .rosterteam{
-    background:var(--s1); border:1px solid var(--hair); border-radius:12px;
+    background:var(--s1); border:1px solid var(--hair); border-radius:0;
     padding:20px; min-width:0; position:relative; overflow:hidden;
     transition:background .15s ease, border-color .15s ease;
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
   }
   .rosterteam:hover{background:var(--s2); border-color:var(--hair2)}
   .rosterhd{display:grid; grid-template-columns:auto auto minmax(0,1fr); align-items:center; gap:12px; margin-bottom:14px}
-  .rosterhd .mark{width:3px; height:30px; border-radius:2px; display:block}
-  .teamlogo{
-    width:44px; height:30px; object-fit:contain; flex:none;
-    background:var(--s3); border:1px solid var(--hair); border-radius:6px; padding:3px;
-  }
+  .rosterhd .mark{width:3px; height:38px; border-radius:2px; display:block}
+  .teamlogo{width:68px; height:44px; object-fit:contain; flex:none; background:none}
   .teamlogo.dim{opacity:.9}
-  .tn{font-size:15px; font-weight:600; letter-spacing:-.2px; line-height:1.3}
+  /* sources with a baked-in white background: lift luminance-inverted art onto the
+     dark canvas (screen drops the black that was white), hue-rotate restores hue */
+  .teamlogo.wm{filter:invert(1) hue-rotate(180deg); mix-blend-mode:screen; opacity:.92}
+  .tn{font-size:16px; font-weight:700; letter-spacing:-.2px; line-height:1.3}
   .tn .zh{font-weight:400; color:var(--ink4); margin-left:6px; font-size:12.5px}
-  .td{font-size:12px; color:var(--ink3); margin-top:2px; line-height:1.45}
+  .td{font-size:13px; color:var(--ink3); margin-top:2px; line-height:1.45}
 
   .posblock{margin-top:14px}
   .postitle{
-    font-size:11px; font-weight:500; letter-spacing:.5px; text-transform:uppercase;
+    font-size:11.5px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase;
     color:var(--ink4); padding-bottom:6px; border-bottom:1px solid var(--hair);
     margin-bottom:4px; display:flex; align-items:baseline; gap:8px;
   }
-  .postitle b{font-weight:500}
+  .postitle b{font-weight:700}
   .postitle span{font-weight:400; letter-spacing:.2px; text-transform:none; color:var(--ink4)}
 
   .personrow{
-    display:grid; grid-template-columns:32px minmax(0,1fr); align-items:center; gap:10px;
-    padding:7px 8px; margin:0 -8px; border-radius:8px; cursor:pointer;
+    display:grid; grid-template-columns:48px minmax(0,1fr); align-items:center; gap:10px;
+    padding:7px 8px; margin:0 -8px; border-radius:0; cursor:pointer;
     transition:background .15s ease; position:relative;
   }
   .personrow::after{
@@ -208,29 +215,29 @@
   }
   .personrow:hover{background:var(--s3)}
   .personrow:hover::after{opacity:1}
-  .personrow:focus-visible{outline:2px solid rgba(94,105,209,.5); outline-offset:0}
+  .personrow:focus-visible{outline:2px solid rgba(255,255,255,.6); outline-offset:0}
   .pav{
-    width:32px; height:32px; border-radius:9999px; flex:none;
+    width:48px; height:48px; border-radius:9999px; flex:none;
     background-color:var(--s3); background-size:cover; background-position:center 22%;
     display:flex; align-items:center; justify-content:center;
-    font-size:11px; font-weight:600; color:#fff; letter-spacing:0;
-    border:1px solid var(--hair2);
+    font-size:14px; font-weight:600; color:#fff; letter-spacing:0;
   }
+  span.zh{margin-left:6px}
   .pnamebar{display:flex; align-items:center; gap:8px; min-width:0}
-  .pname{font-size:14px; font-weight:500; letter-spacing:-.05px; line-height:1.35; min-width:0}
+  .pname{font-size:15px; font-weight:500; letter-spacing:-.05px; line-height:1.35; min-width:0}
   .pname .zh{font-weight:400; color:var(--ink4); font-size:12px; margin-left:5px}
   .pnick{font-size:11.5px; color:var(--ink4); margin-top:1px}
-  .prole{font-size:12.5px; color:var(--ink3); line-height:1.4; margin-top:1px}
-  .role-en{display:block; font-size:11.5px; color:var(--ink4)}
+  .prole{font-size:13.5px; color:var(--ink3); line-height:1.4; margin-top:1px}
+  .role-en{display:block; font-size:12.5px; color:var(--ink4)}
   .ptags{display:flex; gap:5px; flex:none}
   .ptag{
-    font-size:10.5px; line-height:1.4; border-radius:9999px; padding:1px 7px;
+    font-size:10.5px; line-height:1.4; border-radius:2px; padding:1px 7px;
     background:var(--s2); border:1px solid var(--hair); color:var(--ink3); white-space:nowrap;
   }
   .ptag.warn{color:#d4a054; border-color:rgba(212,160,84,.35)}
   .unknownrow{
     font-size:12px; color:var(--ink4); padding:8px; margin:0 -8px;
-    border-radius:8px; background:transparent;
+    border-radius:0; background:transparent;
   }
   .unknownrow b{font-weight:500; color:var(--ink4)}
   .slotlist{margin-top:2px}
@@ -239,68 +246,69 @@
 
   /* ---------- role map ---------- */
   .roleintro{
-    margin:48px 0 32px; font-size:14px; line-height:1.6; color:var(--ink3);
-    background:var(--s1); border:1px solid var(--hair); border-radius:12px; padding:20px 24px;
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+    margin:48px 0 32px; font-size:15px; line-height:1.6; color:var(--ink3);
+    background:var(--s1); border:1px solid var(--hair); border-radius:0; padding:20px 24px;
   }
-  .roleintro strong{color:var(--ink2); font-weight:500; margin-right:8px}
+  .roleintro strong{color:var(--ink); font-weight:700; margin-right:8px}
   .rolegrid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px}
   .rolecard{
-    background:var(--s1); border:1px solid var(--hair); border-radius:12px; padding:24px;
+    background:var(--s1); border:1px solid var(--hair); border-radius:0; padding:24px;
     display:flex; flex-direction:column; gap:12px; min-width:0;
     transition:background .15s ease, border-color .15s ease;
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
   }
   .rolecard:hover{background:var(--s2); border-color:var(--hair2)}
   .rolecard .lvl{
-    font-family:var(--monoft); font-size:11px; letter-spacing:.5px; text-transform:uppercase;
-    color:var(--lav-h);
+    font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+    color:var(--ink4);
   }
-  .rolecard h3{margin:0; font-size:20px; font-weight:500; letter-spacing:-.4px; line-height:1.25}
+  .rolecard h3{margin:0; font-size:20px; font-weight:700; letter-spacing:0; line-height:1.25}
   .rolecard h3 .role-en{font-size:12.5px; color:var(--ink4); font-weight:400; margin-top:2px}
-  .rolecard>p{margin:0; font-size:13.5px; line-height:1.55; color:var(--ink2)}
+  .rolecard>p{margin:0; font-size:14.5px; line-height:1.55; color:var(--ink2)}
   .rolefacts{display:grid; grid-template-columns:1fr 1fr; gap:10px 16px; border-top:1px solid var(--hair); padding-top:12px}
-  .rolefact .fl{font-size:10.5px; letter-spacing:.5px; text-transform:uppercase; color:var(--ink4); margin-bottom:2px}
-  .rolefact .fv{font-size:13px; color:var(--ink2); line-height:1.4}
+  .rolefact .fl{font-size:10.5px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--ink4); margin-bottom:2px}
+  .rolefact .fv{font-size:14px; color:var(--ink2); line-height:1.4}
   .diffreason{
-    font-size:12.5px; line-height:1.55; color:var(--ink3);
-    background:var(--s2); border:1px solid var(--hair); border-radius:8px; padding:10px 12px;
+    font-size:13.5px; line-height:1.55; color:var(--ink3);
+    background:var(--s2); border:1px solid var(--hair); border-radius:0; padding:10px 12px;
   }
-  .prog{margin:0; font-size:12.5px; line-height:1.55; color:var(--ink3)}
-  .prog strong{color:var(--ink2); font-weight:500}
+  .prog{margin:0; font-size:13.5px; line-height:1.55; color:var(--ink3)}
+  .prog strong{color:var(--ink2); font-weight:700}
   .exchips{display:flex; flex-wrap:wrap; gap:6px}
   .exchips span{
-    font-size:11.5px; color:var(--ink2); background:var(--s2);
-    border:1px solid var(--hair); border-radius:9999px; padding:2px 9px;
+    font-size:12.5px; color:var(--ink2); background:var(--s2);
+    border:1px solid var(--hair2); border-radius:2px; padding:2px 9px;
   }
   .sourcegrid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-top:32px}
   .sourcecard{
     display:block; text-decoration:none; background:var(--s1); border:1px solid var(--hair);
-    border-radius:8px; padding:14px 16px; transition:border-color .15s ease, background .15s ease;
+    border-radius:0; padding:14px 16px; transition:border-color .15s ease, background .15s ease;
   }
   .sourcecard:hover{background:var(--s2); border-color:var(--hair2)}
-  .sourcecard b{display:block; font-size:13px; font-weight:500; letter-spacing:-.05px}
-  .sourcecard span{display:block; font-size:12px; color:var(--ink4); margin-top:3px; line-height:1.5}
+  .sourcecard b{display:block; font-size:14px; font-weight:700; letter-spacing:0}
+  .sourcecard span{display:block; font-size:13px; color:var(--ink4); margin-top:3px; line-height:1.5}
 
   /* ---------- routes ---------- */
   .rgrid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:48px}
   .panel{
-    background:var(--s1); border:1px solid var(--hair); border-radius:12px; padding:24px;
+    background:var(--s1); border:1px solid var(--hair); border-radius:0; padding:24px;
     min-width:0; box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
   }
   .panel>h3{
-    margin:0 0 18px; font-size:16px; font-weight:600; letter-spacing:-.2px;
+    margin:0 0 18px; font-size:14px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
     padding-bottom:12px; border-bottom:1px solid var(--hair);
   }
   .panel.playbook{grid-column:1/-1}
   .bar{margin-bottom:16px}
   .bar .bl{display:flex; flex-direction:column; gap:2px; margin-bottom:6px}
-  .bar .bn{font-size:13.5px; font-weight:500}
+  .bar .bn{font-size:14.5px; font-weight:700}
   .bar .cnt{font-family:var(--monoft); font-size:11.5px; color:var(--ink4); margin-left:8px; font-weight:400}
-  .bar .bd{font-size:12px; color:var(--ink4); line-height:1.5}
-  .track{height:4px; background:var(--s3); border-radius:2px; overflow:hidden}
-  .fill{height:100%; border-radius:2px}
+  .bar .bd{font-size:13px; color:var(--ink4); line-height:1.5}
+  .track{height:4px; background:var(--s3); border-radius:0; overflow:hidden}
+  .fill{height:100%; border-radius:0}
   .pathchart svg{width:100%; height:auto; display:block}
+  .chartlegend{display:flex; flex-wrap:wrap; gap:6px 18px; margin-top:10px}
+  .chartlegend span{font-size:12.5px; color:var(--ink3); display:inline-flex; align-items:center}
+  .chartlegend i{width:10px; height:10px; border-radius:0; display:inline-block; margin-right:7px; flex:none}
   .gridline{stroke:var(--hair); stroke-width:1}
   .axis{stroke:var(--hair2); stroke-width:1}
   .charttext{fill:var(--ink4); font-size:11px; font-family:var(--monoft)}
@@ -309,18 +317,18 @@
   .route-row{
     display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1.6fr) 64px minmax(0,1.1fr);
     gap:12px; align-items:baseline; padding:9px 0; border-bottom:1px solid var(--hair);
-    font-size:13px;
+    font-size:14px;
   }
   .route-row:last-child{border-bottom:none}
   .route-row.head{
-    font-size:10.5px; letter-spacing:.5px; text-transform:uppercase; color:var(--ink4);
+    font-size:10.5px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--ink4);
   }
-  .route-row b{font-weight:500}
+  .route-row b{font-weight:500; font-weight:600}
   .route-row span{color:var(--ink3); min-width:0}
   .ydist{display:flex; align-items:flex-end; gap:16px; height:180px; padding-top:24px}
   .yb{
-    flex:1; background:linear-gradient(180deg, rgba(94,106,210,.85), rgba(94,106,210,.4));
-    border-radius:6px 6px 2px 2px; position:relative; min-height:6px;
+    flex:1; background:linear-gradient(180deg, rgba(28,105,212,.9), rgba(28,105,212,.45));
+    border-radius:0; position:relative; min-height:6px;
   }
   .yb span{
     position:absolute; top:-22px; left:50%; transform:translateX(-50%);
@@ -330,32 +338,32 @@
     position:absolute; bottom:-24px; left:50%; transform:translateX(-50%);
     font-style:normal; font-family:var(--monoft); font-size:11px; color:var(--ink4); white-space:nowrap;
   }
-  .uni{display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding:7px 0; border-bottom:1px solid var(--hair); font-size:13px}
+  .uni{display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding:7px 0; border-bottom:1px solid var(--hair); font-size:14px}
   .uni:last-child{border-bottom:none}
   .un{min-width:0}
   .un .zh{color:var(--ink4); font-size:12px; margin-left:5px}
-  .uc{font-family:var(--monoft); font-size:11px; color:var(--lav-h); white-space:nowrap; letter-spacing:1px}
+  .uc{font-family:var(--monoft); font-size:11px; color:var(--ink3); white-space:nowrap; letter-spacing:1px}
   .routeitem{margin-bottom:20px}
   .routeitem:last-child{margin-bottom:0}
   .routeitem h4{
-    margin:0 0 8px; font-size:14px; font-weight:600; letter-spacing:-.1px;
+    margin:0 0 8px; font-size:15px; font-weight:700; letter-spacing:.3px;
     display:flex; align-items:baseline; gap:10px;
   }
   .routeitem h4 span{font-family:var(--monoft); font-size:11px; color:var(--ink4); font-weight:400}
   .rroles{display:flex; flex-direction:column; gap:5px}
-  .rrole{display:flex; gap:8px; font-size:12.5px; color:var(--ink3); line-height:1.5}
-  .rrole b{color:var(--lav); flex:none}
+  .rrole{display:flex; gap:8px; font-size:13.5px; color:var(--ink3); line-height:1.5}
+  .rrole b{color:var(--m2); flex:none}
   .rrole strong{color:var(--ink2); font-weight:500}
   .step{display:flex; gap:14px; padding:12px 0; border-bottom:1px solid var(--hair)}
   .step:last-child{border-bottom:none}
   .step .num{
     width:24px; height:24px; flex:none; border-radius:9999px;
-    background:var(--s2); border:1px solid var(--hair2); color:var(--lav-h);
+    background:var(--s2); border:1px solid var(--hair2); color:var(--ink);
     display:flex; align-items:center; justify-content:center;
-    font-family:var(--monoft); font-size:11px;
+    font-family:var(--monoft); font-size:11px; font-weight:700;
   }
-  .step .st{font-size:14px; font-weight:500; letter-spacing:-.05px}
-  .step .sd{font-size:12.5px; color:var(--ink3); line-height:1.55; margin-top:2px}
+  .step .st{font-size:15px; font-weight:700; letter-spacing:0}
+  .step .sd{font-size:13.5px; color:var(--ink3); line-height:1.55; margin-top:2px}
 
   /* ---------- person CV (full page) ---------- */
   .scrim{position:fixed; inset:0; background:rgba(0,0,0,.6); opacity:0; visibility:hidden; pointer-events:none; transition:opacity .2s ease, visibility 0s; z-index:50}
@@ -370,10 +378,9 @@
   .dh{
     border-bottom:1px solid var(--hair);
     background:
-      radial-gradient(600px 200px at 20% 0%, rgba(94,106,210,.08), transparent 70%),
       var(--canvas);
   }
-  .dh .stripe{display:block; height:2px; width:100%; margin:0; opacity:.85}
+  .dh .stripe{display:block; height:4px; width:100%; margin:0; opacity:.9}
   .dh .dhrow{
     max-width:1040px; margin:0 auto; padding:64px 32px 36px;
     display:grid; grid-template-columns:96px minmax(0,1fr); gap:28px; align-items:center;
@@ -381,7 +388,7 @@
   .dh .dhrow>div:last-child{min-width:0}
   .close{
     position:fixed; top:16px; right:24px; z-index:70;
-    width:34px; height:34px; border-radius:8px; cursor:pointer;
+    width:40px; height:40px; border-radius:9999px; cursor:pointer;
     background:var(--s1); border:1px solid var(--hair); color:var(--ink3);
     font-size:14px; line-height:1; display:flex; align-items:center; justify-content:center;
     transition:color .15s ease, border-color .15s ease, background .15s ease;
@@ -389,31 +396,31 @@
   .close:hover{color:var(--ink); border-color:var(--hair2); background:var(--s2)}
   .dav{
     width:96px; height:96px; border-radius:9999px; object-fit:cover; object-position:center 22%;
-    border:1px solid var(--hair2); background:var(--s2); display:block;
+    background:var(--s2); display:block;
   }
-  .dav.ph{display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:600; color:#fff}
+  .dav.ph{display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:700; color:#fff}
   .dcap{font-size:10.5px; color:var(--ink4); margin-top:8px; text-align:center; max-width:96px; line-height:1.45}
-  .dn{font-size:clamp(28px,3.4vw,40px); font-weight:600; letter-spacing:-1px; line-height:1.15}
+  .dn{font-size:clamp(28px,3.4vw,40px); font-weight:700; letter-spacing:-.5px; text-transform:uppercase; line-height:1.1}
   .dn .zh{font-size:16px; font-weight:400; color:var(--ink3); margin-left:10px; letter-spacing:0}
   .dnick{font-size:12.5px; color:var(--ink4); margin-top:4px}
-  .drole{font-size:15px; color:var(--ink2); margin-top:8px; line-height:1.5}
+  .drole{font-size:16px; color:var(--ink2); margin-top:8px; line-height:1.5}
   .drole .role-en{display:inline; color:var(--ink4); margin-left:8px; font-size:13px}
   .drole .role-meta{display:block; font-size:13px; color:var(--ink3); margin-top:3px}
   .agewrap{max-width:1040px; margin:0 auto; padding:0 32px}
   .agechip{
     display:inline-flex; align-items:baseline; gap:6px;
-    background:var(--s2); border:1px solid var(--hair); border-radius:9999px;
+    background:var(--s2); border:1px solid var(--hair2); border-radius:2px;
     padding:2px 10px; font-size:12px; color:var(--ink2);
   }
-  .agechip .al{font-size:10.5px; letter-spacing:.4px; text-transform:uppercase; color:var(--ink4)}
+  .agechip .al{font-size:10.5px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--ink4)}
   .chips{max-width:1040px; margin:0 auto; padding:14px 32px 0; display:flex; flex-wrap:wrap; gap:6px}
   .badge{
-    font-size:12px; line-height:1.4; color:var(--ink2);
-    background:var(--s2); border:1px solid var(--hair); border-radius:9999px; padding:2px 10px;
+    font-size:13px; line-height:1.4; color:var(--ink2);
+    background:var(--s2); border:1px solid var(--hair2); border-radius:2px; padding:2px 10px;
   }
-  .abadge{font-size:11px; font-weight:600; border-radius:9999px; padding:3px 10px; letter-spacing:.2px}
+  .abadge{font-size:11px; font-weight:700; border-radius:2px; padding:3px 10px; letter-spacing:.6px; text-transform:uppercase}
   .confbadge{
-    font-size:11px; border-radius:9999px; padding:2px 10px;
+    font-size:11px; border-radius:2px; padding:2px 10px;
     background:var(--s2); border:1px solid rgba(212,160,84,.35); color:#d4a054;
   }
   .dbody{
@@ -425,7 +432,7 @@
   .sec.side{grid-column:2}
   .sec.main{grid-column:1}
   .lab{
-    font-size:11px; font-weight:500; letter-spacing:.5px; text-transform:uppercase;
+    font-size:11.5px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
     color:var(--ink4); margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid var(--hair);
   }
   /* career timeline */
@@ -437,23 +444,23 @@
     position:absolute; left:-19px; top:6px; width:9px; height:9px; border-radius:9999px;
     border:2px solid var(--canvas); box-shadow:0 0 0 1px var(--hair3);
   }
-  .yr{font-family:var(--monoft); font-size:11.5px; color:var(--ink4); letter-spacing:.2px}
-  .org{font-size:14.5px; font-weight:500; letter-spacing:-.05px; margin-top:3px; line-height:1.4}
+  .yr{font-family:var(--monoft); font-size:12.5px; color:var(--ink4); letter-spacing:.2px}
+  .org{font-size:15.5px; font-weight:600; letter-spacing:-.05px; margin-top:3px; line-height:1.4}
   .org .zh{font-weight:400; color:var(--ink4); font-size:12.5px; margin-left:6px}
   .org .cat{
     font-size:10.5px; font-weight:400; color:var(--ink4);
-    border:1px solid var(--hair); border-radius:9999px; padding:1px 8px; margin-left:8px;
+    border:1px solid var(--hair2); border-radius:2px; padding:1px 8px; margin-left:8px;
     vertical-align:2px; white-space:nowrap;
   }
   .org .cat:empty{display:none}
-  .ro{font-size:13px; color:var(--ink3); margin-top:3px; line-height:1.5}
+  .ro{font-size:14px; color:var(--ink3); margin-top:3px; line-height:1.5}
   /* education */
   .edu{padding:12px 0; border-bottom:1px solid var(--hair)}
   .edu:first-child{padding-top:0}
   .edu:last-child{border-bottom:none}
-  .edu .ei{font-size:13.5px; font-weight:500; line-height:1.4}
+  .edu .ei{font-size:14.5px; font-weight:600; line-height:1.4}
   .edu .ei .zh{font-weight:400; color:var(--ink4); font-size:12px; margin-left:5px}
-  .edu .ed{font-size:12.5px; color:var(--ink3); margin-top:2px; line-height:1.5}
+  .edu .ed{font-size:13.5px; color:var(--ink3); margin-top:2px; line-height:1.5}
   .edu .eyr{font-family:var(--monoft); font-size:11px; color:var(--ink4)}
   .edusrc{
     display:inline-block; font-size:11px; color:var(--ink4); text-decoration:none;
@@ -461,17 +468,17 @@
   }
   .edusrc:hover{color:var(--lav-h); border-color:var(--lav-h)}
   /* notes & highlights */
-  .notes{font-size:14px; line-height:1.65; color:var(--ink2)}
+  .notes{font-size:15px; line-height:1.65; color:var(--ink2)}
   .notes p{margin:0 0 12px}
   .notes p:last-child{margin-bottom:0}
   .hl{
-    font-size:13px; line-height:1.6; color:var(--ink2);
+    font-size:14px; line-height:1.6; color:var(--ink2);
     padding:10px 14px; margin-bottom:8px;
-    background:var(--s1); border:1px solid var(--hair); border-radius:8px;
+    background:var(--s1); border:1px solid var(--hair); border-radius:0;
   }
   /* sources */
   .src{
-    display:block; text-decoration:none; font-size:12.5px; color:var(--ink3);
+    display:block; text-decoration:none; font-size:13.5px; color:var(--ink3);
     padding:9px 0; border-bottom:1px solid var(--hair); line-height:1.5;
     transition:color .15s ease;
   }
@@ -480,13 +487,13 @@
   .src .st{
     display:inline-block; font-family:var(--monoft); font-size:9.5px; letter-spacing:.5px;
     text-transform:uppercase; color:var(--ink4); background:var(--s2);
-    border:1px solid var(--hair); border-radius:4px; padding:1px 6px; margin-right:8px;
+    border:1px solid var(--hair2); border-radius:0; padding:1px 6px; margin-right:8px;
     vertical-align:1px;
   }
 
   /* ---------- footer ---------- */
   footer{
-    border-top:1px solid var(--hair); color:var(--ink4); font-size:12px;
+    border-top:1px solid var(--hair); color:var(--ink4); font-size:13px;
     padding:32px 0 64px; line-height:1.7;
   }
   footer a{color:var(--ink3); text-decoration:none}
@@ -515,7 +522,6 @@
       grid-template-columns:auto 1fr; grid-auto-rows:auto; height:auto;
       padding-top:8px; padding-bottom:10px; row-gap:8px;
     }
-    .logo .sub{display:none}
     .tabs{justify-self:end; min-width:0; max-width:100%; flex-wrap:wrap; justify-content:flex-end}
     .tab{padding:7px 8px; font-size:13px}
     .langsel{padding:5px 4px; margin-left:2px; max-width:96px}
@@ -535,8 +541,8 @@
   }
   @media(max-width:420px){
     .role-en{white-space:normal}
-    .personrow{grid-template-columns:28px minmax(0,1fr)}
-    .pav{width:28px; height:28px}
+    .personrow{grid-template-columns:42px minmax(0,1fr)}
+    .pav{width:42px; height:42px}
     .ydist{gap:8px}
   }
   @media (prefers-reduced-motion: reduce){
@@ -560,12 +566,12 @@
   </section>
 </noscript>
 <header class="top">
+  <div class="mstripe" aria-hidden="true"></div>
   <div class="wrap">
     <div class="logo">
       <div class="bars"><span></span><span></span><span></span></div>
       <div>
         <h1 data-i18n="title">围场履历</h1>
-        <div class="sub">PADDOCKCV.COM</div>
       </div>
     </div>
     <nav class="tabs">
@@ -585,13 +591,8 @@
   <section class="view on" id="view-grid">
     <div class="hero">
       <div class="eyebrow">2026 · F1 / F2 / WEC / FE / F1 ACADEMY</div>
-      <h2 data-i18n="hero_h">谁在围场的工程席位上，他们如何走到这里</h2>
+      <h2 data-i18n="hero_h">通往围场之路</h2>
       <p id="rosterscope"></p>
-      <div class="quickfilters" data-i18n-aria="qf_aria" aria-label="数据状态">
-        <span data-i18n="qf_public">公开人员</span>
-        <span data-i18n="qf_photos">头像资源</span>
-        <span data-i18n="qf_lowconf">低置信度标注</span>
-      </div>
     </div>
     <div class="seriesboard" id="rosterboard"></div>
   </section>
@@ -726,7 +727,7 @@ const srcLabel = (title, url) => {
 };
 const I18N = {
 zh:{
-  title:"围场履历",foot_contrib:"补充人员信息",hero_h:"谁在围场的工程席位上，他们如何走到这里",
+  title:"围场履历",foot_contrib:"补充人员信息",hero_h:"通往围场之路",
   tab_roster:"阵容",tab_roles:"岗位地图",tab_routes:"入行路径",
   search_ph:"搜索人员 / 车队 / 岗位",search_aria:"搜索人员、车队或岗位",
   qf_aria:"数据状态",qf_public:"公开人员",qf_photos:"头像资源",qf_lowconf:"低置信度标注",
@@ -757,7 +758,7 @@ zh:{
   ],
 },
 en:{
-  title:"Paddock CV",foot_contrib:"Contribute person info",hero_h:"Who holds every engineering seat in the paddock — and how they got there",
+  title:"Paddock CV",foot_contrib:"Contribute person info",hero_h:"The road to the pit wall",
   tab_roster:"Roster",tab_roles:"Role map",tab_routes:"Entry paths",
   search_ph:"Search people / teams / roles",search_aria:"Search people, teams or roles",
   qf_aria:"Data status",qf_public:"Public people",qf_photos:"Avatars",qf_lowconf:"Low-confidence flags",
@@ -788,7 +789,7 @@ en:{
   ],
 },
 ja:{
-  title:"Paddock CV",foot_contrib:"情報を提供する",hero_h:"パドックのエンジニア席は誰のものか、そしてどう辿り着いたのか",
+  title:"Paddock CV",foot_contrib:"情報を提供する",hero_h:"ピットウォールへの道",
   tab_roster:"ロースター",tab_roles:"ロールマップ",tab_routes:"キャリア経路",
   search_ph:"人・チーム・職種を検索",search_aria:"人・チーム・職種を検索",
   qf_aria:"データ状態",qf_public:"公開人員",qf_photos:"アバター",qf_lowconf:"低信頼度ラベル",
@@ -812,7 +813,7 @@ ja:{
   bucket:l=>`${l} 年`,
 },
 de:{
-  title:"Paddock CV",foot_contrib:"Personendaten beitragen",hero_h:"Wer jeden Engineering-Sitz im Paddock hält – und wie sie dorthin kamen",
+  title:"Paddock CV",foot_contrib:"Personendaten beitragen",hero_h:"Der Weg an die Boxenmauer",
   tab_roster:"Kader",tab_roles:"Rollenkarte",tab_routes:"Einstiegswege",
   search_ph:"Personen / Teams / Rollen suchen",search_aria:"Personen, Teams oder Rollen suchen",
   qf_aria:"Datenstatus",qf_public:"Öffentliche Personen",qf_photos:"Avatare",qf_lowconf:"Niedrige Konfidenz",
@@ -836,7 +837,7 @@ de:{
   bucket:l=>`${l} J.`,
 },
 fr:{
-  title:"Paddock CV",foot_contrib:"Contribuer des infos",hero_h:"Qui occupe chaque poste d'ingénierie du paddock — et comment ils y sont arrivés",
+  title:"Paddock CV",foot_contrib:"Contribuer des infos",hero_h:"Le chemin vers le muret",
   tab_roster:"Effectif",tab_roles:"Carte des rôles",tab_routes:"Parcours d'entrée",
   search_ph:"Rechercher personnes / équipes / postes",search_aria:"Rechercher personnes, équipes ou postes",
   qf_aria:"État des données",qf_public:"Personnes publiques",qf_photos:"Avatars",qf_lowconf:"Confiance faible",
@@ -860,7 +861,7 @@ fr:{
   bucket:l=>`${l} ans`,
 },
 es:{
-  title:"Paddock CV",foot_contrib:"Aportar información",hero_h:"Quién ocupa cada puesto de ingeniería del paddock, y cómo llegó hasta allí",
+  title:"Paddock CV",foot_contrib:"Aportar información",hero_h:"El camino al muro de boxes",
   tab_roster:"Plantilla",tab_roles:"Mapa de roles",tab_routes:"Vías de entrada",
   search_ph:"Buscar personas / equipos / puestos",search_aria:"Buscar personas, equipos o puestos",
   qf_aria:"Estado de datos",qf_public:"Personas públicas",qf_photos:"Avatares",qf_lowconf:"Confianza baja",
@@ -884,7 +885,7 @@ es:{
   bucket:l=>`${l} años`,
 },
 it:{
-  title:"Paddock CV",foot_contrib:"Contribuisci informazioni",hero_h:"Chi occupa ogni posto da ingegnere nel paddock, e come ci è arrivato",
+  title:"Paddock CV",foot_contrib:"Contribuisci informazioni",hero_h:"La strada verso il muretto",
   tab_roster:"Organico",tab_roles:"Mappa dei ruoli",tab_routes:"Percorsi d'ingresso",
   search_ph:"Cerca persone / team / ruoli",search_aria:"Cerca persone, team o ruoli",
   qf_aria:"Stato dei dati",qf_public:"Persone pubbliche",qf_photos:"Avatar",qf_lowconf:"Bassa confidenza",
@@ -996,6 +997,10 @@ function imageUrl(url, fallbackText=""){
   }
   return localImageUrl(raw);
 }
+// insert a space at Latin/CJK boundaries so mixed strings don't run together
+const cjks = s => String(s||"")
+  .replace(/([A-Za-z0-9\u00C0-\u024F).,%#])(?=[\u3040-\u30FF\u4E00-\u9FFF])/g,"$1 ")
+  .replace(/([\u3040-\u30FF\u4E00-\u9FFF])(?=[A-Za-z0-9\u00C0-\u024F(#])/g,"$1 ");
 // bilingual name: English + 中文 (zh suffix only shown in the zh locale)
 const nm = (en,zh) => (zh && LOCALE==="zh") ? `${en}<span class="zh">${zh}</span>` : en;
 const driversBi = e => (e.drivers_2026||[]).map((d,i)=>nm(d,(e.drivers_zh||[])[i])).join(" · ") || t("whole_team");
@@ -1047,7 +1052,7 @@ function profileKey(seriesId, teamName, name, roleKey=""){
   return [seriesId, teamName, name, roleKey].map(x=>String(x||"").normalize("NFKD").toLowerCase().replace(/[^\w]+/g," ").trim()).join("|");
 }
 function seriesColor(id){
-  return ({f1:"var(--accent)", f2:"var(--a2)", "wec-le-mans":"var(--a3)", "f1-academy":"var(--a4)", "formula-e":"var(--a5)"}[id] || "var(--a6)");
+  return ({f1:"var(--a1)", f2:"var(--a2)", "wec-le-mans":"var(--a3)", "f1-academy":"var(--a4)", "formula-e":"var(--a5)"}[id] || "var(--a6)");
 }
 function seriesTitle(s){
   return ({
@@ -1076,7 +1081,7 @@ function driverLine(drivers=[]){
   }).join(" · ");
 }
 function teamLogo(url, light=false, invert=false){
-  return url ? `<img class="teamlogo ${light?"light":""} ${invert?"invert":""}" src="${escAttr(imageUrl(url))}" alt="" loading="lazy" decoding="async">` : "";
+  return url ? `<img class="teamlogo ${/res\.cloudinary\.com/.test(url)?"wm":""} ${invert?"invert":""}" src="${escAttr(imageUrl(url))}" alt="" loading="lazy" decoding="async">` : "";
 }
 function leadershipRoleZh(role=""){
   const map = {
@@ -1470,7 +1475,7 @@ function buildF1Section(filter=""){
 	      series_zh:"一级方程式",
 	      named,
 	      html:`<article class="rosterteam">
-	        <div class="rosterhd"><span class="mark" style="background:${t.color}"></span>${teamLogo(t.logo_url, false, t.logo_invert)}<div><div class="tn">${nm(t.name,t.name_zh)}</div><div class="td">${driverText} · ${race.length}/2 RE · ${engRefs} refs</div></div></div>
+	        <div class="rosterhd"><span class="mark" style="background:${t.color}"></span>${teamLogo(t.logo_url, false, t.logo_invert)}<div><div class="tn">${nm(t.name,t.name_zh)}</div><div class="td">${cjks(driverText)}</div></div></div>
 	        ${blocks}
 	      </article>`
     };
@@ -1508,7 +1513,7 @@ function buildOtherSeriesSection(s, filter=""){
         series_zh:s.name_zh||s.name,
         named,
         html:`<article class="rosterteam">
-          <div class="rosterhd"><span class="mark" style="background:${seriesColor(s.id)}"></span><div><div class="tn">#${entry.car_number} ${entry.entrant}</div><div class="td">${entry.class_name} · ${entry.car} · ${drivers.join(" / ")}</div></div></div>
+          <div class="rosterhd"><span class="mark" style="background:${seriesColor(s.id)}"></span><div><div class="tn">#${entry.car_number} ${entry.entrant}</div><div class="td">${cjks(`${entry.class_name} · ${entry.car} · ${drivers.join(" / ")}`)}</div></div></div>
           ${publicPeopleBlocks(named) || notFound()}
         </article>`
       };
@@ -1541,7 +1546,7 @@ function buildOtherSeriesSection(s, filter=""){
       series_zh:s.name_zh||s.name,
       named,
       html:`<article class="rosterteam">
-        <div class="rosterhd"><span class="mark" style="background:${seriesColor(s.id)}"></span>${teamLogo(roster.logo_url, true)}<div><div class="tn">${name}</div><div class="td">${drivers||""}</div></div></div>
+        <div class="rosterhd"><span class="mark" style="background:${seriesColor(s.id)}"></span>${teamLogo(roster.logo_url, true)}<div><div class="tn">${name}</div><div class="td">${cjks(drivers||"")}</div></div></div>
         ${publicPeopleBlocks(named) || notFound()}
       </article>`
     };
@@ -1902,7 +1907,7 @@ function renderPathChart(){
     groups[k].push(e.years_to_race_engineer);
   });
   const maxYear=Math.max(18,...PATH_ENG.map(e=>e.years_to_race_engineer));
-  const w=760,h=320,pl=54,pr=154,pt=24,pb=48;
+  const w=760,h=320,pl=54,pr=26,pt=24,pb=48;
   const iw=w-pl-pr, ih=h-pt-pb;
   const sx=x=>pl+(x/maxYear)*iw;
   const sy=p=>pt+(1-p/100)*ih;
@@ -1922,18 +1927,19 @@ function renderPathChart(){
     }
     const d=pts.map((p,i)=>`${i?"L":"M"}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(" ");
     const last=pts[pts.length-1];
-    return `<path d="${d}" fill="none" stroke="${a.color}" stroke-width="3" stroke-linecap="round"></path>
-      ${vals.map(v=>`<circle cx="${sx(v)}" cy="${sy(vals.filter(x=>x<=v).length/vals.length*100)}" r="3.5" fill="${a.color}"></circle>`).join("")}
-      <text class="chartlabel" x="${last[0]+10}" y="${last[1]+4+(idx%4-1.5)*13}" fill="${a.color}">${a.badge} · ${vals.length}</text>`;
-  }).join("");
+    return {svg:`<path d="${d}" fill="none" stroke="${a.color}" stroke-width="3" stroke-linecap="round"></path>
+      ${vals.map(v=>`<circle cx="${sx(v)}" cy="${sy(vals.filter(x=>x<=v).length/vals.length*100)}" r="3.5" fill="${a.color}"></circle>`).join("")}`,
+      key:`<span><i style="background:${a.color}"></i>${a.badge||a.label} · ${vals.length}</span>`};
+  });
+  const legend = lines.map(l=>l.key).join("");
   host.innerHTML=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${t("chart_aria")}">
     ${grid}
     <line class="axis" x1="${pl}" y1="${pt}" x2="${pl}" y2="${pt+ih}"></line>
     <line class="axis" x1="${pl}" y1="${pt+ih}" x2="${pl+iw}" y2="${pt+ih}"></line>
-    ${lines}
+    ${lines.map(l=>l.svg).join("")}
     <text class="charttext" x="${pl+iw/2}" y="${h-8}" text-anchor="middle">${t("chart_x")}</text>
     <text class="charttext" transform="translate(14 ${pt+ih/2}) rotate(-90)" text-anchor="middle">${t("chart_y")}</text>
-  </svg>`;
+  </svg><div class="chartlegend">${legend}</div>`;
 }
 
 /* ---------- nav + search ---------- */
