@@ -579,6 +579,29 @@ es:{"中级":"Nivel medio","中级到高级":"De medio a sénior","中高级":"M
 it:{"中级":"Livello intermedio","中级到高级":"Da intermedio a senior","中高级":"Intermedio-alto","入门到中级":"Da junior a intermedio","入门到高级":"Da junior a senior","最高技术层":"Vertice tecnico","管理层":"Management","高级":"Senior","高级管理":"Alta dirigenza","中":"Media","中高":"Medio-alta","很高":"Molto alta","极高":"Estremamente alta","高":"Alta","高到很高":"Da alta a molto alta","RE 之后的高级席位":"Posizione senior dopo il RE","RE 前一站 / 核心跳板":"Ultima tappa prima del RE / trampolino chiave","专项入口 / 支撑岗位":"Ingresso specialistico / ruolo di supporto","专项路线":"Percorso specialistico","专项跳板":"Trampolino specialistico","分析入口 / 横向跳板":"Ingresso analisi / trampolino laterale","工厂入口 / 专项路线":"Ingresso in fabbrica / percorso specialistico","工厂入口 / 跳板":"Ingresso in fabbrica / trampolino","常见入口":"Ingresso comune","目标岗位":"Ruolo obiettivo","终点 / 管理晋升":"Traguardo / promozione manageriale"}
 };
 const sc = v => { v = String(v||"").trim(); if(!v || LOCALE==="zh") return v; const m = SCALES[LOCALE]; return (m && m[v]) || v; };
+
+/* en-pivot rescue for zh-only structured values in non-zh locales:
+   career categories, period markers (约/至/至今), photo-credit boilerplate. */
+const CAT_EN = {"电动方程式":"Formula E","WEC / 勒芒 24 小时":"WEC / Le Mans 24h"};
+const CJK_RE = /[一-鿿]/;
+const zhTok = s => {
+  s = String(s||"");
+  if(LOCALE==="zh" || !CJK_RE.test(s)) return s;
+  return s
+    .replace(/^[一-鿿][^\/]*\/\s*(?=[A-Za-z])/, "")
+    .replace(/至今/g,"present").replace(/^至/,"until ").replace(/约\s*/g,"c. ")
+    .replace(/官网/g,"official site").replace(/媒体图/g,"media photo").replace(/水印图/g,"watermarked")
+    .replace(/存档/g,"archive").replace(/本地缓存/g,"local cache")
+    .replace(/，/g,", ").replace(/（/g," (").replace(/）/g,")")
+    .replace(/\s+/g," ").trim();
+};
+/* zh-written source titles carry no meaning for non-zh readers: show the host */
+const srcLabel = (title, url) => {
+  if(LOCALE!=="zh" && CJK_RE.test(String(title||""))){
+    try{ return new URL(url).hostname.replace(/^www\./,""); }catch{ return url||""; }
+  }
+  return title||url||"";
+};
 const I18N = {
 zh:{
   title:"围场履历",foot_contrib:"补充人员信息",
@@ -858,7 +881,7 @@ const driversZh = e => (e.drivers_zh||[]).filter(Boolean).join("、") || (e.driv
 // age: exact "NN 岁" or estimated "约 NN 岁"; empty when undocumented
 const ageStr = e => (e.age!=null) ? `${e.age_approx?t("age_approx")+" ":""}${e.age} ${t("age_suffix")}`.trim() : "";
 const confLabel = e => e.confidence==="low" ? t("low_conf") : "";
-const confBadge = e => e.confidence==="low" ? `<span class="confbadge low" title="资料核验置信度">${confLabel(e)}</span>` : "";
+const confBadge = e => e.confidence==="low" ? `<span class="confbadge low" title="${t("low_conf")}">${confLabel(e)}</span>` : "";
 // collapse doubled sentence punctuation ("。。") and stray spaces in a zh note
 function cleanZh(t){
   if(!t) return "";
@@ -1562,7 +1585,7 @@ function openPerson(id){
   const isPlainRole = e.profile_kind==="leadership"||e.profile_kind==="f1-engineering"||e.profile_kind==="series-person";
   const chips=[
     (!isPlainRole && a.label) ? `<span class="abadge" style="color:#0a0c10;background:${a.color}">${a.label}</span>` : "",
-    (e.nationality_zh||e.nationality)?`<span class="badge">${e.nationality_zh||e.nationality}</span>`:"",
+    (e.nationality_zh||e.nationality)?`<span class="badge">${LOCALE==="zh"?(e.nationality_zh||e.nationality):(e.nationality||zhTok(e.nationality_zh))}</span>`:"",
     confBadge(e),
     typeof e.years_to_race_engineer==="number"?`<span class="badge">${t("yrs_to_re", e.years_to_race_engineer)}</span>`:"",
     e.f1_debut_year?`<span class="badge">${t("debut", e.f1_debut_year)}</span>`:"",
@@ -1574,18 +1597,18 @@ function openPerson(id){
     const line2=(LOCALE==="zh"
       ? [ed.degree_zh||ed.degree, ed.field_zh||ed.field]
       : [ed.degree||ed.degree_zh, ed.field||ed.field_zh]).filter(Boolean).join(" · ");
-    const extra=[ed.years, LOCALE==="zh"?(ed.note_zh||ed.note):(ed.note||ed.note_zh)].filter(Boolean).join(" · ");
+    const extra=[zhTok(ed.years), LOCALE==="zh"?(ed.note_zh||ed.note):(ed.note||ed.note_zh)].filter(Boolean).join(" · ");
     return `<div class="edu"><div class="ei">${nm(ed.institution||"—",ed.institution_zh)}</div>
      ${line2?`<div class="ed">${line2}</div>`:""}
      ${extra?`<div class="ed eyr">${extra}</div>`:""}
      ${(!line2&&!extra)?`<div class="ed">${t("no_detail")}</div>`:""}
-     ${ed.source_url?`<a class="edusrc" href="${ed.source_url}" target="_blank" rel="noopener">${t("source_pfx")} · ${ed.source_title||ed.source_url}</a>`:""}</div>`;
+     ${ed.source_url?`<a class="edusrc" href="${ed.source_url}" target="_blank" rel="noopener">${t("source_pfx")} · ${srcLabel(ed.source_title, ed.source_url)}</a>`:""}</div>`;
   }).join("")
     :`<div class="notes">${t("not_found")}</div>`;
   const tl=(e.career||[]).length?`<div class="tl">${e.career.map(c=>
     `<div class="tli"><div class="dot" style="background:${catColor(c.category)}"></div>
-      <div class="yr">${[c.from,c.to].filter(Boolean).join(" – ")}</div>
-      <div class="org">${nm(c.org||"—",c.org_zh)}<span class="cat">${LOCALE==="zh"?(c.category_zh||c.category||""):(c.category||c.category_zh||"")}</span></div>
+      <div class="yr">${[c.from,c.to].filter(Boolean).map(zhTok).join(" – ")}</div>
+      <div class="org">${nm(zhTok(c.org)||"—",c.org_zh)}<span class="cat">${LOCALE==="zh"?(c.category_zh||c.category||""):(c.category||CAT_EN[c.category_zh]||c.category_zh||"")}</span></div>
       <div class="ro">${roleHtml(c)}</div></div>`).join("")}</div>`
     :`<div class="notes">${t("not_found")}</div>`;
   const ov = ovP(e.id);
@@ -1604,15 +1627,15 @@ function openPerson(id){
   const dav = p&&p.local
     ? `<div><img class="dav" src="${escAttr(imageUrl(p.local, drawerInitials))}" ${drawerPhotoAttrs}>${(p.license||p.credit)?`<div class="dcap">${provLabel}${p.license?(" · "+p.license):""}</div>`:""}</div>`
     : remotePhotoRaw
-    ? `<div><img class="dav" src="${escAttr(imageUrl(remotePhotoRaw, drawerInitials))}" ${drawerPhotoAttrs}>${(p?.credit||e.photo_credit)?`<div class="dcap">${p?.credit||e.photo_credit}</div>`:""}</div>`
+    ? `<div><img class="dav" src="${escAttr(imageUrl(remotePhotoRaw, drawerInitials))}" ${drawerPhotoAttrs}>${(p?.credit||e.photo_credit)?`<div class="dcap">${zhTok(p?.credit||e.photo_credit)}</div>`:""}</div>`
     : `<div class="dav ph" style="background:${e.team_color}">${drawerInitials}</div>`;
   const photoSrc = p&&p.src_page
-    ? `<a class="src" href="${p.src_page}" target="_blank" rel="noopener"><span class="st">${p.provenance==="wikimedia"?t("photo_free"):t("photo_media")}</span>${p.credit||p.src_page}${p.license?(" · "+p.license):""}</a>`
+    ? `<a class="src" href="${p.src_page}" target="_blank" rel="noopener"><span class="st">${p.provenance==="wikimedia"?t("photo_free"):t("photo_media")}</span>${zhTok(p.credit)||p.src_page}${p.license?(" · "+p.license):""}</a>`
     : e.profile_source_url
-    ? `<a class="src" href="${e.profile_source_url}" target="_blank" rel="noopener"><span class="st">${t("photo_profile")}</span>${e.photo_credit||e.profile_source_url}</a>`
+    ? `<a class="src" href="${e.profile_source_url}" target="_blank" rel="noopener"><span class="st">${t("photo_profile")}</span>${zhTok(e.photo_credit)||e.profile_source_url}</a>`
     : "";
   const srcs=photoSrc+(e.sources||[]).map(s=>
-    `<a class="src" href="${s.url}" target="_blank" rel="noopener"><span class="st">${s.type||"link"}</span>${s.title||s.url}</a>`).join("");
+    `<a class="src" href="${s.url}" target="_blank" rel="noopener"><span class="st">${s.type||"link"}</span>${srcLabel(s.title, s.url)}</a>`).join("");
   const drawerNick = e.aka&&e.aka.length ? `<div class="dnick">${t("aka")}${e.aka.join(" / ")}</div>` : "";
 	  drawer.innerHTML=`
 	    <div class="dh"><div class="stripe" style="background:${e.team_color}"></div>
