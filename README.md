@@ -159,6 +159,14 @@ how to reproduce these numbers for any other paddock role.
 - **Photos are never redistributed.** The pipeline stores them locally with
   full provenance; the licence does not and cannot cover them.
 
+## Agent skill
+
+The dashboard's layout system and search behavior are documented as a reusable
+agent skill in [`skills/paddock-dashboard/SKILL.md`](skills/paddock-dashboard/SKILL.md)
+— drop it into your agent's skills directory to build (or extend) a
+Paddock-CV-style roster UI: Apple-dark tokens, team cards, person rows,
+hash-routed CV drawer, and the single-input live search.
+
 ## Contributing
 
 **Know something about a paddock engineer that the site is missing?** That's

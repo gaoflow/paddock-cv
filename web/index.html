@@ -181,13 +181,12 @@
   .rosterteam:hover{background:var(--s3)}
   .rosterhd{display:grid; grid-template-columns:auto auto minmax(0,1fr); align-items:center; gap:12px; margin-bottom:14px}
   .rosterhd .mark{width:3px; height:38px; border-radius:2px; display:block}
-  .teamlogo{
-    width:64px; height:44px; object-fit:contain; flex:none;
-    background:var(--s3); border-radius:12px; padding:6px 9px;
-  }
+  .teamlogo{width:64px; height:44px; object-fit:contain; flex:none; background:none}
   .teamlogo.dim{opacity:.9}
-  /* sources with a baked-in white background: lift luminance-inverted art onto the
-     chip (screen drops the black that was white), hue-rotate restores hue */
+  /* near-black official marks ship as logowhite on a team-color chip */
+  .teamlogo.chip{border-radius:12px; padding:6px 10px}
+  /* sources with a baked-in white background: luminance-invert + screen drops the
+     white plate (no element background here — the filter would invert it too) */
   .teamlogo.wm{filter:invert(1) hue-rotate(180deg); mix-blend-mode:screen; opacity:.92}
   .tn{font-size:16px; font-weight:700; letter-spacing:-.2px; line-height:1.3}
   .tn .zh{font-weight:400; color:var(--ink4); margin-left:6px; font-size:12.5px}
@@ -203,15 +202,16 @@
   .postitle span{font-weight:400; letter-spacing:.2px; text-transform:none; color:var(--ink4)}
 
   .personrow{
+    --tc:var(--accent);
     display:grid; grid-template-columns:48px minmax(0,1fr); align-items:center; gap:10px;
     padding:7px 8px; margin:0 -8px; border-radius:12px; cursor:pointer;
     transition:background .15s ease; position:relative;
   }
   .personrow::after{
     content:'›'; position:absolute; right:10px; top:50%; transform:translateY(-50%);
-    color:var(--ink4); font-size:15px; opacity:0; transition:opacity .15s ease;
+    color:var(--tc); font-size:15px; opacity:0; transition:opacity .15s ease;
   }
-  .personrow:hover{background:var(--s3)}
+  .personrow:hover{background:color-mix(in srgb, var(--tc) 14%, var(--s2))}
   .personrow:hover::after{opacity:1}
   .personrow:focus-visible{outline:2px solid rgba(0,113,227,.85); outline-offset:0}
   .pav{
@@ -754,7 +754,7 @@ zh:{
   ],
 },
 en:{
-  title:"Paddock CV",foot_contrib:"Contribute person info",hero_h:"The road to the pit wall",
+  title:"Paddock CV",foot_contrib:"Contribute person info",hero_h:"The road to the paddock",
   tab_roster:"Roster",tab_roles:"Role map",tab_routes:"Entry paths",
   search_ph:"Search people / teams / roles",search_aria:"Search people, teams or roles",
   qf_aria:"Data status",qf_public:"Public people",qf_photos:"Avatars",qf_lowconf:"Low-confidence flags",
@@ -785,7 +785,7 @@ en:{
   ],
 },
 ja:{
-  title:"Paddock CV",foot_contrib:"情報を提供する",hero_h:"ピットウォールへの道",
+  title:"Paddock CV",foot_contrib:"情報を提供する",hero_h:"パドックへの道",
   tab_roster:"ロースター",tab_roles:"ロールマップ",tab_routes:"キャリア経路",
   search_ph:"人・チーム・職種を検索",search_aria:"人・チーム・職種を検索",
   qf_aria:"データ状態",qf_public:"公開人員",qf_photos:"アバター",qf_lowconf:"低信頼度ラベル",
@@ -809,7 +809,7 @@ ja:{
   bucket:l=>`${l} 年`,
 },
 de:{
-  title:"Paddock CV",foot_contrib:"Personendaten beitragen",hero_h:"Der Weg an die Boxenmauer",
+  title:"Paddock CV",foot_contrib:"Personendaten beitragen",hero_h:"Der Weg ins Fahrerlager",
   tab_roster:"Kader",tab_roles:"Rollenkarte",tab_routes:"Einstiegswege",
   search_ph:"Personen / Teams / Rollen suchen",search_aria:"Personen, Teams oder Rollen suchen",
   qf_aria:"Datenstatus",qf_public:"Öffentliche Personen",qf_photos:"Avatare",qf_lowconf:"Niedrige Konfidenz",
@@ -833,7 +833,7 @@ de:{
   bucket:l=>`${l} J.`,
 },
 fr:{
-  title:"Paddock CV",foot_contrib:"Contribuer des infos",hero_h:"Le chemin vers le muret",
+  title:"Paddock CV",foot_contrib:"Contribuer des infos",hero_h:"Le chemin vers le paddock",
   tab_roster:"Effectif",tab_roles:"Carte des rôles",tab_routes:"Parcours d'entrée",
   search_ph:"Rechercher personnes / équipes / postes",search_aria:"Rechercher personnes, équipes ou postes",
   qf_aria:"État des données",qf_public:"Personnes publiques",qf_photos:"Avatars",qf_lowconf:"Confiance faible",
@@ -857,7 +857,7 @@ fr:{
   bucket:l=>`${l} ans`,
 },
 es:{
-  title:"Paddock CV",foot_contrib:"Aportar información",hero_h:"El camino al muro de boxes",
+  title:"Paddock CV",foot_contrib:"Aportar información",hero_h:"El camino al paddock",
   tab_roster:"Plantilla",tab_roles:"Mapa de roles",tab_routes:"Vías de entrada",
   search_ph:"Buscar personas / equipos / puestos",search_aria:"Buscar personas, equipos o puestos",
   qf_aria:"Estado de datos",qf_public:"Personas públicas",qf_photos:"Avatares",qf_lowconf:"Confianza baja",
@@ -881,7 +881,7 @@ es:{
   bucket:l=>`${l} años`,
 },
 it:{
-  title:"Paddock CV",foot_contrib:"Contribuisci informazioni",hero_h:"La strada verso il muretto",
+  title:"Paddock CV",foot_contrib:"Contribuisci informazioni",hero_h:"La strada verso il paddock",
   tab_roster:"Organico",tab_roles:"Mappa dei ruoli",tab_routes:"Percorsi d'ingresso",
   search_ph:"Cerca persone / team / ruoli",search_aria:"Cerca persone, team o ruoli",
   qf_aria:"Stato dei dati",qf_public:"Persone pubbliche",qf_photos:"Avatar",qf_lowconf:"Bassa confidenza",
@@ -1077,7 +1077,8 @@ function driverLine(drivers=[]){
   }).join(" · ");
 }
 function teamLogo(url, light=false, invert=false, teamBg=""){
-  return url ? `<img class="teamlogo ${/res\.cloudinary\.com/.test(url)?"wm":""} ${invert?"invert":""}"${teamBg?` style="background:color-mix(in srgb, ${escAttr(teamBg)} 78%, #000)"`:""} src="${escAttr(imageUrl(url))}" alt="" loading="lazy" decoding="async">` : "";
+  const chip = /logowhite/.test(url||"") && teamBg;
+  return url ? `<img class="teamlogo ${/res\.cloudinary\.com/.test(url)?"wm":""} ${chip?"chip":""}"${chip?` style="background:color-mix(in srgb, ${escAttr(teamBg)} 72%, #000)"`:""} src="${escAttr(imageUrl(url))}" alt="" loading="lazy" decoding="async">` : "";
 }
 function leadershipRoleZh(role=""){
   const map = {
@@ -1277,12 +1278,25 @@ function getSeriesPeople(){
   return SERIES_PEOPLE_CACHE;
 }
 
+// row avatars prefer the ~112px pre-rendered thumb (static bundle) — an 8x
+// browser downscale of a noisy source looks crunchy, a real thumb doesn't
+function avatarThumbUrl(raw){
+  const s = String(raw||"").trim();
+  if(!s) return "";
+  if(/^https?:\/\//i.test(s)) return (window.IMGTHUMB && window.IMGTHUMB[s]) || "";
+  if(window.IMGMAP && !s.startsWith("local:") && s.startsWith("img/")){
+    const base = s.split("/").pop().replace(/\.[a-z0-9]+$/i, ".jpg");
+    return "img/thumb/" + base;
+  }
+  return "";
+}
 function personAvatar(p, cls="pav"){
   const rawUrl = (p.photo&&p.photo.local) || (p.photo&&p.photo.src_img) || p.photo_url || "";
   const avatarInitials = initials(p.name||"?");
   const url = imageUrl(rawUrl, avatarInitials);
+  const thumb = avatarThumbUrl(rawUrl);
   const pos = p.photo_pos || "";
-  if(url) return `<div class="${cls} lazy-bg" data-bg="${escAttr(url)}" data-initials="${escAttr(avatarInitials)}"${pos?` data-bg-pos="${escAttr(pos)}"`:""}></div>`;
+  if(url) return `<div class="${cls} lazy-bg" data-bg="${escAttr(thumb||url)}"${thumb?` data-bg-full="${escAttr(url)}"`:""} data-initials="${escAttr(avatarInitials)}"${pos?` data-bg-pos="${escAttr(pos)}"`:""}></div>`;
   return `<div class="${cls}" style="background:${p.team_color||"var(--accent)"}">${initials(p.name||"?")}</div>`;
 }
 function loadAvatar(el){
@@ -1299,9 +1313,14 @@ function loadAvatar(el){
     delete el.dataset.loading;
   };
   img.onerror = ()=>{
+    delete el.dataset.loading;
+    if(el.dataset.bgFull && el.dataset.bg !== el.dataset.bgFull){
+      el.dataset.bg = el.dataset.bgFull;   // thumb missing -> retry the full asset
+      loadAvatar(el);
+      return;
+    }
     el.dataset.error = "1";
     el.dataset.loaded = "1";
-    delete el.dataset.loading;
   };
   img.src = url;
 }
@@ -1332,7 +1351,7 @@ function titleRoleHtml(r){
 function personRow(p, context="", contextEn=""){
 	  const tags = p.confidence==="low" ? `<span class="ptag warn">${t("low_conf")}</span>` : "";
 	  const nick = p.aka&&p.aka.length ? `<div class="pnick">${t("aka")}${p.aka.join(" / ")}</div>` : "";
-	  return `<div class="personrow" data-id="${p.id}" tabindex="0" role="button">
+	  return `<div class="personrow" data-id="${p.id}" tabindex="0" role="button"${p.team_color?` style="--tc:${escAttr(p.team_color)}"`:""}>
 	    ${personAvatar(p)}
 	    <div>
 	      <div class="pnamebar"><div class="pname">${nm(p.name,p.name_zh)}</div>${tags?`<div class="ptags">${tags}</div>`:""}</div>
