@@ -42,20 +42,11 @@ that made it repeatable at the scale of ~480 people across five series.
   identity without misattribution, when to stop and record "not public".
 - **Playwright regression tests** that run against the sample dataset.
 
-## ⚠️ Data notice
-
-**The real dataset is not in this repository and never will be.** It contains
-~480 living people's aggregated career histories and locally cached
-editorial photos — publishing it would be a privacy and copyright problem,
-full stop. What ships instead:
-
-- `data/sample/` — a small, obviously **fictional** dataset (fake names such
-  as *Alex Example*, fake teams, `example.com` sources) that is structurally
-  identical to the real one, so everything in this repo runs out of the box.
-- The **methodology** to build your own dataset from public sources, which is
-  the actually valuable part.
-
-This project is not affiliated with the FIA, Formula 1, FOM, or any team.
+The real dataset (~480 living people's aggregated career histories and cached
+editorial photos) stays out of this repository for privacy and copyright
+reasons. `data/sample/` ships a structurally identical, obviously fictional
+dataset (*Alex Example*, fake teams, `example.com` sources) so everything runs
+out of the box. Not affiliated with the FIA, Formula 1, FOM, or any team.
 
 ## Quickstart
 
