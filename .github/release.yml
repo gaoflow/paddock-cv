@@ -1,0 +1,18 @@
+changelog:
+  exclude:
+    labels:
+      - skip-release-notes
+  categories:
+    - title: Interface
+      labels:
+        - interface
+    - title: Research and data model
+      labels:
+        - research
+        - data-model
+    - title: Documentation
+      labels:
+        - documentation
+    - title: Other changes
+      labels:
+        - "*"

@@ -35,6 +35,13 @@ ROLES_FILE = DATA / "trackside_roles.json"
 ROLES = json.loads(ROLES_FILE.read_text()) if ROLES_FILE.exists() else {}
 SERIES_FILE = DATA / "series_engineering.json"
 SERIES = json.loads(SERIES_FILE.read_text()) if SERIES_FILE.exists() else {}
+F1_ROLE_TAXONOMY_FILE = DATA / "f1_role_taxonomy.json"
+F1_ROLE_TAXONOMY = json.loads(F1_ROLE_TAXONOMY_FILE.read_text()) if F1_ROLE_TAXONOMY_FILE.exists() else {}
+if F1_ROLE_TAXONOMY.get("role_templates"):
+    SERIES.setdefault("f1_team_engineering", {})["role_templates"] = F1_ROLE_TAXONOMY["role_templates"]
+    for series in SERIES.get("motorsport_series", []):
+        if series.get("id") == "f1":
+            series["role_ladder"] = [role["key"] for role in F1_ROLE_TAXONOMY["role_templates"]]
 PHOTOS_FILE = DATA / "photos_merged.json"
 PHOTOS = json.loads(PHOTOS_FILE.read_text()) if PHOTOS_FILE.exists() else {}
 AGES_FILE = DATA / "ages.json"
@@ -51,25 +58,31 @@ LE_MANS_ENTRIES_FILE = DATA / "wec_le_mans_entries_2026.json"
 LE_MANS_ENTRIES = json.loads(LE_MANS_ENTRIES_FILE.read_text()) if LE_MANS_ENTRIES_FILE.exists() else {}
 F1_PUBLIC_ENGINEERING_FILE = DATA / "f1_public_engineering_people.json"
 F1_PUBLIC_ENGINEERING = json.loads(F1_PUBLIC_ENGINEERING_FILE.read_text()) if F1_PUBLIC_ENGINEERING_FILE.exists() else {}
-REF_DATE = datetime.date(2026, 6, 15)  # ages computed as of this date (see ages.json)
+F1_PUBLIC_ENGINEERING_EXPANSION_FILE = DATA / "f1_public_engineering_people_expansion.json"
+F1_PUBLIC_ENGINEERING_EXPANSION = json.loads(F1_PUBLIC_ENGINEERING_EXPANSION_FILE.read_text()) if F1_PUBLIC_ENGINEERING_EXPANSION_FILE.exists() else {}
+for team_id, people in F1_PUBLIC_ENGINEERING_EXPANSION.get("teams", {}).items():
+    F1_PUBLIC_ENGINEERING.setdefault("teams", {}).setdefault(team_id, []).extend(people)
+CURRENT_YEAR = datetime.date.today().year
 OUT = ROOT / "web" / "data.json"
 
 
-def compute_age(eid):
-    """Return (age, approx) for an engineer id, or (None, False) if undocumented.
-
-    Exact age from a full `dob`; otherwise REF_DATE.year - birth_year flagged approx.
-    """
+def get_birth_year(eid):
     rec = AGES.get(eid)
     if not rec:
-        return None, False
+        return None
     if rec.get("dob"):
-        d = datetime.date.fromisoformat(rec["dob"])
-        age = REF_DATE.year - d.year - ((REF_DATE.month, REF_DATE.day) < (d.month, d.day))
-        return age, bool(rec.get("approx"))
+        return datetime.date.fromisoformat(rec["dob"]).year
     if rec.get("birth_year"):
-        return REF_DATE.year - int(rec["birth_year"]), bool(rec.get("approx", True))
-    return None, False
+        return int(rec["birth_year"])
+    return None
+
+
+def compute_age(eid):
+    """Return current year minus birth year, plus the source approximation flag."""
+    year = get_birth_year(eid)
+    if year is None:
+        return None, False
+    return CURRENT_YEAR - year, bool(AGES[eid].get("approx", "dob" not in AGES[eid]))
 
 teams_meta = json.loads(TEAMS_FILE.read_text())
 
@@ -407,6 +420,7 @@ for t in teams_meta["teams"]:
         e["team_color"] = t["color"]
         e["team_zh"] = team_zh
         e["photo"] = PHOTOS.get(e["id"])
+        e["birth_year"] = get_birth_year(e["id"])
         e["age"], e["age_approx"] = compute_age(e["id"])
 
         a = e.get("route_archetype", "unknown")
@@ -473,8 +487,10 @@ out = {
         for p in (
             SERIES_PEOPLE_FILE,
             SERIES_PEOPLE_ENRICHMENT_FILE,
+            F1_ROLE_TAXONOMY_FILE,
             PHOTOS_FILE,
             F1_PUBLIC_ENGINEERING_FILE,
+            F1_PUBLIC_ENGINEERING_EXPANSION_FILE,
             LEADER_PROFILES_FILE,
         )
         if p.exists()

@@ -22,6 +22,10 @@
 （Alex Example 这类假名、假车队、example.com 来源），保证开箱即跑。
 本项目与 FIA、Formula 1、FOM 及任何车队均无关联。
 
+当前公开版本加入了 **26 类 F1 工程岗位分类**，按实际职责区分技术管理、
+机械设计、空气动力学、车辆动力学、仿真、控制、轮胎、可靠性和赛道工程，
+不再仅依赖各车队不统一的职位名称。
+
 ## 快速开始
 
 需要 Python 3.10+（纯标准库，无需 pip），跑测试则需要 Node 20+。
@@ -58,7 +62,11 @@ F1E_DATA_DIR=data/sample python3 server.py              # http://localhost:8000
 
 完整文档：[docs/SEARCH_METHODOLOGY.md](docs/SEARCH_METHODOLOGY.md)（中文）·
 [docs/DATA_METHOD.md](docs/DATA_METHOD.md) ·
+[F1 岗位分类研究](docs/research/f1-role-taxonomy-strategy-2026-07-16.md) ·
 [docs/ROUTES.md](docs/ROUTES.md)（研究结论摘要）。
+
+版本记录：[CHANGELOG.md](CHANGELOG.md) ·
+[GitHub Releases](https://github.com/gaoflow/paddock-cv/releases)。
 
 ## 主要发现（来自真实数据集）
 

@@ -1,0 +1,32 @@
+{
+  "last_verified": "2026-07-16",
+  "method": "Normalize by documented remit first and raw title second. Scope and seniority are attributes, not separate role families.",
+  "role_templates": [
+    {"key": "technical-executive", "title": "Chief Technical Officer / Overall Technical Director", "title_zh": "首席技术官 / 总技术负责人", "importance_score": 100, "seniority_zh": "最高技术层", "difficulty_zh": "极高", "why_zh": "统筹整车技术战略、研发能力和跨部门技术责任。"},
+    {"key": "technical-director-engineering-design", "title": "Technical Director, Engineering & Design", "title_zh": "工程与设计技术总监", "importance_score": 98, "seniority_zh": "技术管理层", "difficulty_zh": "极高", "why_zh": "领导机械设计、结构、研发、测试验证和工厂工程支持。"},
+    {"key": "technical-director-aerodynamics", "title": "Technical Director / Head of Aerodynamics", "title_zh": "空气动力技术总监 / 主管", "importance_score": 98, "seniority_zh": "技术管理层", "difficulty_zh": "极高", "why_zh": "负责车队空气动力学研发方向与组织。"},
+    {"key": "technical-director-performance", "title": "Technical Director / Director of Performance", "title_zh": "性能技术总监 / 性能总监", "importance_score": 97, "seniority_zh": "技术管理层", "difficulty_zh": "极高", "why_zh": "统筹车辆性能、仿真、软件及工厂到赛道的性能闭环。"},
+    {"key": "chief-designer", "title": "Chief Designer / Head of Car Design", "title_zh": "首席设计师 / 赛车设计主管", "importance_score": 95, "seniority_zh": "技术管理层", "difficulty_zh": "极高", "why_zh": "负责整车架构、设计协调和详细工程交付。"},
+    {"key": "head-trackside-engineering", "title": "Head / Director of Trackside or Race Engineering", "title_zh": "赛道 / 比赛工程主管", "importance_score": 94, "seniority_zh": "赛道工程管理层", "difficulty_zh": "极高", "why_zh": "统一两台赛车的赛道工程标准、人员和工厂支持。"},
+    {"key": "trackside-reliability-engineer", "title": "Trackside Reliability Engineer", "title_zh": "赛道可靠性工程师", "importance_score": 82, "seniority_zh": "中高级", "difficulty_zh": "很高", "why_zh": "实时判断可靠性、技术合规、降载和停车风险。"},
+    {"key": "race-engineer", "title": "Race Engineer", "title_zh": "赛车工程师", "importance_score": 92, "seniority_zh": "高级", "difficulty_zh": "极高", "why_zh": "单车工程负责人和车手主要沟通窗口。"},
+    {"key": "performance-engineer", "title": "Trackside Performance Engineer", "title_zh": "赛道性能工程师", "importance_score": 86, "seniority_zh": "中高级", "difficulty_zh": "很高", "why_zh": "通过遥测、设定和子系统分析支持单车赛车工程师。"},
+    {"key": "strategy-engineer", "title": "Race Strategy Engineer / Strategist", "title_zh": "比赛策略工程师 / 策略师", "importance_score": 84, "seniority_zh": "中高级", "difficulty_zh": "很高", "why_zh": "负责轮胎、进站窗口、对手行为和实时情景决策。"},
+    {"key": "trackside-controls-engineer", "title": "Trackside Controls Engineer", "title_zh": "赛道控制工程师", "importance_score": 78, "seniority_zh": "中高级", "difficulty_zh": "很高", "why_zh": "支持赛车控制参数、电子控制和赛道可靠性。"},
+    {"key": "trackside-power-unit-engineer", "title": "Trackside Power Unit Performance / Systems Engineer", "title_zh": "赛道动力单元性能 / 系统工程师", "importance_score": 80, "seniority_zh": "中高级", "difficulty_zh": "很高", "why_zh": "管理动力模式、能量、冷却、性能和 PU 可靠性接口。"},
+    {"key": "tyre-performance-engineer", "title": "Tyre Performance Engineer", "title_zh": "轮胎性能工程师", "importance_score": 78, "seniority_zh": "中高级", "difficulty_zh": "很高", "why_zh": "分析轮胎温度、压力、磨损、退化并支持设定和策略。"},
+    {"key": "trackside-aero-engineer", "title": "Trackside Aero / Aero Performance Engineer", "title_zh": "赛道气动 / 气动性能工程师", "importance_score": 78, "seniority_zh": "中高级", "difficulty_zh": "很高", "why_zh": "负责气动相关性、升级验证和赛道气动数据。"},
+    {"key": "aerodynamics-development-engineer", "title": "Aerodynamics Development / CFD Engineer", "title_zh": "空气动力研发 / CFD 工程师", "importance_score": 82, "seniority_zh": "入门到高级", "difficulty_zh": "很高", "why_zh": "通过 CFD、风洞和气动热力学开发赛车气动性能。"},
+    {"key": "mechanical-design-engineer", "title": "Mechanical Design Engineer", "title_zh": "机械设计工程师", "importance_score": 80, "seniority_zh": "入门到高级", "difficulty_zh": "很高", "why_zh": "负责底盘、车身、悬架、转向、制动等部件的设计交付。"},
+    {"key": "vehicle-dynamics-engineer", "title": "Vehicle Dynamics / Vehicle Performance Engineer", "title_zh": "车辆动力学 / 车辆性能工程师", "importance_score": 84, "seniority_zh": "中高级", "difficulty_zh": "很高", "why_zh": "研究车辆行为、属性目标、圈速、操稳和设定。"},
+    {"key": "simulation-modelling-engineer", "title": "Simulation & Modelling Engineer", "title_zh": "仿真与建模工程师", "importance_score": 80, "seniority_zh": "入门到高级", "difficulty_zh": "很高", "why_zh": "开发圈速、车辆动力学和性能预测模型与方法。"},
+    {"key": "simulator-test-engineer", "title": "Driver-in-the-Loop Simulator / Test Engineer", "title_zh": "驾驶员在环模拟器 / 测试工程师", "importance_score": 76, "seniority_zh": "入门到高级", "difficulty_zh": "高", "why_zh": "配置并执行 DiL 测试，维护模拟器和控制系统集成。"},
+    {"key": "systems-electronics-engineer", "title": "Systems & Electronics Engineer", "title_zh": "系统与电子工程师", "importance_score": 78, "seniority_zh": "入门到高级", "difficulty_zh": "很高", "why_zh": "负责电气电子架构、传感器、线束、数据记录和系统集成。"},
+    {"key": "control-systems-engineer", "title": "Control Systems / Embedded Controls Engineer", "title_zh": "控制系统 / 嵌入式控制工程师", "importance_score": 80, "seniority_zh": "入门到高级", "difficulty_zh": "很高", "why_zh": "开发实时控制算法、模型、嵌入式软件和 HiL 验证。"},
+    {"key": "performance-software-data-engineer", "title": "Performance Software & Data Engineer", "title_zh": "性能软件与数据工程师", "importance_score": 76, "seniority_zh": "入门到高级", "difficulty_zh": "高", "why_zh": "构建遥测、仿真、分析和比赛决策工具。"},
+    {"key": "reliability-validation-engineer", "title": "Reliability, Test & Validation Engineer", "title_zh": "可靠性、测试与验证工程师", "importance_score": 78, "seniority_zh": "入门到高级", "difficulty_zh": "很高", "why_zh": "负责故障分析、寿命、强度、台架验证和设计反馈。"},
+    {"key": "power-unit-integration-engineer", "title": "Power Unit Integration / Powertrain Engineer", "title_zh": "动力单元集成 / 动力总成工程师", "importance_score": 80, "seniority_zh": "中高级", "difficulty_zh": "很高", "why_zh": "负责动力单元包装、冷却、底盘接口和整车集成。"},
+    {"key": "tyre-modelling-engineer", "title": "Tyre Science / Tyre Modelling Engineer", "title_zh": "轮胎科学 / 轮胎建模工程师", "importance_score": 76, "seniority_zh": "入门到高级", "difficulty_zh": "很高", "why_zh": "开发轮胎物理模型、参数化和仿真相关性。"},
+    {"key": "sporting-race-operations", "title": "Sporting & Race Operations", "title_zh": "赛事与比赛运营", "importance_score": 74, "seniority_zh": "管理层", "difficulty_zh": "很高", "why_zh": "管理赛事规则、FIA 接口、赛队运行和赛道运营；作为工程相邻岗位单列。"}
+  ]
+}

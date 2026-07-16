@@ -32,6 +32,18 @@ test("health endpoint reports a seeded database", async () => {
   assert.ok(health.counts.sources >= 1, "sources should be seeded");
 });
 
+test("sample build exposes the expanded F1 role taxonomy", async () => {
+  const data = await getJson("/data.json");
+  const roles = data.f1_team_engineering?.role_templates || [];
+  assert.equal(roles.length, 26, "the public sample should expose all 26 normalized F1 role families");
+  assert.ok(roles.some((role) => role.key === "vehicle-dynamics-engineer"));
+  assert.ok(roles.some((role) => role.key === "reliability-validation-engineer"));
+  assert.ok(roles.some((role) => role.key === "tyre-modelling-engineer"));
+  const alex = data.engineers.find((engineer) => engineer.id === "alex-example");
+  assert.equal(alex.birth_year, 1990, "profiles should retain their sourced birth year");
+  assert.equal(alex.age, new Date().getFullYear() - 1990, "age should be rebuilt from the current year");
+});
+
 test("roster board renders team cards and person rows", async () => {
   const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
   try {
@@ -56,6 +68,12 @@ test("profile drawer opens from a person row and closes with Escape", async () =
     await row.click();
     await page.locator("#drawer.on").waitFor();
     assert.ok((await page.locator("#drawer").innerText()).length > 20, "drawer should show profile content");
+    assert.equal(await page.locator("#drawer .chips").count(), 0, "profile fact tags should not render");
+    assert.equal(
+      await page.locator("#drawer .sec .lab", { hasText: "Entry route" }).count(),
+      0,
+      "entry-route analysis should not be repeated in person details"
+    );
     await page.keyboard.press("Escape");
     await page.locator("#drawer.on").waitFor({ state: "hidden" });
   } finally {
