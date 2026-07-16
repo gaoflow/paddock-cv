@@ -1,5 +1,5 @@
 {
-  "_note": "Fictional sample ages (dob invented). approx flag demo included.",
+  "_note": "Fictional birth facts; builds display current year minus birth year.",
   "alex-example": {
     "dob": "1990-03-14"
   },

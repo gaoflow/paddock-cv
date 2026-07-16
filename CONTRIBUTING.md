@@ -61,6 +61,13 @@ good reason. The frontend is one HTML file with no build step — likewise.
 - [ ] `npm test` passes against the sample dataset
 - [ ] No absolute paths, usernames, or machine-specific config
 - [ ] New behaviour covered by a test if it's testable
+- [ ] Role taxonomy changes include a primary-source responsibility or careers link
+- [ ] PR title describes the user-facing or research outcome
+
+PRs run the public sample build and browser suite. Maintainer release PRs use
+GitHub auto-merge: the `test` check must pass, then GitHub squash-merges the
+branch and deletes it. Releases summarize substantive changes from the merged
+PRs; timestamp-only and formatting-only churn is not part of the release process.
 
 ### Style
 

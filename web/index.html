@@ -431,12 +431,6 @@
     padding:3px 12px; font-size:12.5px; color:var(--ink2);
   }
   .agechip .al{font-size:11px; font-weight:600; letter-spacing:0; color:var(--ink4)}
-  .chips{max-width:1040px; margin:0 auto; padding:16px 32px 30px; display:flex; flex-wrap:wrap; gap:8px}
-  .badge{
-    font-size:13px; line-height:1.4; color:var(--ink2);
-    background:var(--s3); border-radius:9999px; padding:3px 12px;
-  }
-  .abadge{font-size:11.5px; font-weight:600; border-radius:9999px; padding:3px 12px; letter-spacing:0}
   .confbadge{
     font-size:11.5px; border-radius:9999px; padding:3px 12px;
     background:var(--s2); border:1px solid rgba(212,160,84,.35); color:#d4a054;
@@ -556,7 +550,7 @@
     .dh .dhrow{grid-template-columns:64px minmax(0,1fr); gap:16px; padding:48px 14px 24px}
     .dav{width:64px; height:64px}
     .dcap{max-width:64px}
-    .chips,.agewrap{padding-left:14px; padding-right:14px}
+    .agewrap{padding-left:14px; padding-right:14px}
     .dbody{padding:28px 14px 72px}
     .drawer{top:8px; width:calc(100vw - 16px); max-height:calc(100vh - 16px); border-radius:6px}
     .close{top:10px; right:12px}
@@ -1825,17 +1819,6 @@ let lastFocusedRow = null;
 function openPerson(id){
   lastFocusedRow = document.activeElement?.closest?.(".personrow") || null;
   const e=PERSON_BY_ID[id]; if(!e) return;
-  const a=ARCHE[e.route_archetype]||ARCHE.unknown;
-  // no generic identity tags; keep the career-route class (the study's subject)
-  // and specific, meaningful facts (nationality, pairing, RE-timeline, low-conf).
-  const isPlainRole = e.profile_kind==="leadership"||e.profile_kind==="f1-engineering"||e.profile_kind==="series-person";
-  const chips=[
-    (!isPlainRole && a.label) ? `<span class="abadge" style="color:#0a0c10;background:${a.color}">${a.label}</span>` : "",
-    (e.nationality_zh||e.nationality)?`<span class="badge">${LOCALE==="zh"?(e.nationality_zh||e.nationality):(e.nationality||zhTok(e.nationality_zh))}</span>`:"",
-    confBadge(e),
-    typeof e.years_to_race_engineer==="number"?`<span class="badge">${t("yrs_to_re", e.years_to_race_engineer)}</span>`:"",
-    e.f1_debut_year?`<span class="badge">${t("debut", e.f1_debut_year)}</span>`:"",
-  ].filter(Boolean).join("");
   const ageChip = e.age!=null
     ? `<div class="agewrap"><span class="agechip"><span class="al">${t("age_label")}</span><b>${e.age}</b> ${t("age_suffix")}${e.age_approx?`<span class="al">${t("age_approx")}</span>`:""}</span></div>`
     : "";
@@ -1907,11 +1890,9 @@ function openPerson(id){
         </div>
       </div>
       ${ageChip}
-      <div class="chips">${chips}</div>
     </div>
     <div class="dbody">
       <div class="sec main"><div class="lab">${t("lab_career")}</div>${tl}</div>
-      ${(!isPlainRole && a.desc)?`<div class="sec main"><div class="lab">${t("lab_route")}</div><div style="font-size:16px;line-height:1.6;color:var(--ink2)">${a.desc}</div></div>`:""}
       ${hls?`<div class="sec main"><div class="lab">${t("lab_highlights")}</div>${hls}</div>`:""}
       ${notesText?`<div class="sec main"><div class="lab">${t("lab_notes")}</div><div class="notes">${paras(notesText)}</div></div>`:""}
       <div class="sec side"><div class="lab edulab">${t("lab_edu")}</div>${edu}</div>

@@ -160,6 +160,7 @@ def main():
           name_zh text,
           nationality text,
           nationality_zh text,
+          birth_year integer,
           json text not null
         );
 
@@ -448,8 +449,8 @@ def main():
         for e in t.get("engineers", []):
             cur.execute(
                 """
-                insert or replace into people(id, name, name_zh, nationality, nationality_zh, json)
-                values(?, ?, ?, ?, ?, ?)
+                insert or replace into people(id, name, name_zh, nationality, nationality_zh, birth_year, json)
+                values(?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     e["id"],
@@ -457,6 +458,7 @@ def main():
                     e.get("name_zh"),
                     e.get("nationality"),
                     e.get("nationality_zh"),
+                    e.get("birth_year"),
                     json.dumps(e, ensure_ascii=False),
                 ),
             )
@@ -595,8 +597,8 @@ def main():
             aid = f"f1:{source_team_id}:leader:{idx}"
             cur.execute(
                 """
-                insert or replace into people(id, name, name_zh, nationality, nationality_zh, json)
-                values(?, ?, ?, ?, ?, ?)
+                insert or replace into people(id, name, name_zh, nationality, nationality_zh, birth_year, json)
+                values(?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     pid,
@@ -604,6 +606,7 @@ def main():
                     leader.get("person_zh"),
                     "",
                     "",
+                    profile.get("birth_year"),
                     json.dumps(leader, ensure_ascii=False),
                 ),
             )
@@ -699,8 +702,8 @@ def main():
             person_json["series_id"] = "f1"
             cur.execute(
                 """
-                insert or replace into people(id, name, name_zh, nationality, nationality_zh, json)
-                values(?, ?, ?, ?, ?, ?)
+                insert or replace into people(id, name, name_zh, nationality, nationality_zh, birth_year, json)
+                values(?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     pid,
@@ -708,6 +711,7 @@ def main():
                     person.get("person_zh", ""),
                     person.get("nationality", ""),
                     person.get("nationality_zh", ""),
+                    person.get("birth_year"),
                     json.dumps(person_json, ensure_ascii=False),
                 ),
             )
@@ -1005,10 +1009,10 @@ def main():
                 }
                 cur.execute(
                     """
-                    insert or replace into people(id, name, name_zh, nationality, nationality_zh, json)
-                    values(?, ?, ?, ?, ?, ?)
+                    insert or replace into people(id, name, name_zh, nationality, nationality_zh, birth_year, json)
+                    values(?, ?, ?, ?, ?, ?, ?)
                     """,
-                    (pid, member.get("name"), "", "", "", json.dumps(person_json, ensure_ascii=False)),
+                    (pid, member.get("name"), "", "", "", member.get("birth_year"), json.dumps(person_json, ensure_ascii=False)),
                 )
                 if src:
                     cur.execute(

@@ -380,7 +380,7 @@ def main():
     # -- photos / ages / logos / run logs (empty-ish placeholders) ------------
     write("photos_merged.json", {})  # no photos: dashboard falls back to initials
     write("ages.json", {
-        "_note": "Fictional sample ages (dob invented). approx flag demo included.",
+        "_note": "Fictional birth facts; builds display current year minus birth year.",
         "alex-example": {"dob": "1990-03-14"},
         "casey-placeholder": {"birth_year": 1985, "approx": True},
     })

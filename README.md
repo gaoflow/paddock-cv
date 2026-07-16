@@ -9,6 +9,7 @@
 [![Data: private · sample shipped](https://img.shields.io/badge/data-private%20·%20sample%20shipped-orange)](#-data-notice)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](#quickstart)
 [![Live: paddockcv.com](https://img.shields.io/badge/live-paddockcv.com-brightgreen)](https://paddockcv.com)
+[![Release: v1.1.0](https://img.shields.io/badge/release-v1.1.0-2ea44f)](https://github.com/gaoflow/paddock-cv/releases)
 
 English | [简体中文](./README.zh-CN.md)
 
@@ -35,6 +36,10 @@ that made it repeatable at the scale of ~480 people across five series.
   accept/reject decision.
 - **A career-ladder data model** — person → education → career entries →
   role assignment → sources, compiled to JSON and seeded into SQLite.
+- **A 26-family F1 role taxonomy** — technical leadership, design,
+  aerodynamics, vehicle dynamics, simulation, controls, tyres, reliability
+  and trackside engineering are normalized by documented remit, not title
+  string alone.
 - **A single-file dashboard** (`web/index.html`, zero build step) — roster
   board for five series, role map, entry-route analytics, per-person CV
   drawer. UI localised into 7 languages.
@@ -99,7 +104,11 @@ Two rules carry the whole thing:
 
 Full write-ups: [docs/SEARCH_METHODOLOGY.md](docs/SEARCH_METHODOLOGY.md) ·
 [docs/DATA_METHOD.md](docs/DATA_METHOD.md) ·
+[docs/research/F1 role taxonomy](docs/research/f1-role-taxonomy-strategy-2026-07-16.md) ·
 [docs/ROUTES.md](docs/ROUTES.md) (findings summary).
+
+Release history: [CHANGELOG.md](CHANGELOG.md) ·
+[GitHub Releases](https://github.com/gaoflow/paddock-cv/releases).
 
 ## Repository layout
 
@@ -114,6 +123,7 @@ web/index.html          the entire frontend (no build step)
 tests/                  Playwright regression suite
 docs/                   methodology + findings
 data/sample/            fictional demo data (the only data that ships)
+  f1_role_taxonomy.json public 26-family F1 role reference
 ```
 
 ## Data model
