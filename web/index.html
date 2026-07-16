@@ -380,16 +380,19 @@
   .step .st{font-size:16.5px; font-weight:600; letter-spacing:-.2px}
   .step .sd{font-size:14px; color:var(--ink3); line-height:1.55; margin-top:2px}
 
-  /* ---------- person CV (full page) ---------- */
+  /* ---------- person CV modal ---------- */
   .scrim{position:fixed; inset:0; background:rgba(0,0,0,.6); opacity:0; visibility:hidden; pointer-events:none; transition:opacity .2s ease, visibility 0s; z-index:50}
   .scrim.on{opacity:1; visibility:visible; pointer-events:auto; transition:opacity .2s ease}
   .drawer{
-    position:fixed; inset:0; z-index:60; background:var(--canvas);
+    position:fixed; top:24px; left:50%; z-index:60;
+    width:min(1104px,calc(100vw - 48px)); max-height:calc(100vh - 48px);
+    border:1px solid var(--hair2); border-radius:8px; background:var(--canvas);
+    box-shadow:0 24px 80px rgba(0,0,0,.55);
     overflow-y:auto; overscroll-behavior:contain;
-    opacity:0; visibility:hidden; pointer-events:none; transform:translateY(12px);
+    opacity:0; visibility:hidden; pointer-events:none; transform:translate(-50%,12px);
     transition:opacity .2s ease, transform .2s ease, visibility 0s;
   }
-  .drawer.on{opacity:1; visibility:visible; pointer-events:auto; transform:none; transition:opacity .2s ease, transform .2s ease}
+  .drawer.on{opacity:1; visibility:visible; pointer-events:auto; transform:translate(-50%,0); transition:opacity .2s ease, transform .2s ease}
   .dh{
     border-bottom:1px solid var(--hair);
     background:
@@ -402,7 +405,7 @@
   }
   .dh .dhrow>div:last-child{min-width:0}
   .close{
-    position:fixed; top:16px; right:24px; z-index:70;
+    position:absolute; top:16px; right:24px; z-index:70;
     width:40px; height:40px; border-radius:9999px; cursor:pointer;
     background:var(--s3); border:1px solid transparent; color:var(--ink2);
     font-size:14px; line-height:1; display:flex; align-items:center; justify-content:center;
@@ -411,7 +414,7 @@
   .close:hover{color:var(--ink); background:var(--carbon)}
   .dav{
     width:96px; height:96px; border-radius:9999px; object-fit:cover; object-position:center 22%;
-    background:var(--s2); display:block;
+    background-color:var(--s2); background-repeat:no-repeat; display:block;
   }
   .dav.ph{display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:700; color:#fff}
   .dcap{font-size:11px; color:var(--ink4); margin-top:8px; text-align:center; max-width:96px; line-height:1.45}
@@ -555,6 +558,7 @@
     .dcap{max-width:64px}
     .chips,.agewrap{padding-left:14px; padding-right:14px}
     .dbody{padding:28px 14px 72px}
+    .drawer{top:8px; width:calc(100vw - 16px); max-height:calc(100vh - 16px); border-radius:6px}
     .close{top:10px; right:12px}
     .route-row{grid-template-columns:minmax(0,1.2fr) minmax(0,1.4fr) 44px minmax(0,1fr); gap:8px; font-size:12px}
   }
@@ -1270,6 +1274,10 @@ function makeSeriesPeople(){
           unresolvedProfile?.note_zh
         ].filter(Boolean);
         const id=`series-${seriesId}-${slug(team.team_name)}-${slug(m.name)}-${slug(m.role_key||m.role)}`;
+        const entryNumbers = String(m.entry_number||"").split("/").map(value=>value.trim()).filter(Boolean);
+        const entry = entryNumbers.length ? (D.series_entries?.[seriesId]?.entries||[]).find(item=>
+          entryNumbers.includes(String(item.car_number)) && slug(item.entrant)===slug(team.team_name)
+        ) : null;
         out.push({
           id,
           profile_kind:"series-person",
@@ -1284,6 +1292,8 @@ function makeSeriesPeople(){
           name:m.name,
           name_zh:"",
           photo:m.photo || enriched.photo || null,
+          photo_pos:m.photo_pos||"",
+          photo_size:m.photo_size||"",
           public_profiles:publicProfiles||[],
           profile_lookup_status:m.profile_lookup_status || (unresolvedProfile ? "no_trusted_result" : (publicProfiles?.length ? "profile_found" : "not_enriched_yet")),
           role:m.role,
@@ -1292,7 +1302,7 @@ function makeSeriesPeople(){
           confidence:m.confidence||"high",
           confidence_zh:m.confidence==="high"?"高":"公开",
           route_archetype:"unknown",
-          drivers_2026:[],
+          drivers_2026:(entry?.drivers||[]).map(driver=>driver.name),
           drivers_zh:[],
           education:m.education||[],
           career:(m.career&&m.career.length) ? m.career : (enriched.career_summary_zh||m.career_summary_zh) ? [{
@@ -1343,9 +1353,10 @@ function personAvatar(p, cls="pav"){
   const rawUrl = (p.photo&&p.photo.local) || (p.photo&&p.photo.src_img) || p.photo_url || "";
   const avatarInitials = initials(p.name||"?");
   const url = imageUrl(rawUrl, avatarInitials);
-  const thumb = avatarThumbUrl(rawUrl);
+  const thumb = p.photo_size ? "" : avatarThumbUrl(rawUrl);
   const pos = p.photo_pos || "";
-  if(url) return `<div class="${cls} lazy-bg" data-bg="${escAttr(thumb||url)}"${thumb?` data-bg-full="${escAttr(url)}"`:""} data-initials="${escAttr(avatarInitials)}"${pos?` data-bg-pos="${escAttr(pos)}"`:""}></div>`;
+  const size = p.photo_size || "";
+  if(url) return `<div class="${cls} lazy-bg" data-bg="${escAttr(thumb||url)}"${thumb?` data-bg-full="${escAttr(url)}"`:""} data-initials="${escAttr(avatarInitials)}"${pos?` data-bg-pos="${escAttr(pos)}"`:""}${size?` data-bg-size="${escAttr(size)}"`:""}></div>`;
   return `<div class="${cls}" style="background:${p.team_color||"var(--accent)"}">${initials(p.name||"?")}</div>`;
 }
 function loadAvatar(el){
@@ -1358,6 +1369,7 @@ function loadAvatar(el){
   img.onload = ()=>{
     el.style.backgroundImage = `url("${url.replace(/"/g,'\\"')}")`;
     if(el.dataset.bgPos) el.style.backgroundPosition = el.dataset.bgPos;
+    if(el.dataset.bgSize) el.style.backgroundSize = el.dataset.bgSize;
     el.dataset.loaded = "1";
     delete el.dataset.loading;
   };
@@ -1449,7 +1461,7 @@ function peopleForEntry(seriesId, entry){
   const key = slug(entry.entrant);
   return getSeriesPeople().filter(p=>
     p.series_id===seriesId &&
-    ((p.entry_number && String(p.entry_number)===String(entry.car_number)) || (!p.entry_number && p.team_id===key))
+    ((p.entry_number && String(p.entry_number).split("/").map(value=>value.trim()).includes(String(entry.car_number))) || (!p.entry_number && p.team_id===key))
   );
 }
 function rawSeriesPeopleCount(seriesId){
@@ -1492,25 +1504,68 @@ function peopleBlocksByRole(people){
     .map(([,items])=>positionBlock(items[0].role_zh||items[0].role, items[0].role, items))
     .join("");
 }
-// canonical F1 position order — rendered identically for every team so the
-// grid is comparable. Core slots always show; empty ones display 未找到.
+function f1RoleFamily(person){
+  const key = person.role_key || "";
+  const title = person.role || "";
+  const normalized = new Set([
+    "technical-executive","technical-director-engineering-design","technical-director-aerodynamics",
+    "technical-director-performance","chief-designer","head-trackside-engineering",
+    "trackside-reliability-engineer","race-engineer","performance-engineer","strategy-engineer",
+    "trackside-controls-engineer","trackside-power-unit-engineer","tyre-performance-engineer",
+    "trackside-aero-engineer","aerodynamics-development-engineer","mechanical-design-engineer",
+    "vehicle-dynamics-engineer","simulation-modelling-engineer","simulator-test-engineer",
+    "systems-electronics-engineer","control-systems-engineer","performance-software-data-engineer",
+    "reliability-validation-engineer","power-unit-integration-engineer","tyre-modelling-engineer",
+    "sporting-race-operations"
+  ]);
+  if(normalized.has(key)) return key;
+  if(key==="technical-leadership"){
+    if(/chief designer|head of design|design director/i.test(title)) return "chief-designer";
+    if(/engineering|chassis project|car design/i.test(title)) return "technical-director-engineering-design";
+    if(/sporting|operations|operating officer/i.test(title)) return "sporting-race-operations";
+    return "technical-executive";
+  }
+  if(key==="head-race-engineering"){
+    return /sporting|operations|racing director/i.test(title) ? "sporting-race-operations" : "head-trackside-engineering";
+  }
+  if(key==="chief-race-engineer") return "head-trackside-engineering";
+  if(key==="performance-engineer"){
+    return /director|head|chief|deputy technical/i.test(title) ? "technical-director-performance" : key;
+  }
+  if(key==="test-simulation-engineer") return "simulation-modelling-engineer";
+  if(key==="systems-controls-engineer"){
+    return /advisor/i.test(title) ? "technical-executive" : "systems-electronics-engineer";
+  }
+  if(key==="pu-engineer") return "power-unit-integration-engineer";
+  if(key==="tyre-aero-trackside"){
+    return /director|head/i.test(title) ? "technical-director-aerodynamics" : "trackside-aero-engineer";
+  }
+  return key;
+}
+// A team card lists only publicly named people. The complete role taxonomy is
+// shown in the career-path view, so an unfilled research cell is not presented
+// to users as a real vacancy or as proof that the role has no incumbent.
 const F1_SLOTS = [
-  {title:"领队 / 管理层", title_en:"Team Principal / Leadership", core:true, get:c=>c.leaders},
-  {title:"技术总监 / 工程负责人", title_en:"Technical Director / CTO / Head of Engineering", core:true, get:c=>c.eng["technical-leadership"]||[]},
-  {title:"赛事工程主管 / 首席 RE", title_en:"Head / Director of Race Engineering / Chief Race Engineer", core:true, get:c=>[...(c.eng["head-race-engineering"]||[]), ...c.chiefs]},
-  {title:"策略工程师", title_en:"Strategy Engineer / Strategist", core:true, get:c=>c.eng["strategy-engineer"]||[]},
-  {title:"车辆性能工程", title_en:"Performance Engineer", core:true, get:c=>c.eng["performance-engineer"]||[]},
-  {title:"仿真 / 模拟器 / 测试", title_en:"Simulation / Simulator / Test Engineer", core:false, get:c=>c.eng["test-simulation-engineer"]||[]},
-  {title:"动力单元 / 系统 / 控制", title_en:"Power Unit / Systems / Controls Engineer", core:false, get:c=>[...(c.eng["pu-engineer"]||[]), ...(c.eng["systems-controls-engineer"]||[])]},
-  {title:"气动 / 轮胎 / 赛道性能", title_en:"Trackside Aero / Tyre / Trackside Performance Engineer", core:false, get:c=>c.eng["tyre-aero-trackside"]||[]},
-  {title:"车手赛车工程师", title_en:"Race Engineer", core:true, get:c=>c.race},
+  {title:"领队 / 管理层", title_en:"Team Principal / Leadership", get:c=>c.leaders},
+  {title:"最高技术管理", title_en:"Chief Technical Officer / Overall Technical Director", get:c=>c.eng["technical-executive"]||[]},
+  {title:"工程设计 / 首席设计", title_en:"Engineering & Design Technical Leadership / Chief Designer", get:c=>[...(c.eng["technical-director-engineering-design"]||[]), ...(c.eng["chief-designer"]||[])]},
+  {title:"空气动力技术管理", title_en:"Aerodynamics Technical Leadership", get:c=>c.eng["technical-director-aerodynamics"]||[]},
+  {title:"性能技术管理", title_en:"Performance Technical Leadership", get:c=>c.eng["technical-director-performance"]||[]},
+  {title:"赛道 / 比赛工程管理", title_en:"Head / Director of Trackside or Race Engineering", get:c=>[...(c.eng["head-trackside-engineering"]||[]), ...c.chiefs]},
+  {title:"车手赛车工程师", title_en:"Race Engineer", get:c=>c.race},
+  {title:"比赛策略", title_en:"Race Strategy Engineer / Strategist", get:c=>c.eng["strategy-engineer"]||[]},
+  {title:"赛道性能工程", title_en:"Trackside Performance Engineering", get:c=>c.eng["performance-engineer"]||[]},
+  {title:"车辆动力学 / 车辆性能", title_en:"Vehicle Dynamics / Vehicle Performance", get:c=>c.eng["vehicle-dynamics-engineer"]||[]},
+  {title:"仿真 / 建模 / 模拟器", title_en:"Simulation / Modelling / Driver-in-the-Loop", get:c=>[...(c.eng["simulation-modelling-engineer"]||[]), ...(c.eng["simulator-test-engineer"]||[])]},
+  {title:"系统 / 控制 / 电子 / 数据", title_en:"Systems / Controls / Electronics / Performance Data", get:c=>[...(c.eng["systems-electronics-engineer"]||[]), ...(c.eng["control-systems-engineer"]||[]), ...(c.eng["trackside-controls-engineer"]||[]), ...(c.eng["performance-software-data-engineer"]||[])]},
+  {title:"动力单元 / 动力总成集成", title_en:"Power Unit / Powertrain Integration", get:c=>[...(c.eng["power-unit-integration-engineer"]||[]), ...(c.eng["trackside-power-unit-engineer"]||[])]},
+  {title:"轮胎性能 / 轮胎建模", title_en:"Tyre Performance / Tyre Modelling", get:c=>[...(c.eng["tyre-performance-engineer"]||[]), ...(c.eng["tyre-modelling-engineer"]||[])]},
+  {title:"赛道气动 / 气动研发", title_en:"Trackside Aero / Aerodynamics Development", get:c=>[...(c.eng["trackside-aero-engineer"]||[]), ...(c.eng["aerodynamics-development-engineer"]||[])]},
+  {title:"可靠性 / 测试 / 验证", title_en:"Reliability / Test / Validation", get:c=>[...(c.eng["trackside-reliability-engineer"]||[]), ...(c.eng["reliability-validation-engineer"]||[])]},
+  {title:"赛事与比赛运营", title_en:"Sporting & Race Operations", get:c=>c.eng["sporting-race-operations"]||[]},
 ];
-function slotBlock(title, titleEn, people, core){
-	  if(!people.length){
-	    return core
-	      ? `<div class="posblock"><div class="postitle">${positionTitleHtml(title, titleEn)}</div><div class="unknownrow"><b>${t("not_found_name")}</b><div class="slotlist"><span>${titleEn}</span></div></div></div>`
-	      : "";
-	  }
+function slotBlock(title, titleEn, people){
+	  if(!people.length) return "";
   return `<div class="posblock">
     <div class="postitle">${positionTitleHtml(title, titleEn)}</div>
     ${people.map(p=>personRow(p, p.role_zh||title, p.role||titleEn)).join("")}
@@ -1522,7 +1577,7 @@ function buildF1Section(filter=""){
   const engByTeam = {};
   F1_ENGINEERING.forEach(p=>{
     (engByTeam[p.team_id] ||= {});
-    (engByTeam[p.team_id][p.role_key] ||= []).push(p);
+    (engByTeam[p.team_id][f1RoleFamily(p)] ||= []).push(p);
   });
   const f = filter.trim().toLowerCase();
 	  const teams = D.teams.map(t=>{
@@ -1532,7 +1587,7 @@ function buildF1Section(filter=""){
 	    const named = [...ctx.leaders, ...F1_ENGINEERING.filter(p=>p.team_id===t.id), ...chiefs, ...race];
 	    const engRefs = ctx.leaders.length + Object.values(ctx.eng).flat().length;
 	    const driverText = (LOCALE==="zh" ? (t.drivers_zh||t.drivers||[]) : (t.drivers||t.drivers_zh||[])).join(" · ")||TR("lineup_tbd");
-	    const blocks = F1_SLOTS.map(s=>slotBlock(s.title, s.title_en, s.get(ctx), s.core)).join("");
+	    const blocks = F1_SLOTS.map(s=>slotBlock(s.title, s.title_en, s.get(ctx))).join("");
 	    return {
       ...t,
       series_name:"Formula 1",
@@ -1824,8 +1879,11 @@ function openPerson(id){
   const provLabel = p ? (p.provenance==="wikimedia"?t("free_license"):t("media_photo")) : "";
   const remotePhotoRaw = (p&&p.src_img) || e.photo_url || "";
   const drawerInitials = initials(e.name||"?");
-  const drawerPhotoAttrs = `alt="${escAttr(e.name)}" loading="lazy" decoding="async" data-fallback-color="${escAttr(e.team_color||"var(--accent)")}"`;
-  const dav = p&&p.local
+  const drawerPhotoAttrs = `alt="${escAttr(e.name)}" loading="lazy" decoding="async" data-fallback-color="${escAttr(e.team_color||"var(--accent)")}" style="object-position:${escAttr(e.photo_pos||"center 22%")}"`;
+  const framedPhotoRaw = (p&&p.local) || remotePhotoRaw;
+  const dav = e.photo_size && framedPhotoRaw
+    ? `<div><div class="dav" role="img" aria-label="${escAttr(e.name)}" style="background-image:url('${escAttr(imageUrl(framedPhotoRaw, drawerInitials))}');background-size:${escAttr(e.photo_size)};background-position:${escAttr(e.photo_pos||"center")}"></div>${(p?.license||p?.credit||e.photo_credit)?`<div class="dcap">${provLabel}${p?.license?(` · ${p.license}`):""}</div>`:""}</div>`
+    : p&&p.local
     ? `<div><img class="dav" src="${escAttr(imageUrl(p.local, drawerInitials))}" ${drawerPhotoAttrs}>${(p.license||p.credit)?`<div class="dcap">${provLabel}${p.license?(" · "+p.license):""}</div>`:""}</div>`
     : remotePhotoRaw
     ? `<div><img class="dav" src="${escAttr(imageUrl(remotePhotoRaw, drawerInitials))}" ${drawerPhotoAttrs}>${(p?.credit||e.photo_credit)?`<div class="dcap">${zhTok(p?.credit||e.photo_credit)}</div>`:""}</div>`
