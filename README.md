@@ -9,7 +9,7 @@
 [![Data: private · sample shipped](https://img.shields.io/badge/data-private%20·%20sample%20shipped-orange)](#-data-notice)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](#quickstart)
 [![Live: paddockcv.com](https://img.shields.io/badge/live-paddockcv.com-brightgreen)](https://paddockcv.com)
-[![Release: v1.1.5](https://img.shields.io/badge/release-v1.1.5-2ea44f)](https://github.com/gaoflow/paddock-cv/releases)
+[![Release: v1.1.6](https://img.shields.io/badge/release-v1.1.6-2ea44f)](https://github.com/gaoflow/paddock-cv/releases)
 
 English | [简体中文](./README.zh-CN.md)
 
