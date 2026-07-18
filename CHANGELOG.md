@@ -4,6 +4,23 @@ All notable public changes to Paddock CV are recorded here. The compiled
 real-person dataset remains private; entries below describe public code,
 methodology, schema and interface changes.
 
+## [1.1.9] - 2026-07-18
+
+### Added
+
+- An Algarve Pro Racing follow-up documenting eight current car-specific or
+  team-level engineering and mechanic records.
+- Four locally stored public static portraits verified in the rendered profile
+  dialog, including face-focused framing for environmental work photographs.
+
+### Changed
+
+- Single-source names remain held when exact-name searches resolve only to
+  unrelated namesakes; they are not promoted by relabeling low confidence as
+  medium.
+- APR and CrowdStrike by APR records now distinguish current car assignments
+  from team-level mechanics whose exact 2026 car number is not public.
+
 ## [1.1.8] - 2026-07-18
 
 ### Added
@@ -136,8 +153,9 @@ methodology, schema and interface changes.
 - Fictional sample dataset, SQLite seed layer and Playwright regression suite.
 - Research, sourcing, identity-binding and data-publication methodology.
 
-[1.1.7]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.7
+[1.1.9]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.9
 [1.1.8]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.8
+[1.1.7]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.7
 [1.1.6]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.6
 [1.1.5]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.5
 [1.1.4]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.4
