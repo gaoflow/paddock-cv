@@ -381,6 +381,7 @@
   .step .sd{font-size:14px; color:var(--ink3); line-height:1.55; margin-top:2px}
 
   /* ---------- person CV modal ---------- */
+  body.modal-open{overflow:hidden}
   .scrim{position:fixed; inset:0; background:rgba(0,0,0,.6); opacity:0; visibility:hidden; pointer-events:none; transition:opacity .2s ease, visibility 0s; z-index:50}
   .scrim.on{opacity:1; visibility:visible; pointer-events:auto; transition:opacity .2s ease}
   .drawer{
@@ -657,7 +658,7 @@
 <div class="wrap"><footer id="foot"></footer></div>
 
 <div class="scrim" id="scrim"></div>
-<aside class="drawer" id="drawer" data-i18n-aria="drawer_aria" aria-label="人员详情"></aside>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="drawer-title" tabindex="-1"></aside>
 
 <script src="imgmap.js" onerror="window.IMGMAP=window.IMGMAP"></script>
 <script src="data.js"></script>
@@ -1815,7 +1816,15 @@ function renderRoles(){
 
 /* ---------- detail drawer ---------- */
 const scrim=document.getElementById("scrim"), drawer=document.getElementById("drawer");
+const modalBackground=document.querySelectorAll("body > .top, body > .wrap");
 let lastFocusedRow = null;
+function setPersonModalOpen(open){
+  drawer.classList.toggle("on",open);
+  scrim.classList.toggle("on",open);
+  drawer.setAttribute("aria-hidden",String(!open));
+  document.body.classList.toggle("modal-open",open);
+  modalBackground.forEach(el=>{el.inert=open;});
+}
 function openPerson(id){
   lastFocusedRow = document.activeElement?.closest?.(".personrow") || null;
   const e=PERSON_BY_ID[id]; if(!e) return;
@@ -1884,7 +1893,7 @@ function openPerson(id){
 	      <button class="close" id="dclose" aria-label="${t("close_aria")}">✕</button>
 	      <div class="dhrow">${dav}
         <div>
-          <div class="dn">${nm(e.name,e.name_zh)}</div>
+          <div class="dn" id="drawer-title">${nm(e.name,e.name_zh)}</div>
           ${drawerNick}
           <div class="drole">${roleHtml(e)}<span class="role-meta">${nm(e.team_2026,e.team_zh)} · ${driversBi(e)}</span></div>
         </div>
@@ -1898,32 +1907,51 @@ function openPerson(id){
       <div class="sec side"><div class="lab edulab">${t("lab_edu")}</div>${edu}</div>
       ${srcs?`<div class="sec side"><div class="lab">${t("lab_sources")}</div>${srcs}</div>`:""}
     </div>`;
-  drawer.classList.add("on");
-  scrim.classList.add("on");
+  setPersonModalOpen(true);
   drawer.scrollTop = 0;
   try{
     if(!location.hash.startsWith("#p/") || decodeURIComponent(location.hash.slice(3))!==id){
       history.pushState(null, "", "#p/"+encodeURIComponent(id));
     }
   }catch{}
-	  document.getElementById("dclose").onclick=closeEng;
+	  const closeButton=document.getElementById("dclose");
+    closeButton.onclick=closeEng;
+    requestAnimationFrame(()=>closeButton.focus());
 	}
 function openPersonFromHash(){
   const m = location.hash.match(/^#p\/(.+)$/);
-  if(!m){ if(drawer.classList.contains("on")){ drawer.classList.remove("on"); scrim.classList.remove("on"); } return; }
+  if(!m){ if(drawer.classList.contains("on")) hidePersonModal(); return; }
   try{ getSeriesPeople(); }catch{}
   const id = decodeURIComponent(m[1]);
   if(PERSON_BY_ID[id]) openPerson(id);
 }
 window.addEventListener("popstate", openPersonFromHash);
-function closeEng(){
-  drawer.classList.remove("on");scrim.classList.remove("on");
-  try{ if(location.hash.startsWith("#p/")) history.pushState(null, "", location.pathname+location.search); }catch{}
+function hidePersonModal(){
+  setPersonModalOpen(false);
   lastFocusedRow?.focus?.();
   lastFocusedRow = null;
 }
+function closeEng(){
+  if(!drawer.classList.contains("on")) return;
+  hidePersonModal();
+  try{ if(location.hash.startsWith("#p/")) history.pushState(null, "", location.pathname+location.search); }catch{}
+}
 scrim.onclick=closeEng;
-document.addEventListener("keydown",e=>{if(e.key==="Escape")closeEng();});
+document.addEventListener("keydown",e=>{
+  if(!drawer.classList.contains("on")) return;
+  if(e.key==="Escape"){
+    e.preventDefault();
+    closeEng();
+    return;
+  }
+  if(e.key!=="Tab") return;
+  const focusable=[...drawer.querySelectorAll('a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"])')]
+    .filter(el=>el.offsetParent!==null);
+  if(!focusable.length){e.preventDefault();drawer.focus();return;}
+  const first=focusable[0],last=focusable[focusable.length-1];
+  if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+  else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+});
 document.addEventListener("error",e=>{
   const img = e.target;
   if(!(img instanceof HTMLImageElement) || !img.classList.contains("dav")) return;
