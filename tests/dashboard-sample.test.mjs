@@ -67,6 +67,14 @@ test("profile drawer opens from a person row and closes with Escape", async () =
     await row.scrollIntoViewIfNeeded();
     await row.click();
     await page.locator("#drawer.on").waitFor();
+    assert.equal(await page.locator("#drawer").getAttribute("role"), "dialog");
+    assert.equal(await page.locator("#drawer").getAttribute("aria-modal"), "true");
+    assert.equal(await page.locator("#drawer").getAttribute("aria-hidden"), "false");
+    assert.equal(await page.locator("#dclose").evaluate((el) => el === document.activeElement), true);
+    assert.equal(await page.locator("body").evaluate((el) => getComputedStyle(el).overflow), "hidden");
+    assert.equal(await page.locator("header.top").evaluate((el) => el.inert), true);
+    await page.keyboard.press("Shift+Tab");
+    assert.equal(await page.locator("#drawer").evaluate((el) => el.contains(document.activeElement)), true);
     assert.ok((await page.locator("#drawer").innerText()).length > 20, "drawer should show profile content");
     assert.equal(await page.locator("#drawer .chips").count(), 0, "profile fact tags should not render");
     assert.equal(
@@ -76,6 +84,9 @@ test("profile drawer opens from a person row and closes with Escape", async () =
     );
     await page.keyboard.press("Escape");
     await page.locator("#drawer.on").waitFor({ state: "hidden" });
+    assert.equal(await page.locator("#drawer").getAttribute("aria-hidden"), "true");
+    assert.equal(await page.locator("header.top").evaluate((el) => el.inert), false);
+    assert.equal(await row.evaluate((el) => el === document.activeElement), true);
   } finally {
     await page.close();
   }
@@ -88,6 +99,13 @@ test("mobile layout does not overflow horizontally", async () => {
     await page.locator(".personrow").first().waitFor();
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     assert.ok(overflow <= 6, `mobile page should not horizontally overflow; got ${overflow}px`);
+    const row = page.locator(".personrow").first();
+    await row.click();
+    await page.locator("#drawer.on").waitFor();
+    const modalBox = await page.locator("#drawer.on").boundingBox();
+    assert.ok(modalBox, "mobile profile modal should have a layout box");
+    assert.ok(modalBox.x >= 7 && modalBox.y >= 7, "mobile profile modal should retain viewport margins");
+    assert.ok(modalBox.width <= 376 && modalBox.height <= 828, "mobile profile modal should fit inside the viewport");
   } finally {
     await page.close();
   }

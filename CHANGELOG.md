@@ -4,6 +4,17 @@ All notable public changes to Paddock CV are recorded here. The compiled
 real-person dataset remains private; entries below describe public code,
 methodology, schema and interface changes.
 
+## [1.1.1] - 2026-07-18
+
+### Changed
+
+- Person details now use native modal-dialog semantics with an accessible
+  title, initial close-button focus and keyboard focus containment.
+- Opening a profile locks background scrolling and removes the underlying
+  dashboard from keyboard interaction; closing restores both state and focus.
+- Mobile regression coverage now verifies that profile dialogs remain within
+  the viewport margins.
+
 ## [1.1.0] - 2026-07-16
 
 ### Added
@@ -32,5 +43,6 @@ methodology, schema and interface changes.
 - Fictional sample dataset, SQLite seed layer and Playwright regression suite.
 - Research, sourcing, identity-binding and data-publication methodology.
 
+[1.1.1]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.1
 [1.1.0]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.0
 [1.0.0]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.0.0
