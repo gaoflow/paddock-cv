@@ -4,6 +4,20 @@ All notable public changes to Paddock CV are recorded here. The compiled
 real-person dataset remains private; entries below describe public code,
 methodology, schema and interface changes.
 
+## [1.1.8] - 2026-07-18
+
+### Added
+
+- An Akkodis ASP and Heart of Racing follow-up documenting four additional
+  current engineering or mechanic records and three verified static portraits.
+
+### Changed
+
+- Corrected a shortened race-record spelling by joining it to the exact AMR
+  Chief Race Engineer profile and retained car-specific scope.
+- Documented the Python runtime requirement for the local MySearch client so a
+  client-side failure is not misclassified as an empty search result.
+
 ## [1.1.7] - 2026-07-18
 
 ### Added
@@ -123,6 +137,7 @@ methodology, schema and interface changes.
 - Research, sourcing, identity-binding and data-publication methodology.
 
 [1.1.7]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.7
+[1.1.8]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.8
 [1.1.6]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.6
 [1.1.5]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.5
 [1.1.4]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.4
