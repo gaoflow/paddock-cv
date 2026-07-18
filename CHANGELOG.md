@@ -4,6 +4,19 @@ All notable public changes to Paddock CV are recorded here. The compiled
 real-person dataset remains private; entries below describe public code,
 methodology, schema and interface changes.
 
+## [1.1.5] - 2026-07-18
+
+### Added
+
+- A WEC car-staff follow-up documenting three medium-confidence technical and
+  sporting staff additions across 13 Autosport and Vista AF Corse.
+
+### Changed
+
+- Expanded namesake rejection notes for professional-profile and avatar
+  candidates, including explicit evidence for keeping two single-source names
+  on hold.
+
 ## [1.1.4] - 2026-07-18
 
 ### Added
@@ -85,6 +98,7 @@ methodology, schema and interface changes.
 - Fictional sample dataset, SQLite seed layer and Playwright regression suite.
 - Research, sourcing, identity-binding and data-publication methodology.
 
+[1.1.5]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.5
 [1.1.4]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.4
 [1.1.3]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.3
 [1.1.2]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.2
