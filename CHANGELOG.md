@@ -4,6 +4,21 @@ All notable public changes to Paddock CV are recorded here. The compiled
 real-person dataset remains private; entries below describe public code,
 methodology, schema and interface changes.
 
+## [1.1.2] - 2026-07-18
+
+### Added
+
+- A source-by-source Alpine Endurance Team roster audit documenting four
+  verified 2026 Le Mans staff records, two car-specific assignments and four
+  visually checked public static portraits.
+
+### Changed
+
+- Corrected three misspelled names inherited from the #35/#36 race sheets by
+  cross-checking exact current professional profiles.
+- Added regression coverage that prevents #35 and #36 personnel from being
+  displayed on the wrong Alpine entry.
+
 ## [1.1.1] - 2026-07-18
 
 ### Changed
@@ -43,6 +58,7 @@ methodology, schema and interface changes.
 - Fictional sample dataset, SQLite seed layer and Playwright regression suite.
 - Research, sourcing, identity-binding and data-publication methodology.
 
+[1.1.2]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.2
 [1.1.1]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.1
 [1.1.0]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.0
 [1.0.0]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.0.0
