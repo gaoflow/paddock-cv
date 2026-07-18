@@ -4,6 +4,19 @@ All notable public changes to Paddock CV are recorded here. The compiled
 real-person dataset remains private; entries below describe public code,
 methodology, schema and interface changes.
 
+## [1.1.3] - 2026-07-18
+
+### Added
+
+- A WEC static-avatar audit recording three adopted portraits and two
+  candidates rejected after real-browser card and dialog inspection.
+
+### Changed
+
+- Portrait acceptance now requires recognizable rendering at both dashboard
+  avatar sizes; exact identity alone is insufficient for an environmental
+  photograph with a very small subject.
+
 ## [1.1.2] - 2026-07-18
 
 ### Added
@@ -58,6 +71,7 @@ methodology, schema and interface changes.
 - Fictional sample dataset, SQLite seed layer and Playwright regression suite.
 - Research, sourcing, identity-binding and data-publication methodology.
 
+[1.1.3]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.3
 [1.1.2]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.2
 [1.1.1]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.1
 [1.1.0]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.0
