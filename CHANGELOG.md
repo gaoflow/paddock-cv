@@ -4,6 +4,20 @@ All notable public changes to Paddock CV are recorded here. The compiled
 real-person dataset remains private; entries below describe public code,
 methodology, schema and interface changes.
 
+## [1.1.4] - 2026-07-18
+
+### Added
+
+- A source-level WEC follow-up documenting two newly verified car-specific
+  technical staff records and one corrected static-avatar decision.
+
+### Changed
+
+- Avatar review now treats decoded initial tiles as placeholders even when an
+  image search returns them as JPEG profile images.
+- Corrected an earlier vehicle-only classification after the exact Iron Lynx
+  profile image was downloaded and visually inspected again.
+
 ## [1.1.3] - 2026-07-18
 
 ### Added
@@ -71,6 +85,7 @@ methodology, schema and interface changes.
 - Fictional sample dataset, SQLite seed layer and Playwright regression suite.
 - Research, sourcing, identity-binding and data-publication methodology.
 
+[1.1.4]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.4
 [1.1.3]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.3
 [1.1.2]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.2
 [1.1.1]: https://github.com/gaoflow/paddock-cv/releases/tag/v1.1.1
