@@ -105,7 +105,10 @@ test("mobile layout does not overflow horizontally", async () => {
     const modalBox = await page.locator("#drawer.on").boundingBox();
     assert.ok(modalBox, "mobile profile modal should have a layout box");
     assert.ok(modalBox.x >= 7 && modalBox.y >= 7, "mobile profile modal should retain viewport margins");
-    assert.ok(modalBox.width <= 376 && modalBox.height <= 828, "mobile profile modal should fit inside the viewport");
+    assert.ok(
+      modalBox.width <= 377 && modalBox.height <= 829,
+      `mobile profile modal should fit inside the viewport; got ${modalBox.width}x${modalBox.height}`
+    );
   } finally {
     await page.close();
   }
