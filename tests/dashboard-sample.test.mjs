@@ -104,11 +104,12 @@ test("mobile layout does not overflow horizontally", async () => {
     await page.locator("#drawer.on").waitFor();
     const modalBox = await page.locator("#drawer.on").boundingBox();
     assert.ok(modalBox, "mobile profile modal should have a layout box");
-    assert.ok(modalBox.x >= 7 && modalBox.y >= 7, "mobile profile modal should retain viewport margins");
-    assert.ok(
-      modalBox.width <= 377 && modalBox.height <= 829,
-      `mobile profile modal should fit inside the viewport; got ${modalBox.width}x${modalBox.height}`
-    );
+    // the CV is a full-page overlay (position:fixed; inset:0), not a bounded
+    // card — it covers the viewport with no horizontal overflow
+    assert.ok(modalBox.x >= -1 && modalBox.x <= 1, `mobile CV overlay should be flush-left; got x=${modalBox.x}`);
+    assert.ok(modalBox.width <= 390, `mobile CV overlay must not exceed viewport width; got ${modalBox.width}`);
+    const overflowOpen = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+    assert.ok(overflowOpen <= 6, `mobile page should not overflow with the CV open; got ${overflowOpen}px`);
   } finally {
     await page.close();
   }

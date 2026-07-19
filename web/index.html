@@ -385,6 +385,7 @@
   .step .sd{font-size:14px; color:var(--ink3); line-height:1.55; margin-top:2px}
 
   /* ---------- person CV (full page) ---------- */
+  body.modal-open{overflow:hidden}
   .scrim{position:fixed; inset:0; background:rgba(0,0,0,.6); opacity:0; visibility:hidden; pointer-events:none; transition:opacity .2s ease, visibility 0s; z-index:50}
   .scrim.on{opacity:1; visibility:visible; pointer-events:auto; transition:opacity .2s ease}
   .drawer{
@@ -663,7 +664,7 @@
 <div class="wrap"><footer id="foot"></footer></div>
 
 <div class="scrim" id="scrim"></div>
-<aside class="drawer" id="drawer" data-i18n-aria="drawer_aria" aria-label="人员详情"></aside>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="drawer-title" tabindex="-1"></aside>
 
 <script src="imgmap.js" onerror="window.IMGMAP=window.IMGMAP"></script>
 <script src="data.js"></script>
@@ -1775,7 +1776,15 @@ function renderRoles(){
 
 /* ---------- detail drawer ---------- */
 const scrim=document.getElementById("scrim"), drawer=document.getElementById("drawer");
+const modalBackground=document.querySelectorAll("body > .top, body > .wrap");
 let lastFocusedRow = null;
+function setPersonModalOpen(open){
+  drawer.classList.toggle("on",open);
+  scrim.classList.toggle("on",open);
+  drawer.setAttribute("aria-hidden",String(!open));
+  document.body.classList.toggle("modal-open",open);
+  modalBackground.forEach(el=>{el.inert=open;});
+}
 /* ---------- per-CV <head> (real title / description / canonical / Person JSON-LD
    for /p/<id> pages — set live on navigation AND captured by the prerender) ---------- */
 const HOME_HEAD = {
@@ -1901,13 +1910,13 @@ function openPerson(id){
 	      <button class="close" id="dclose" aria-label="${t("close_aria")}">✕</button>
 	      <div class="dhrow">${dav}
         <div>
-          <div class="dn">${nm(e.name,e.name_zh)}</div>
+          <div class="dn" id="drawer-title">${nm(e.name,e.name_zh)}</div>
           ${drawerNick}
           <div class="drole">${roleHtml(e)}<span class="role-meta">${nm(e.team_2026,e.team_zh)} · ${driversBi(e)}</span></div>
         </div>
       </div>
       ${ageChip}
-      <div class="chips">${chips}</div>
+      ${chips?`<div class="chips">${chips}</div>`:""}
     </div>
     <div class="dbody">
       <div class="sec main"><div class="lab">${t("lab_career")}</div>${tl}</div>
@@ -1917,8 +1926,7 @@ function openPerson(id){
       <div class="sec side"><div class="lab edulab">${t("lab_edu")}</div>${edu}</div>
       ${srcs?`<div class="sec side"><div class="lab">${t("lab_sources")}</div>${srcs}</div>`:""}
     </div>`;
-  drawer.classList.add("on");
-  scrim.classList.add("on");
+  setPersonModalOpen(true);
   drawer.scrollTop = 0;
   setCvHead(e);
   try{
@@ -1929,7 +1937,9 @@ function openPerson(id){
       history.pushState(null, "", want+location.search);
     }
   }catch{}
-	  document.getElementById("dclose").onclick=closeEng;
+	  const closeButton=document.getElementById("dclose");
+	  closeButton.onclick=closeEng;
+	  requestAnimationFrame(()=>closeButton.focus());
 	}
 // person id from either the real path (/p/<id>) or the legacy hash (#p/<id>)
 function personIdFromLocation(){
@@ -1940,20 +1950,35 @@ function personIdFromLocation(){
 }
 function openPersonFromLocation(){
   const id = personIdFromLocation();
-  if(!id){ if(drawer.classList.contains("on")){ drawer.classList.remove("on"); scrim.classList.remove("on"); resetHead(); } return; }
+  if(!id){ if(drawer.classList.contains("on")) hidePersonModal(); return; }
   try{ getSeriesPeople(); }catch{}
   if(PERSON_BY_ID[id]) openPerson(id);
 }
 window.addEventListener("popstate", openPersonFromLocation);
-function closeEng(){
-  drawer.classList.remove("on");scrim.classList.remove("on");
-  try{ if(personIdFromLocation()!=null) history.pushState(null, "", "/"+location.search); }catch{}
+function hidePersonModal(){
+  setPersonModalOpen(false);
   resetHead();
   lastFocusedRow?.focus?.();
   lastFocusedRow = null;
 }
+function closeEng(){
+  if(!drawer.classList.contains("on")) return;
+  hidePersonModal();
+  try{ if(personIdFromLocation()!=null) history.pushState(null, "", "/"+location.search); }catch{}
+}
 scrim.onclick=closeEng;
-document.addEventListener("keydown",e=>{if(e.key==="Escape")closeEng();});
+document.addEventListener("keydown",e=>{
+  if(!drawer.classList.contains("on")) return;
+  if(e.key==="Escape"){ e.preventDefault(); closeEng(); return; }
+  if(e.key!=="Tab") return;
+  // trap focus inside the dialog
+  const focusable=[...drawer.querySelectorAll('a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"])')]
+    .filter(el=>el.offsetParent!==null);
+  if(!focusable.length){ e.preventDefault(); drawer.focus(); return; }
+  const first=focusable[0], last=focusable[focusable.length-1];
+  if(e.shiftKey&&document.activeElement===first){ e.preventDefault(); last.focus(); }
+  else if(!e.shiftKey&&document.activeElement===last){ e.preventDefault(); first.focus(); }
+});
 document.addEventListener("error",e=>{
   const img = e.target;
   if(!(img instanceof HTMLImageElement) || !img.classList.contains("dav")) return;
