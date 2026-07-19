@@ -1410,7 +1410,7 @@ function personRow(p, context="", contextEn=""){
 	  const nick = p.aka&&p.aka.length ? `<div class="pnick">${t("aka")}${p.aka.join(" / ")}</div>` : "";
 	  // real crawlable link to the person's CV page; JS intercepts the click to
 	  // open the drawer in place (no reload), crawlers/no-JS follow the href
-	  return `<a class="personrow" href="/p/${encodeURIComponent(p.id)}" data-id="${escAttr(p.id)}"${p.team_color?` style="--tc:${escAttr(p.team_color)}"`:""}>
+	  return `<a class="personrow" href="/p/${encodeURIComponent(p.id)}/" data-id="${escAttr(p.id)}"${p.team_color?` style="--tc:${escAttr(p.team_color)}"`:""}>
 	    ${personAvatar(p)}
 	    <div>
 	      <div class="pnamebar"><div class="pname">${nm(p.name,p.name_zh)}</div>${tags?`<div class="ptags">${tags}</div>`:""}</div>
@@ -1814,7 +1814,9 @@ function setCvHead(e){
   const role = (LOCALE==="zh" ? (e.role_zh||e.role) : (e.role||e.role_zh)) || "";
   const team = (LOCALE==="zh" ? (e.team_zh||e.team_2026) : e.team_2026) || "";
   const natl = (LOCALE==="zh" ? (e.nationality_zh||e.nationality) : (e.nationality||e.nationality_zh)) || "";
-  const url = "https://paddockcv.com/p/"+encodeURIComponent(e.id);
+  // trailing slash: Cloudflare Pages serves /p/<id>/index.html at /p/<id>/ (200)
+  // and 308-redirects the no-slash form there, so the canonical must be the slash URL
+  const url = "https://paddockcv.com/p/"+encodeURIComponent(e.id)+"/";
   const roleTeam = [role, team].filter(Boolean).join(" · ");
   const title = [name, roleTeam].filter(Boolean).join(" — ") + " · Paddock CV";
   const desc = [name + (role?(" — "+role):"") + (team?(", "+team):"") + ".",
@@ -1930,9 +1932,10 @@ function openPerson(id){
   drawer.scrollTop = 0;
   setCvHead(e);
   try{
-    // canonical URL is the real path /p/<id> (keep the lang query for the user);
-    // only push when we are not already there (covers direct /p/<id> loads)
-    const want = "/p/"+encodeURIComponent(id);
+    // canonical URL is the real path /p/<id>/ (trailing slash = the 200 URL that
+    // Cloudflare serves; keep the lang query for the user). Only push when we are
+    // not already there (covers direct /p/<id>/ loads, which arrive slash-normalised)
+    const want = "/p/"+encodeURIComponent(id)+"/";
     if(decodeURIComponent(location.pathname)!==decodeURIComponent(want)){
       history.pushState(null, "", want+location.search);
     }
