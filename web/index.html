@@ -3,10 +3,13 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- root base so /p/<id> deep-linked CV pages resolve data.js, imgmap.js and
+     imgcache/ image paths from the site root, not their own directory -->
+<base href="/" />
 <link rel="icon" href="data:," />
-<title>Paddock CV</title>
-<meta name="description" content="Paddock CV — a sourced career-path atlas of the trackside engineering staff across F1, F2, WEC / Le Mans, Formula E and F1 Academy. Pick a paddock job, see everyone who holds it today, and read how each of them got there: education, junior series, years to the pit wall." />
-<link rel="canonical" href="https://paddockcv.com/" />
+<title id="pagetitle">Paddock CV</title>
+<meta id="metadesc" name="description" content="Paddock CV — a sourced career-path atlas of the trackside engineering staff across F1, F2, WEC / Le Mans, Formula E and F1 Academy. Pick a paddock job, see everyone who holds it today, and read how each of them got there: education, junior series, years to the pit wall." />
+<link id="canonical" rel="canonical" href="https://paddockcv.com/" />
 <link rel="alternate" hreflang="x-default" href="https://paddockcv.com/" />
 <link rel="alternate" hreflang="zh" href="https://paddockcv.com/?lang=zh" />
 <link rel="alternate" hreflang="en" href="https://paddockcv.com/?lang=en" />
@@ -224,6 +227,7 @@
     display:grid; grid-template-columns:48px minmax(0,1fr); align-items:center; gap:10px;
     padding:7px 8px; margin:0 -8px; border-radius:12px; cursor:pointer;
     transition:background .15s ease; position:relative;
+    color:inherit; text-decoration:none; /* it is an <a> — kill link styling */
   }
   .personrow::after{
     content:'›'; position:absolute; right:10px; top:50%; transform:translateY(-50%);
@@ -380,20 +384,16 @@
   .step .st{font-size:16.5px; font-weight:600; letter-spacing:-.2px}
   .step .sd{font-size:14px; color:var(--ink3); line-height:1.55; margin-top:2px}
 
-  /* ---------- person CV modal ---------- */
-  body.modal-open{overflow:hidden}
+  /* ---------- person CV (full page) ---------- */
   .scrim{position:fixed; inset:0; background:rgba(0,0,0,.6); opacity:0; visibility:hidden; pointer-events:none; transition:opacity .2s ease, visibility 0s; z-index:50}
   .scrim.on{opacity:1; visibility:visible; pointer-events:auto; transition:opacity .2s ease}
   .drawer{
-    position:fixed; top:24px; left:50%; z-index:60;
-    width:min(1104px,calc(100vw - 48px)); max-height:calc(100vh - 48px);
-    border:1px solid var(--hair2); border-radius:8px; background:var(--canvas);
-    box-shadow:0 24px 80px rgba(0,0,0,.55);
+    position:fixed; inset:0; z-index:60; background:var(--canvas);
     overflow-y:auto; overscroll-behavior:contain;
-    opacity:0; visibility:hidden; pointer-events:none; transform:translate(-50%,12px);
+    opacity:0; visibility:hidden; pointer-events:none; transform:translateY(12px);
     transition:opacity .2s ease, transform .2s ease, visibility 0s;
   }
-  .drawer.on{opacity:1; visibility:visible; pointer-events:auto; transform:translate(-50%,0); transition:opacity .2s ease, transform .2s ease}
+  .drawer.on{opacity:1; visibility:visible; pointer-events:auto; transform:none; transition:opacity .2s ease, transform .2s ease}
   .dh{
     border-bottom:1px solid var(--hair);
     background:
@@ -406,7 +406,7 @@
   }
   .dh .dhrow>div:last-child{min-width:0}
   .close{
-    position:absolute; top:16px; right:24px; z-index:70;
+    position:fixed; top:16px; right:24px; z-index:70;
     width:40px; height:40px; border-radius:9999px; cursor:pointer;
     background:var(--s3); border:1px solid transparent; color:var(--ink2);
     font-size:14px; line-height:1; display:flex; align-items:center; justify-content:center;
@@ -415,7 +415,7 @@
   .close:hover{color:var(--ink); background:var(--carbon)}
   .dav{
     width:96px; height:96px; border-radius:9999px; object-fit:cover; object-position:center 22%;
-    background-color:var(--s2); background-repeat:no-repeat; display:block;
+    background:var(--s2); display:block;
   }
   .dav.ph{display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:700; color:#fff}
   .dcap{font-size:11px; color:var(--ink4); margin-top:8px; text-align:center; max-width:96px; line-height:1.45}
@@ -423,7 +423,7 @@
   .dn .zh{font-size:16px; font-weight:400; color:var(--ink3); margin-left:10px; letter-spacing:0}
   .dnick{font-size:12.5px; color:var(--ink4); margin-top:4px}
   .drole{font-size:17px; color:var(--ink2); margin-top:8px; line-height:1.5}
-  .drole .role-en{display:block; color:var(--ink4); margin-left:0; font-size:14px}
+  .drole .role-en{display:inline; color:var(--ink4); margin-left:8px; font-size:14px}
   .drole .role-meta{display:block; font-size:14px; color:var(--ink3); margin-top:3px}
   .agewrap{max-width:1040px; margin:0 auto; padding:0 32px}
   .agechip{
@@ -432,6 +432,12 @@
     padding:3px 12px; font-size:12.5px; color:var(--ink2);
   }
   .agechip .al{font-size:11px; font-weight:600; letter-spacing:0; color:var(--ink4)}
+  .chips{max-width:1040px; margin:0 auto; padding:16px 32px 30px; display:flex; flex-wrap:wrap; gap:8px}
+  .badge{
+    font-size:13px; line-height:1.4; color:var(--ink2);
+    background:var(--s3); border-radius:9999px; padding:3px 12px;
+  }
+  .abadge{font-size:11.5px; font-weight:600; border-radius:9999px; padding:3px 12px; letter-spacing:0}
   .confbadge{
     font-size:11.5px; border-radius:9999px; padding:3px 12px;
     background:var(--s2); border:1px solid rgba(212,160,84,.35); color:#d4a054;
@@ -551,9 +557,8 @@
     .dh .dhrow{grid-template-columns:64px minmax(0,1fr); gap:16px; padding:48px 14px 24px}
     .dav{width:64px; height:64px}
     .dcap{max-width:64px}
-    .agewrap{padding-left:14px; padding-right:14px}
+    .chips,.agewrap{padding-left:14px; padding-right:14px}
     .dbody{padding:28px 14px 72px}
-    .drawer{top:8px; width:calc(100vw - 16px); max-height:calc(100vh - 16px); border-radius:6px}
     .close{top:10px; right:12px}
     .route-row{grid-template-columns:minmax(0,1.2fr) minmax(0,1.4fr) 44px minmax(0,1fr); gap:8px; font-size:12px}
   }
@@ -658,7 +663,7 @@
 <div class="wrap"><footer id="foot"></footer></div>
 
 <div class="scrim" id="scrim"></div>
-<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="drawer-title" tabindex="-1"></aside>
+<aside class="drawer" id="drawer" data-i18n-aria="drawer_aria" aria-label="人员详情"></aside>
 
 <script src="imgmap.js" onerror="window.IMGMAP=window.IMGMAP"></script>
 <script src="data.js"></script>
@@ -1105,7 +1110,7 @@ function teamLogo(url, light=false, invert=false, teamBg=""){
     ? (0.2126*parseInt(teamBg.slice(1,3),16)+0.7152*parseInt(teamBg.slice(3,5),16)+0.0722*parseInt(teamBg.slice(5,7),16))/255 : 0;
   const mix = lum > 0.6 ? 34 : 72;
   const wm = /res\.cloudinary\.com/.test(url||"");
-  return url ? `<img class="teamlogo ${wm?"wm":""} ${chip?"chip":""}"${chip?` style="background:color-mix(in srgb, ${escAttr(teamBg)} ${mix}%, #000)"`:""} src="${escAttr(imageUrl(url))}" alt="" loading="lazy" decoding="async"${(!wm&&!chip)?' onload="logoTune(this)"':''}>` : "";
+  return url ? `<img class="teamlogo ${wm?"wm":""} ${chip?"chip":""}"${chip?` style="background:color-mix(in srgb, ${escAttr(teamBg)} ${mix}%, #000)"`:""} src="${escAttr(imageUrl(url))}" alt="" loading="lazy" decoding="async"${(!wm&&!chip)?' onload="window.logoTune&&window.logoTune(this)"':''}>` : "";
 }
 // scraped series logos are a mixed bag: some are near-black transparent marks
 // (Citroën Racing) that vanish on the dark cards. Sample the drawn pixels and
@@ -1269,9 +1274,8 @@ function makeSeriesPeople(){
           unresolvedProfile?.note_zh
         ].filter(Boolean);
         const id=`series-${seriesId}-${slug(team.team_name)}-${slug(m.name)}-${slug(m.role_key||m.role)}`;
-        const entryNumbers = String(m.entry_number||"").split("/").map(value=>value.trim()).filter(Boolean);
-        const entry = entryNumbers.length ? (D.series_entries?.[seriesId]?.entries||[]).find(item=>
-          entryNumbers.includes(String(item.car_number)) && slug(item.entrant)===slug(team.team_name)
+        const entry = m.entry_number ? (D.series_entries?.[seriesId]?.entries||[]).find(item=>
+          String(item.car_number)===String(m.entry_number) && slug(item.entrant)===slug(team.team_name)
         ) : null;
         out.push({
           id,
@@ -1287,8 +1291,6 @@ function makeSeriesPeople(){
           name:m.name,
           name_zh:"",
           photo:m.photo || enriched.photo || null,
-          photo_pos:m.photo_pos||"",
-          photo_size:m.photo_size||"",
           public_profiles:publicProfiles||[],
           profile_lookup_status:m.profile_lookup_status || (unresolvedProfile ? "no_trusted_result" : (publicProfiles?.length ? "profile_found" : "not_enriched_yet")),
           role:m.role,
@@ -1348,10 +1350,9 @@ function personAvatar(p, cls="pav"){
   const rawUrl = (p.photo&&p.photo.local) || (p.photo&&p.photo.src_img) || p.photo_url || "";
   const avatarInitials = initials(p.name||"?");
   const url = imageUrl(rawUrl, avatarInitials);
-  const thumb = p.photo_size ? "" : avatarThumbUrl(rawUrl);
+  const thumb = avatarThumbUrl(rawUrl);
   const pos = p.photo_pos || "";
-  const size = p.photo_size || "";
-  if(url) return `<div class="${cls} lazy-bg" data-bg="${escAttr(thumb||url)}"${thumb?` data-bg-full="${escAttr(url)}"`:""} data-initials="${escAttr(avatarInitials)}"${pos?` data-bg-pos="${escAttr(pos)}"`:""}${size?` data-bg-size="${escAttr(size)}"`:""}></div>`;
+  if(url) return `<div class="${cls} lazy-bg" data-bg="${escAttr(thumb||url)}"${thumb?` data-bg-full="${escAttr(url)}"`:""} data-initials="${escAttr(avatarInitials)}"${pos?` data-bg-pos="${escAttr(pos)}"`:""}></div>`;
   return `<div class="${cls}" style="background:${p.team_color||"var(--accent)"}">${initials(p.name||"?")}</div>`;
 }
 function loadAvatar(el){
@@ -1364,7 +1365,6 @@ function loadAvatar(el){
   img.onload = ()=>{
     el.style.backgroundImage = `url("${url.replace(/"/g,'\\"')}")`;
     if(el.dataset.bgPos) el.style.backgroundPosition = el.dataset.bgPos;
-    if(el.dataset.bgSize) el.style.backgroundSize = el.dataset.bgSize;
     el.dataset.loaded = "1";
     delete el.dataset.loading;
   };
@@ -1407,14 +1407,16 @@ function titleRoleHtml(r){
 function personRow(p, context="", contextEn=""){
 	  const tags = p.confidence==="low" ? `<span class="ptag warn">${t("low_conf")}</span>` : "";
 	  const nick = p.aka&&p.aka.length ? `<div class="pnick">${t("aka")}${p.aka.join(" / ")}</div>` : "";
-	  return `<div class="personrow" data-id="${p.id}" tabindex="0" role="button"${p.team_color?` style="--tc:${escAttr(p.team_color)}"`:""}>
+	  // real crawlable link to the person's CV page; JS intercepts the click to
+	  // open the drawer in place (no reload), crawlers/no-JS follow the href
+	  return `<a class="personrow" href="/p/${encodeURIComponent(p.id)}" data-id="${escAttr(p.id)}"${p.team_color?` style="--tc:${escAttr(p.team_color)}"`:""}>
 	    ${personAvatar(p)}
 	    <div>
 	      <div class="pnamebar"><div class="pname">${nm(p.name,p.name_zh)}</div>${tags?`<div class="ptags">${tags}</div>`:""}</div>
 	      ${nick}
 	      <div class="prole">${roleHtml(p, context, contextEn)}</div>
 	    </div>
-	  </div>`;
+	  </a>`;
 	}
 function unknownSlot(text, roles=[]){
   return `<div class="unknownrow">${t("not_found")}</div>`;
@@ -1456,7 +1458,7 @@ function peopleForEntry(seriesId, entry){
   const key = slug(entry.entrant);
   return getSeriesPeople().filter(p=>
     p.series_id===seriesId &&
-    ((p.entry_number && String(p.entry_number).split("/").map(value=>value.trim()).includes(String(entry.car_number))) || (!p.entry_number && p.team_id===key))
+    ((p.entry_number && String(p.entry_number)===String(entry.car_number)) || (!p.entry_number && p.team_id===key))
   );
 }
 function rawSeriesPeopleCount(seriesId){
@@ -1499,68 +1501,25 @@ function peopleBlocksByRole(people){
     .map(([,items])=>positionBlock(items[0].role_zh||items[0].role, items[0].role, items))
     .join("");
 }
-function f1RoleFamily(person){
-  const key = person.role_key || "";
-  const title = person.role || "";
-  const normalized = new Set([
-    "technical-executive","technical-director-engineering-design","technical-director-aerodynamics",
-    "technical-director-performance","chief-designer","head-trackside-engineering",
-    "trackside-reliability-engineer","race-engineer","performance-engineer","strategy-engineer",
-    "trackside-controls-engineer","trackside-power-unit-engineer","tyre-performance-engineer",
-    "trackside-aero-engineer","aerodynamics-development-engineer","mechanical-design-engineer",
-    "vehicle-dynamics-engineer","simulation-modelling-engineer","simulator-test-engineer",
-    "systems-electronics-engineer","control-systems-engineer","performance-software-data-engineer",
-    "reliability-validation-engineer","power-unit-integration-engineer","tyre-modelling-engineer",
-    "sporting-race-operations"
-  ]);
-  if(normalized.has(key)) return key;
-  if(key==="technical-leadership"){
-    if(/chief designer|head of design|design director/i.test(title)) return "chief-designer";
-    if(/engineering|chassis project|car design/i.test(title)) return "technical-director-engineering-design";
-    if(/sporting|operations|operating officer/i.test(title)) return "sporting-race-operations";
-    return "technical-executive";
-  }
-  if(key==="head-race-engineering"){
-    return /sporting|operations|racing director/i.test(title) ? "sporting-race-operations" : "head-trackside-engineering";
-  }
-  if(key==="chief-race-engineer") return "head-trackside-engineering";
-  if(key==="performance-engineer"){
-    return /director|head|chief|deputy technical/i.test(title) ? "technical-director-performance" : key;
-  }
-  if(key==="test-simulation-engineer") return "simulation-modelling-engineer";
-  if(key==="systems-controls-engineer"){
-    return /advisor/i.test(title) ? "technical-executive" : "systems-electronics-engineer";
-  }
-  if(key==="pu-engineer") return "power-unit-integration-engineer";
-  if(key==="tyre-aero-trackside"){
-    return /director|head/i.test(title) ? "technical-director-aerodynamics" : "trackside-aero-engineer";
-  }
-  return key;
-}
-// A team card lists only publicly named people. The complete role taxonomy is
-// shown in the career-path view, so an unfilled research cell is not presented
-// to users as a real vacancy or as proof that the role has no incumbent.
+// canonical F1 position order — rendered identically for every team so the
+// grid is comparable. Core slots always show; empty ones display 未找到.
 const F1_SLOTS = [
-  {title:"领队 / 管理层", title_en:"Team Principal / Leadership", get:c=>c.leaders},
-  {title:"最高技术管理", title_en:"Chief Technical Officer / Overall Technical Director", get:c=>c.eng["technical-executive"]||[]},
-  {title:"工程设计 / 首席设计", title_en:"Engineering & Design Technical Leadership / Chief Designer", get:c=>[...(c.eng["technical-director-engineering-design"]||[]), ...(c.eng["chief-designer"]||[])]},
-  {title:"空气动力技术管理", title_en:"Aerodynamics Technical Leadership", get:c=>c.eng["technical-director-aerodynamics"]||[]},
-  {title:"性能技术管理", title_en:"Performance Technical Leadership", get:c=>c.eng["technical-director-performance"]||[]},
-  {title:"赛道 / 比赛工程管理", title_en:"Head / Director of Trackside or Race Engineering", get:c=>[...(c.eng["head-trackside-engineering"]||[]), ...c.chiefs]},
-  {title:"车手赛车工程师", title_en:"Race Engineer", get:c=>c.race},
-  {title:"比赛策略", title_en:"Race Strategy Engineer / Strategist", get:c=>c.eng["strategy-engineer"]||[]},
-  {title:"赛道性能工程", title_en:"Trackside Performance Engineering", get:c=>c.eng["performance-engineer"]||[]},
-  {title:"车辆动力学 / 车辆性能", title_en:"Vehicle Dynamics / Vehicle Performance", get:c=>c.eng["vehicle-dynamics-engineer"]||[]},
-  {title:"仿真 / 建模 / 模拟器", title_en:"Simulation / Modelling / Driver-in-the-Loop", get:c=>[...(c.eng["simulation-modelling-engineer"]||[]), ...(c.eng["simulator-test-engineer"]||[])]},
-  {title:"系统 / 控制 / 电子 / 数据", title_en:"Systems / Controls / Electronics / Performance Data", get:c=>[...(c.eng["systems-electronics-engineer"]||[]), ...(c.eng["control-systems-engineer"]||[]), ...(c.eng["trackside-controls-engineer"]||[]), ...(c.eng["performance-software-data-engineer"]||[])]},
-  {title:"动力单元 / 动力总成集成", title_en:"Power Unit / Powertrain Integration", get:c=>[...(c.eng["power-unit-integration-engineer"]||[]), ...(c.eng["trackside-power-unit-engineer"]||[])]},
-  {title:"轮胎性能 / 轮胎建模", title_en:"Tyre Performance / Tyre Modelling", get:c=>[...(c.eng["tyre-performance-engineer"]||[]), ...(c.eng["tyre-modelling-engineer"]||[])]},
-  {title:"赛道气动 / 气动研发", title_en:"Trackside Aero / Aerodynamics Development", get:c=>[...(c.eng["trackside-aero-engineer"]||[]), ...(c.eng["aerodynamics-development-engineer"]||[])]},
-  {title:"可靠性 / 测试 / 验证", title_en:"Reliability / Test / Validation", get:c=>[...(c.eng["trackside-reliability-engineer"]||[]), ...(c.eng["reliability-validation-engineer"]||[])]},
-  {title:"赛事与比赛运营", title_en:"Sporting & Race Operations", get:c=>c.eng["sporting-race-operations"]||[]},
+  {title:"领队 / 管理层", title_en:"Team Principal / Leadership", core:true, get:c=>c.leaders},
+  {title:"技术总监 / 工程负责人", title_en:"Technical Director / CTO / Head of Engineering", core:true, get:c=>c.eng["technical-leadership"]||[]},
+  {title:"赛事工程主管 / 首席 RE", title_en:"Head / Director of Race Engineering / Chief Race Engineer", core:true, get:c=>[...(c.eng["head-race-engineering"]||[]), ...c.chiefs]},
+  {title:"策略工程师", title_en:"Strategy Engineer / Strategist", core:true, get:c=>c.eng["strategy-engineer"]||[]},
+  {title:"车辆性能工程", title_en:"Performance Engineer", core:true, get:c=>c.eng["performance-engineer"]||[]},
+  {title:"仿真 / 模拟器 / 测试", title_en:"Simulation / Simulator / Test Engineer", core:false, get:c=>c.eng["test-simulation-engineer"]||[]},
+  {title:"动力单元 / 系统 / 控制", title_en:"Power Unit / Systems / Controls Engineer", core:false, get:c=>[...(c.eng["pu-engineer"]||[]), ...(c.eng["systems-controls-engineer"]||[])]},
+  {title:"气动 / 轮胎 / 赛道性能", title_en:"Trackside Aero / Tyre / Trackside Performance Engineer", core:false, get:c=>c.eng["tyre-aero-trackside"]||[]},
+  {title:"车手赛车工程师", title_en:"Race Engineer", core:true, get:c=>c.race},
 ];
-function slotBlock(title, titleEn, people){
-	  if(!people.length) return "";
+function slotBlock(title, titleEn, people, core){
+	  if(!people.length){
+	    return core
+	      ? `<div class="posblock"><div class="postitle">${positionTitleHtml(title, titleEn)}</div><div class="unknownrow"><b>${t("not_found_name")}</b><div class="slotlist"><span>${titleEn}</span></div></div></div>`
+	      : "";
+	  }
   return `<div class="posblock">
     <div class="postitle">${positionTitleHtml(title, titleEn)}</div>
     ${people.map(p=>personRow(p, p.role_zh||title, p.role||titleEn)).join("")}
@@ -1572,7 +1531,7 @@ function buildF1Section(filter=""){
   const engByTeam = {};
   F1_ENGINEERING.forEach(p=>{
     (engByTeam[p.team_id] ||= {});
-    (engByTeam[p.team_id][f1RoleFamily(p)] ||= []).push(p);
+    (engByTeam[p.team_id][p.role_key] ||= []).push(p);
   });
   const f = filter.trim().toLowerCase();
 	  const teams = D.teams.map(t=>{
@@ -1582,7 +1541,7 @@ function buildF1Section(filter=""){
 	    const named = [...ctx.leaders, ...F1_ENGINEERING.filter(p=>p.team_id===t.id), ...chiefs, ...race];
 	    const engRefs = ctx.leaders.length + Object.values(ctx.eng).flat().length;
 	    const driverText = (LOCALE==="zh" ? (t.drivers_zh||t.drivers||[]) : (t.drivers||t.drivers_zh||[])).join(" · ")||TR("lineup_tbd");
-	    const blocks = F1_SLOTS.map(s=>slotBlock(s.title, s.title_en, s.get(ctx))).join("");
+	    const blocks = F1_SLOTS.map(s=>slotBlock(s.title, s.title_en, s.get(ctx), s.core)).join("");
 	    return {
       ...t,
       series_name:"Formula 1",
@@ -1816,18 +1775,70 @@ function renderRoles(){
 
 /* ---------- detail drawer ---------- */
 const scrim=document.getElementById("scrim"), drawer=document.getElementById("drawer");
-const modalBackground=document.querySelectorAll("body > .top, body > .wrap");
 let lastFocusedRow = null;
-function setPersonModalOpen(open){
-  drawer.classList.toggle("on",open);
-  scrim.classList.toggle("on",open);
-  drawer.setAttribute("aria-hidden",String(!open));
-  document.body.classList.toggle("modal-open",open);
-  modalBackground.forEach(el=>{el.inert=open;});
+/* ---------- per-CV <head> (real title / description / canonical / Person JSON-LD
+   for /p/<id> pages — set live on navigation AND captured by the prerender) ---------- */
+const HOME_HEAD = {
+  title: (document.getElementById("pagetitle")||{}).textContent || "Paddock CV",
+  ogtitle: "Paddock CV — how people actually get paddock jobs",
+  desc: (document.getElementById("metadesc")||{}).getAttribute
+        ? document.getElementById("metadesc").getAttribute("content") : "",
+  canon: "https://paddockcv.com/",
+};
+function metaByProp(p){ let m=document.head.querySelector(`meta[property="${p}"]`);
+  if(!m){ m=document.createElement("meta"); m.setAttribute("property",p); document.head.appendChild(m);} return m; }
+function metaByName(n){ let m=document.head.querySelector(`meta[name="${n}"]`);
+  if(!m){ m=document.createElement("meta"); m.setAttribute("name",n); document.head.appendChild(m);} return m; }
+function applyHead(o){
+  document.title = o.title;
+  metaByName("description").setAttribute("content", o.desc||"");
+  const c=document.getElementById("canonical"); if(c) c.setAttribute("href", o.canon);
+  metaByProp("og:title").setAttribute("content", o.ogtitle||o.title);
+  metaByProp("og:description").setAttribute("content", o.desc||"");
+  metaByProp("og:url").setAttribute("content", o.canon);
+  metaByName("twitter:title").setAttribute("content", o.ogtitle||o.title);
+  metaByName("twitter:description").setAttribute("content", o.desc||"");
+}
+function removePersonLd(){ const s=document.getElementById("cvld"); if(s) s.remove(); }
+function setCvHead(e){
+  const name = LOCALE==="zh" ? (e.name_zh||e.name) : (e.name||e.name_zh);
+  const role = (LOCALE==="zh" ? (e.role_zh||e.role) : (e.role||e.role_zh)) || "";
+  const team = (LOCALE==="zh" ? (e.team_zh||e.team_2026) : e.team_2026) || "";
+  const natl = (LOCALE==="zh" ? (e.nationality_zh||e.nationality) : (e.nationality||e.nationality_zh)) || "";
+  const url = "https://paddockcv.com/p/"+encodeURIComponent(e.id);
+  const roleTeam = [role, team].filter(Boolean).join(" · ");
+  const title = [name, roleTeam].filter(Boolean).join(" — ") + " · Paddock CV";
+  const desc = [name + (role?(" — "+role):"") + (team?(", "+team):"") + ".",
+    natl?(natl+" ·"):"", "Career path, education and route into motorsport, sourced on Paddock CV."]
+    .filter(Boolean).join(" ");
+  applyHead({title, ogtitle:title, desc, canon:url});
+  removePersonLd();
+  const ld = {"@context":"https://schema.org","@type":"ProfilePage",
+    "mainEntity":{"@type":"Person","name":name,
+      ...(role?{"jobTitle":role}:{}),
+      ...(team?{"worksFor":{"@type":"Organization","name":team}}:{}),
+      ...(e.nationality?{"nationality":e.nationality}:{}),
+      "url":url}};
+  const s=document.createElement("script"); s.type="application/ld+json"; s.id="cvld";
+  s.textContent=JSON.stringify(ld); document.head.appendChild(s);
+}
+function resetHead(){
+  applyHead(HOME_HEAD); removePersonLd();
 }
 function openPerson(id){
   lastFocusedRow = document.activeElement?.closest?.(".personrow") || null;
   const e=PERSON_BY_ID[id]; if(!e) return;
+  const a=ARCHE[e.route_archetype]||ARCHE.unknown;
+  // no generic identity tags; keep the career-route class (the study's subject)
+  // and specific, meaningful facts (nationality, pairing, RE-timeline, low-conf).
+  const isPlainRole = e.profile_kind==="leadership"||e.profile_kind==="f1-engineering"||e.profile_kind==="series-person";
+  const chips=[
+    (!isPlainRole && a.label) ? `<span class="abadge" style="color:#0a0c10;background:${a.color}">${a.label}</span>` : "",
+    (e.nationality_zh||e.nationality)?`<span class="badge">${LOCALE==="zh"?(e.nationality_zh||e.nationality):(e.nationality||zhTok(e.nationality_zh))}</span>`:"",
+    confBadge(e),
+    typeof e.years_to_race_engineer==="number"?`<span class="badge">${t("yrs_to_re", e.years_to_race_engineer)}</span>`:"",
+    e.f1_debut_year?`<span class="badge">${t("debut", e.f1_debut_year)}</span>`:"",
+  ].filter(Boolean).join("");
   const ageChip = e.age!=null
     ? `<div class="agewrap"><span class="agechip"><span class="al">${t("age_label")}</span><b>${e.age}</b> ${t("age_suffix")}${e.age_approx?`<span class="al">${t("age_approx")}</span>`:""}</span></div>`
     : "";
@@ -1871,11 +1882,8 @@ function openPerson(id){
   const provLabel = p ? (p.provenance==="wikimedia"?t("free_license"):t("media_photo")) : "";
   const remotePhotoRaw = (p&&p.src_img) || e.photo_url || "";
   const drawerInitials = initials(e.name||"?");
-  const drawerPhotoAttrs = `alt="${escAttr(e.name)}" loading="lazy" decoding="async" data-fallback-color="${escAttr(e.team_color||"var(--accent)")}" style="object-position:${escAttr(e.photo_pos||"center 22%")}"`;
-  const framedPhotoRaw = (p&&p.local) || remotePhotoRaw;
-  const dav = e.photo_size && framedPhotoRaw
-    ? `<div><div class="dav" role="img" aria-label="${escAttr(e.name)}" style="background-image:url('${escAttr(imageUrl(framedPhotoRaw, drawerInitials))}');background-size:${escAttr(e.photo_size)};background-position:${escAttr(e.photo_pos||"center")}"></div>${(p?.license||p?.credit||e.photo_credit)?`<div class="dcap">${provLabel}${p?.license?(` · ${p.license}`):""}</div>`:""}</div>`
-    : p&&p.local
+  const drawerPhotoAttrs = `alt="${escAttr(e.name)}" loading="lazy" decoding="async" data-fallback-color="${escAttr(e.team_color||"var(--accent)")}"`;
+  const dav = p&&p.local
     ? `<div><img class="dav" src="${escAttr(imageUrl(p.local, drawerInitials))}" ${drawerPhotoAttrs}>${(p.license||p.credit)?`<div class="dcap">${provLabel}${p.license?(" · "+p.license):""}</div>`:""}</div>`
     : remotePhotoRaw
     ? `<div><img class="dav" src="${escAttr(imageUrl(remotePhotoRaw, drawerInitials))}" ${drawerPhotoAttrs}>${(p?.credit||e.photo_credit)?`<div class="dcap">${zhTok(p?.credit||e.photo_credit)}</div>`:""}</div>`
@@ -1893,65 +1901,59 @@ function openPerson(id){
 	      <button class="close" id="dclose" aria-label="${t("close_aria")}">✕</button>
 	      <div class="dhrow">${dav}
         <div>
-          <div class="dn" id="drawer-title">${nm(e.name,e.name_zh)}</div>
+          <div class="dn">${nm(e.name,e.name_zh)}</div>
           ${drawerNick}
           <div class="drole">${roleHtml(e)}<span class="role-meta">${nm(e.team_2026,e.team_zh)} · ${driversBi(e)}</span></div>
         </div>
       </div>
       ${ageChip}
+      <div class="chips">${chips}</div>
     </div>
     <div class="dbody">
       <div class="sec main"><div class="lab">${t("lab_career")}</div>${tl}</div>
+      ${(!isPlainRole && a.desc)?`<div class="sec main"><div class="lab">${t("lab_route")}</div><div style="font-size:16px;line-height:1.6;color:var(--ink2)">${a.desc}</div></div>`:""}
       ${hls?`<div class="sec main"><div class="lab">${t("lab_highlights")}</div>${hls}</div>`:""}
       ${notesText?`<div class="sec main"><div class="lab">${t("lab_notes")}</div><div class="notes">${paras(notesText)}</div></div>`:""}
       <div class="sec side"><div class="lab edulab">${t("lab_edu")}</div>${edu}</div>
       ${srcs?`<div class="sec side"><div class="lab">${t("lab_sources")}</div>${srcs}</div>`:""}
     </div>`;
-  setPersonModalOpen(true);
+  drawer.classList.add("on");
+  scrim.classList.add("on");
   drawer.scrollTop = 0;
+  setCvHead(e);
   try{
-    if(!location.hash.startsWith("#p/") || decodeURIComponent(location.hash.slice(3))!==id){
-      history.pushState(null, "", "#p/"+encodeURIComponent(id));
+    // canonical URL is the real path /p/<id> (keep the lang query for the user);
+    // only push when we are not already there (covers direct /p/<id> loads)
+    const want = "/p/"+encodeURIComponent(id);
+    if(decodeURIComponent(location.pathname)!==decodeURIComponent(want)){
+      history.pushState(null, "", want+location.search);
     }
   }catch{}
-	  const closeButton=document.getElementById("dclose");
-    closeButton.onclick=closeEng;
-    requestAnimationFrame(()=>closeButton.focus());
+	  document.getElementById("dclose").onclick=closeEng;
 	}
-function openPersonFromHash(){
-  const m = location.hash.match(/^#p\/(.+)$/);
-  if(!m){ if(drawer.classList.contains("on")) hidePersonModal(); return; }
+// person id from either the real path (/p/<id>) or the legacy hash (#p/<id>)
+function personIdFromLocation(){
+  const mp = decodeURIComponent(location.pathname).match(/^\/p\/(.+?)\/?$/);
+  if(mp) return mp[1];
+  const mh = location.hash.match(/^#p\/(.+)$/);
+  return mh ? decodeURIComponent(mh[1]) : null;
+}
+function openPersonFromLocation(){
+  const id = personIdFromLocation();
+  if(!id){ if(drawer.classList.contains("on")){ drawer.classList.remove("on"); scrim.classList.remove("on"); resetHead(); } return; }
   try{ getSeriesPeople(); }catch{}
-  const id = decodeURIComponent(m[1]);
   if(PERSON_BY_ID[id]) openPerson(id);
 }
-window.addEventListener("popstate", openPersonFromHash);
-function hidePersonModal(){
-  setPersonModalOpen(false);
+window.addEventListener("popstate", openPersonFromLocation);
+function closeEng(){
+  drawer.classList.remove("on");scrim.classList.remove("on");
+  try{ if(personIdFromLocation()!=null) history.pushState(null, "", "/"+location.search); }catch{}
+  resetHead();
   lastFocusedRow?.focus?.();
   lastFocusedRow = null;
 }
-function closeEng(){
-  if(!drawer.classList.contains("on")) return;
-  hidePersonModal();
-  try{ if(location.hash.startsWith("#p/")) history.pushState(null, "", location.pathname+location.search); }catch{}
-}
 scrim.onclick=closeEng;
-document.addEventListener("keydown",e=>{
-  if(!drawer.classList.contains("on")) return;
-  if(e.key==="Escape"){
-    e.preventDefault();
-    closeEng();
-    return;
-  }
-  if(e.key!=="Tab") return;
-  const focusable=[...drawer.querySelectorAll('a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"])')]
-    .filter(el=>el.offsetParent!==null);
-  if(!focusable.length){e.preventDefault();drawer.focus();return;}
-  const first=focusable[0],last=focusable[focusable.length-1];
-  if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
-  else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
-});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeEng();});
 document.addEventListener("error",e=>{
   const img = e.target;
   if(!(img instanceof HTMLImageElement) || !img.classList.contains("dav")) return;
@@ -1971,11 +1973,19 @@ document.getElementById("rosterboard").addEventListener("click",e=>{
     renderRosterSection(id, OPEN_SERIES.has(id));
     return;
   }
-	  const row=e.target.closest(".personrow"); if(row) openPerson(row.dataset.id);
+	  const row=e.target.closest(".personrow");
+	  if(row){
+	    // it is an <a href="/p/<id>"> — open in place, don't reload
+	    // (let modifier-clicks / middle-clicks open the real URL in a new tab)
+	    if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||e.button!==0) return;
+	    e.preventDefault();
+	    openPerson(row.dataset.id);
+	  }
 	});
 document.getElementById("rosterboard").addEventListener("keydown",e=>{
+  // anchors fire a native click on Enter (handled above); only Space needs help
   const row=e.target.closest(".personrow");
-  if(!row || (e.key!=="Enter" && e.key!==" ")) return;
+  if(!row || e.key!==" ") return;
   e.preventDefault();
   openPerson(row.dataset.id);
 });
@@ -2105,7 +2115,15 @@ document.getElementById("foot").innerHTML =
 renderRosterBoard();
 renderRoles();
 renderPathChart();
-openPersonFromHash();   // shareable CV links: /?lang=en#p/<person-id>
+// build-time hook: the prerender script (scripts/prerender.mjs) drives these to
+// snapshot the homepage + one static HTML page per CV. Harmless at runtime.
+window.__PRERENDER__ = {
+  ids(){ try{ getSeriesPeople(); }catch{} return Object.keys(PERSON_BY_ID); },
+  open(id){ window.scrollTo(0,0); openPerson(id); },
+  close(){ closeEng(); },
+  expandAll(){ (D.motorsport_series||[]).forEach(s=>OPEN_SERIES.add(s.id)); OPEN_SERIES.add("f1"); renderRosterBoard(CURRENT_ROSTER_FILTER); },
+};
+openPersonFromLocation();   // shareable CV links: /p/<person-id> (and legacy #p/<id>)
 if("serviceWorker" in navigator && location.protocol !== "file:"){
   navigator.serviceWorker.getRegistrations()
     .then(regs=>Promise.all(regs.map(reg=>reg.unregister())))
